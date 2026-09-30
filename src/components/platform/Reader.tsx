@@ -1,10 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import type { Edition, Work } from "@/data/types";
 import { accessLabel } from "@/lib/commerce";
 import { bookOne, questionsBook, readerExcerpts } from "@/data/anugoonj";
+import { readerResumeKey } from "@/lib/reading";
 import { allowsDownload, allowsOnline } from "@/lib/utils";
 
 export function Reader({
@@ -20,9 +22,21 @@ export function Reader({
   const isAnugoonj = work.slug === bookOne.slug;
   const isQuestions = work.slug === questionsBook.slug;
 
+  useEffect(() => {
+    if (!allowed) return;
+    try {
+      window.localStorage.setItem(
+        readerResumeKey,
+        JSON.stringify({ slug: work.slug, lang: edition.language }),
+      );
+    } catch {
+      /* ignore */
+    }
+  }, [allowed, work.slug, edition.language]);
+
   return (
     <article className="bg-ink px-5 pt-28 pb-28 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-3xl">
+      <div className="reader-prose mx-auto max-w-[42rem]">
         <p className="label-meta text-gilt">
           {t("workLabel")} {work.number}
         </p>
@@ -53,7 +67,7 @@ export function Reader({
               ? readerExcerpts.map((excerpt) => (
                   <section key={excerpt.kicker.hi}>
                     <p className="label-meta text-gilt">{loc(excerpt.kicker)}</p>
-                    <p className="mt-5 font-serif text-3xl leading-relaxed">
+                    <p className="mt-5 font-serif text-[1.35rem] leading-[1.85] text-ivory/92 sm:text-[1.45rem]">
                       {loc(excerpt.body)}
                     </p>
                   </section>

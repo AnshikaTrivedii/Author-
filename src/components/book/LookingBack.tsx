@@ -6,13 +6,13 @@ import { bookOne } from "@/data/anugoonj";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export function LookingBack() {
-  const { loc } = useLanguage();
+  const { t, loc } = useLanguage();
 
   return (
-    <section className="bg-ink py-24 lg:py-36">
+    <section id="story" className="scroll-mt-28 bg-ink py-24 lg:py-36">
       <div className="mx-auto grid max-w-[1680px] items-end gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:px-12">
         <Reveal className="lg:col-span-6">
-          <p className="label-meta text-gilt">प्रस्तावना</p>
+          <p className="label-meta text-gilt">{t("preface")}</p>
           <h2 className="mt-6 font-serif text-4xl leading-[1.1] sm:text-6xl lg:text-7xl">
             {loc(bookOne.lookingBackTitle)}
           </h2>

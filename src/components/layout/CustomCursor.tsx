@@ -84,6 +84,14 @@ export function CustomCursor() {
   if (!enabled) return null;
 
   const expanded = mode !== "default";
+  const showLabel =
+    mode === "read" ||
+    mode === "listen" ||
+    mode === "watch" ||
+    mode === "explore";
+  const ringSize =
+    mode === "view" ? 34 : showLabel ? 46 : 7;
+  const half = ringSize / 2;
   const label =
     mode === "read"
       ? t("cursorRead")
@@ -93,14 +101,12 @@ export function CustomCursor() {
           ? t("cursorWatch")
           : mode === "explore"
             ? t("cursorExplore")
-            : mode === "view"
-              ? t("cursorView")
-              : "";
+            : "";
 
   return (
     <motion.div
       aria-hidden="true"
-      className="pointer-events-none fixed top-0 left-0 z-[90] mix-blend-difference"
+      className="pointer-events-none fixed top-0 left-0 z-[90]"
       style={{
         x: renderPos.x,
         y: renderPos.y,
@@ -108,21 +114,22 @@ export function CustomCursor() {
       }}
     >
       <motion.div
-        className="flex items-center justify-center rounded-full border border-ivory/80"
+        className="flex items-center justify-center rounded-full border border-ivory/55"
         animate={{
-          width: expanded ? 88 : 10,
-          height: expanded ? 88 : 10,
-          x: expanded ? -44 : -5,
-          y: expanded ? -44 : -5,
+          width: ringSize,
+          height: ringSize,
+          x: -half,
+          y: -half,
           backgroundColor: expanded
-            ? "rgba(241,232,216,0.08)"
-            : "rgba(241,232,216,0.92)",
+            ? "rgba(232,228,220,0.06)"
+            : "rgba(232,228,220,0.85)",
+          borderWidth: expanded ? 1 : 0,
         }}
-        transition={{ type: "spring", stiffness: 320, damping: 28 }}
+        transition={{ type: "spring", stiffness: 400, damping: 32 }}
       >
         <motion.span
-          className="label-meta px-2 text-center text-[9px] leading-tight text-ivory"
-          animate={{ opacity: expanded ? 1 : 0 }}
+          className="label-meta px-1 text-center text-[7px] leading-none tracking-[0.14em] text-ivory"
+          animate={{ opacity: showLabel ? 1 : 0, scale: showLabel ? 1 : 0.9 }}
         >
           {label}
         </motion.span>

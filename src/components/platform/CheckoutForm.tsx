@@ -67,7 +67,7 @@ export function CheckoutForm({ work, offer }: { work: Work; offer: Offer }) {
       <label className="mt-10 flex items-start gap-4 text-sm text-ivory/85">
         <input
           type="checkbox"
-          className="mt-1 size-5 accent-[#a98b61]"
+          className="mt-1 size-5 accent-[#8f7558]"
           checked={terms}
           onChange={(event) => setTerms(event.target.checked)}
         />
@@ -81,7 +81,7 @@ export function CheckoutForm({ work, offer }: { work: Work; offer: Offer }) {
       <label className="mt-5 flex items-start gap-4 text-sm text-ivory/85">
         <input
           type="checkbox"
-          className="mt-1 size-5 accent-[#a98b61]"
+          className="mt-1 size-5 accent-[#8f7558]"
           checked={privacy}
           onChange={(event) => setPrivacy(event.target.checked)}
         />

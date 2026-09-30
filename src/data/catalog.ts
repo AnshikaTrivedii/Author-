@@ -1,0 +1,298 @@
+import type { Copy } from "@/lib/locale";
+import type {
+  AccessType,
+  Edition,
+  FilmPresentation,
+  Money,
+  Work,
+  WorkCredits,
+} from "./types";
+import { copyToBeProvided, platform, pricePlaceholder } from "./site";
+import { bookOne, questionsBook } from "./anugoonj";
+
+const pendingTax = {
+  rate: null as number | null,
+  inclusive: true,
+  display: { en: "[TAX]", hi: "[कर]" },
+};
+
+const pendingMoney: Money = {
+  amount: null,
+  currency: "INR",
+  display: pricePlaceholder,
+};
+
+const freeMoney: Money = {
+  amount: 0,
+  currency: "INR",
+  display: { en: "FREE", hi: "निःशुल्क" },
+};
+
+const creditPending: Copy = copyToBeProvided;
+
+function edition(
+  language: "hi" | "en",
+  label: Copy,
+  pricing: "free" | "paid",
+): Edition {
+  return {
+    language,
+    label,
+    version: "1.0",
+    publishedAt: { en: "[PUBLICATION DATE]", hi: "[प्रकाशन तिथि]" },
+    status: "published",
+    accessType: "ONLINE",
+    fileKey: null,
+    price: pricing === "free" ? freeMoney : pendingMoney,
+  };
+}
+
+const pendingCredits: WorkCredits = {
+  writtenBy: { en: platform.creatorName, hi: platform.creatorNameHi },
+  narratedBy: { en: platform.creatorName, hi: platform.creatorNameHi },
+  filmConcept: creditPending,
+  direction: creditPending,
+  editing: creditPending,
+  aiProduction: creditPending,
+  music: creditPending,
+  other: creditPending,
+};
+
+function film(pricing: "free" | "paid"): FilmPresentation {
+  return {
+    available: true,
+    title: { en: "[FILM TITLE]", hi: "[फिल्म का शीर्षक]" },
+    synopsis: copyToBeProvided,
+    duration: { en: "5–7 minutes", hi: "5–7 मिनट" },
+    accessType: "ONLINE",
+    src: null,
+    poster: "/images/stills/cinematic-01.jpg",
+    language: { en: "[LANGUAGE]", hi: "[भाषा]" },
+    subtitles: { en: "[SUBTITLES]", hi: "[उपशीर्षक]" },
+    aiAssisted: true,
+    aiTools: { en: "[OPTIONAL TOOL LIST]", hi: "[वैकल्पिक उपकरण सूची]" },
+    price: pricing === "free" ? freeMoney : pendingMoney,
+  };
+}
+
+function freeWork(
+  id: string,
+  number: string,
+  image: string,
+  imageAlt: { en: string; hi: string },
+): Work {
+  return {
+    id,
+    slug: id,
+    number,
+    title: { en: "[WORK TITLE]", hi: "[कृति का शीर्षक]" },
+    subtitle: { en: "[SUBTITLE]", hi: "[उपशीर्षक]" },
+    description: { en: "[SHORT DESCRIPTION]", hi: "[संक्षिप्त विवरण]" },
+    about: {
+      en: "[100–300 word introduction]",
+      hi: "[100–300 शब्दों का परिचय]",
+    },
+    kind: "story",
+    status: "published",
+    pricingModel: "free",
+    publishedAt: { en: "[PUBLICATION DATE]", hi: "[प्रकाशन तिथि]" },
+    version: "1.0",
+    image,
+    imageAlt,
+    hindi: edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "free"),
+    english: edition(
+      "en",
+      { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+      "free",
+    ),
+    audio: {
+      available: true,
+      title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
+      accessType: "ONLINE",
+      src: null,
+      poster: image,
+      duration: { en: "[DURATION]", hi: "[अवधि]" },
+      price: freeMoney,
+    },
+    film: film("free"),
+    credits: pendingCredits,
+    whatYouReceive: [
+      { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
+      { en: "English Edition — FREE", hi: "अंग्रेज़ी संस्करण — निःशुल्क" },
+      { en: "Author's Voice — FREE", hi: "लेखक की आवाज़ — निःशुल्क" },
+      { en: "Short Film — FREE", hi: "लघु फिल्म — निःशुल्क" },
+    ],
+    offers: [
+      {
+        id: "complete-free",
+        label: { en: "Complete Digital Access", hi: "पूर्ण डिजिटल पहुँच" },
+        includes: [
+          { en: "Hindi Edition", hi: "हिन्दी संस्करण" },
+          { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+          { en: "Author's Voice", hi: "लेखक की आवाज़" },
+          { en: "Short Film", hi: "लघु फिल्म" },
+        ],
+        price: freeMoney,
+        accessType: "ONLINE",
+      },
+    ],
+    aiAssisted: true,
+    tax: pendingTax,
+    copyrightOwner: {
+      en: platform.creatorName,
+      hi: platform.creatorNameHi,
+    },
+  };
+}
+
+export const catalogWorks: Work[] = [
+  {
+    ...freeWork("work-01", "01", bookOne.image, bookOne.imageAlt),
+    slug: bookOne.slug,
+    title: bookOne.title,
+    subtitle: bookOne.tagline,
+    description: bookOne.proposition,
+    about: bookOne.about,
+    image: bookOne.image,
+    hindi: {
+      ...edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "free"),
+      status: "published",
+    },
+    english: {
+      ...edition(
+        "en",
+        { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+        "free",
+      ),
+      status: "forthcoming",
+    },
+    audio: {
+      available: true,
+      title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
+      accessType: "ONLINE",
+      src: null,
+      poster: bookOne.image,
+      duration: { en: "[DURATION]", hi: "[अवधि]" },
+      price: freeMoney,
+    },
+    film: {
+      ...film("free"),
+      poster: "/images/stills/family-photo.jpg",
+    },
+    credits: {
+      ...pendingCredits,
+      writtenBy: bookOne.author,
+      narratedBy: bookOne.author,
+    },
+    whatYouReceive: [
+      { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
+      { en: "English Edition — Forthcoming", hi: "अंग्रेज़ी संस्करण — शीघ्र आ रही" },
+      { en: "Author's Voice — FREE", hi: "लेखक की आवाज़ — निःशुल्क" },
+      { en: "Short Film — FREE", hi: "लघु फिल्म — निःशुल्क" },
+    ],
+  },
+  {
+    ...freeWork("work-02", "02", questionsBook.image, questionsBook.imageAlt),
+    slug: questionsBook.slug,
+    title: questionsBook.title,
+    subtitle: questionsBook.subtitle,
+    description: questionsBook.subtitle,
+    about: questionsBook.about,
+    hindi: {
+      ...edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "free"),
+      status: "published",
+    },
+    english: {
+      ...edition(
+        "en",
+        { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+        "free",
+      ),
+      status: "forthcoming",
+    },
+    credits: {
+      ...pendingCredits,
+      writtenBy: bookOne.author,
+      narratedBy: bookOne.author,
+    },
+    whatYouReceive: [
+      { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
+      { en: "English Edition — Forthcoming", hi: "अंग्रेज़ी संस्करण — शीघ्र आ रही" },
+      { en: "Author's Voice — FREE", hi: "लेखक की आवाज़ — निःशुल्क" },
+      { en: "Short Film — FREE", hi: "लघु फिल्म — निःशुल्क" },
+    ],
+  },
+  {
+    ...freeWork("work-03", "03", "/images/stills/heritage-books.jpg", {
+      en: "Heritage books and a camera on stone",
+      hi: "पत्थर पर विरासत की पुस्तकें और कैमरा",
+    }),
+    status: "forthcoming",
+    pricingModel: "paid",
+    hindi: {
+      ...edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "paid"),
+      status: "forthcoming",
+      accessType: "ONLINE" as AccessType,
+    },
+    english: {
+      ...edition(
+        "en",
+        { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+        "paid",
+      ),
+      status: "forthcoming",
+      accessType: "ONLINE" as AccessType,
+    },
+    audio: {
+      available: true,
+      title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
+      accessType: "ONLINE",
+      src: null,
+      poster: "/images/stills/heritage-books.jpg",
+      duration: { en: "[DURATION]", hi: "[अवधि]" },
+      price: pendingMoney,
+    },
+    film: {
+      ...film("paid"),
+      duration: { en: "20–25 minutes", hi: "20–25 मिनट" },
+      poster: "/images/stills/archive-01.jpg",
+    },
+    whatYouReceive: [
+      { en: "Hindi Edition — [PRICE]", hi: "हिन्दी संस्करण — [मूल्य]" },
+      { en: "English Edition — [PRICE]", hi: "अंग्रेज़ी संस्करण — [मूल्य]" },
+      {
+        en: "Complete Digital Access — [PRICE]",
+        hi: "पूर्ण डिजिटल पहुँच — [मूल्य]",
+      },
+    ],
+    offers: [
+      {
+        id: "hindi",
+        label: { en: "Hindi Edition", hi: "हिन्दी संस्करण" },
+        includes: [{ en: "Hindi Edition", hi: "हिन्दी संस्करण" }],
+        price: pendingMoney,
+        accessType: "ONLINE",
+      },
+      {
+        id: "english",
+        label: { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+        includes: [{ en: "English Edition", hi: "अंग्रेज़ी संस्करण" }],
+        price: pendingMoney,
+        accessType: "ONLINE",
+      },
+      {
+        id: "complete",
+        label: { en: "Complete Digital Access", hi: "पूर्ण डिजिटल पहुँच" },
+        includes: [
+          { en: "Hindi Edition", hi: "हिन्दी संस्करण" },
+          { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+          { en: "Audio", hi: "श्रव्य" },
+          { en: "Film", hi: "फिल्म" },
+          { en: "Online Access", hi: "ऑनलाइन पहुँच" },
+        ],
+        price: pendingMoney,
+        accessType: "ONLINE",
+      },
+    ],
+  },
+];

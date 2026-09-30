@@ -21,7 +21,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
       {options.map((option, index) => (
         <span key={option.id} className="flex items-baseline gap-2">
           {index > 0 ? (
-            <span className="text-[0.65rem] text-muted" aria-hidden="true">
+            <span className="text-[0.65rem] !text-ivory/50" aria-hidden="true">
               |
             </span>
           ) : null}
@@ -31,7 +31,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
             aria-pressed={locale === option.id}
             className={cn(
               "label-meta transition-colors duration-300",
-              locale === option.id ? "text-gilt" : "text-muted hover:text-ivory",
+              locale === option.id ? "!text-gilt" : "!text-ivory/80 hover:!text-ivory",
             )}
           >
             {option.label}

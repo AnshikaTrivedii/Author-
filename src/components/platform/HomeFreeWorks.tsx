@@ -1,5 +1,6 @@
 "use client";
 
+import { FreeProgressRibbon } from "@/components/audience/FreeProgressRibbon";
 import Link from "next/link";
 import { ImageReveal, Reveal } from "@/components/ui/Reveal";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
@@ -13,7 +14,7 @@ export function HomeFreeWorks() {
   const works = freeWorks();
 
   return (
-    <section className="bg-ink-2 py-24 lg:py-36">
+    <section id="free" className="scroll-mt-28 bg-ink-2 py-24 lg:py-36">
       <div className="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
         <Reveal>
           <p className="label-meta text-gilt">{t("badgeFree")}</p>
@@ -23,6 +24,12 @@ export function HomeFreeWorks() {
           <p className="mt-8 max-w-xl font-serif text-xl italic text-muted">
             {t("freeSupport")}
           </p>
+          <div className="mt-10 max-w-xl">
+            <FreeProgressRibbon />
+          </div>
+          <CtaLink href="/gift" className="mt-8" cursor="explore">
+            {t("giftHeading")}
+          </CtaLink>
         </Reveal>
 
         <div className="mt-16 grid gap-20 lg:gap-28">

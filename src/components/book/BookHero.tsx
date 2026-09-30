@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { readReaderResume } from "@/lib/reading";
 import {
   motion,
   useReducedMotion,
@@ -26,6 +28,11 @@ export function BookHero() {
   });
   const mediaY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const [resume, setResume] = useState<ReturnType<typeof readReaderResume>>(null);
+
+  useEffect(() => {
+    setResume(readReaderResume());
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -62,12 +69,12 @@ export function BookHero() {
           ) : (
             <video
               ref={videoRef}
-              className="absolute inset-0 h-full w-full object-cover object-center"
+              className="absolute inset-0 h-full w-full scale-[1.02] object-cover object-[center_42%] [filter:contrast(1.08)_saturate(1.12)_brightness(1.05)]"
               autoPlay
               muted
               loop
               playsInline
-              preload="metadata"
+              preload="auto"
               poster={platform.heroImage}
               aria-hidden="true"
             >
@@ -75,8 +82,8 @@ export function BookHero() {
             </video>
           )}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/80 via-ink/30 to-transparent" />
+        <div className="absolute inset-y-0 left-0 w-[min(70%,52rem)] bg-gradient-to-r from-ink/78 via-ink/40 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
       </motion.div>
 
       <FilmFrame className="z-20 hidden sm:block" />
@@ -104,14 +111,23 @@ export function BookHero() {
           >
             {loc(bookOne.tagline)}
           </motion.p>
-          <motion.p variants={fadeUp} className="label-meta mt-6 text-gilt">
+          <motion.p
+            variants={fadeUp}
+            className="label-meta mt-6 !text-ivory [text-shadow:0_1px_2px_rgba(13,13,12,0.9),0_8px_22px_rgba(13,13,12,0.75)]"
+          >
             {loc(bookOne.positioning)}
           </motion.p>
           <motion.p
             variants={fadeUp}
-            className="mt-8 text-xs tracking-[0.28em] text-muted uppercase"
+            className="mt-8 text-xs tracking-[0.28em] !text-ivory uppercase [text-shadow:0_1px_2px_rgba(13,13,12,0.9),0_8px_22px_rgba(13,13,12,0.75)]"
           >
             {loc(bookOne.author)}
+          </motion.p>
+          <motion.p
+            variants={fadeUp}
+            className="mt-4 max-w-md text-sm !text-ivory/95 [text-shadow:0_1px_2px_rgba(13,13,12,0.9),0_8px_22px_rgba(13,13,12,0.75)]"
+          >
+            {locale === "hi" ? t("languageOriginal") : t("languageTranslation")}
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -131,6 +147,16 @@ export function BookHero() {
               {t("watchTheJourney")}
             </CtaLink>
           </motion.div>
+          {resume ? (
+            <motion.p variants={fadeUp} className="mt-6">
+              <Link
+                href={`/works/${resume.slug}/read/${resume.lang}`}
+                className="label-meta text-gilt underline-offset-4 hover:underline"
+              >
+                {t("readerResume")}
+              </Link>
+            </motion.p>
+          ) : null}
         </motion.div>
       </motion.div>
     </section>

@@ -1,5 +1,6 @@
 "use client";
 
+import { FreeProgressRibbon } from "@/components/audience/FreeProgressRibbon";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
@@ -19,6 +20,7 @@ export function FreeWorksPage() {
         kicker={t("freeSupport")}
       />
       <div className="mx-auto max-w-[1680px] space-y-28 px-5 pt-12 sm:px-8 lg:px-12">
+        <FreeProgressRibbon />
         {freeWorks().map((work) => (
           <article key={work.id} className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-6">

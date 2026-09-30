@@ -33,6 +33,11 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local admin persistence and uploads
+/data/admin-store.json
+/data/audience-store.json
+/public/uploads/
+
 # vercel
 .vercel
 

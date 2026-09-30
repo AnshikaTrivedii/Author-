@@ -1,8 +1,10 @@
 "use client";
 
 import { CtaLink } from "@/components/ui/CtaLink";
+import { FreeProgressRibbon } from "@/components/audience/FreeProgressRibbon";
 import { MediaPlayer } from "@/components/platform/MediaPlayer";
 import { StatusBadge } from "@/components/platform/StatusBadge";
+import { WorkDetailSubnav } from "@/components/platform/WorkDetailSubnav";
 import { WorkModes } from "@/components/platform/WorkModes";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import type { Work } from "@/data/types";
@@ -14,6 +16,8 @@ export function WorkDetail({ work }: { work: Work }) {
   const { t, loc, locale } = useLanguage();
   const paid = work.pricingModel === "paid";
   const complete = work.offers.find((offer) => offer.id.startsWith("complete"));
+  const hindiReady = work.hindi.status !== "forthcoming";
+  const primaryReadLang = hindiReady ? "hi" : "en";
 
   return (
     <article className="bg-ink pb-28">
@@ -37,7 +41,31 @@ export function WorkDetail({ work }: { work: Work }) {
           ) : null}
         </div>
         <WorkModes work={work} />
+        <div className="mt-10 flex flex-col gap-6 border-t border-ivory/10 pt-10 lg:flex-row lg:items-center lg:justify-between">
+          <p className="max-w-lg text-sm leading-relaxed text-muted">
+            {paid ? t("workPaidNote") : t("workSampleFree")}
+          </p>
+          <div className="flex flex-wrap gap-4">
+            <CtaLink
+              href={`/works/${work.slug}/read/${primaryReadLang}`}
+              cursor="read"
+              variant="solid"
+            >
+              {t("workStartReading")}
+            </CtaLink>
+            {paid && complete ? (
+              <CtaLink href="#buy">{t("buyNow")}</CtaLink>
+            ) : null}
+          </div>
+        </div>
+        {!paid ? (
+          <div className="mt-10 max-w-xl">
+            <FreeProgressRibbon />
+          </div>
+        ) : null}
       </header>
+
+      <WorkDetailSubnav work={work} />
 
       <section className="mx-auto mt-24 max-w-[1680px] px-5 sm:px-8 lg:grid lg:grid-cols-12 lg:px-12">
         <h2 className="label-meta text-gilt lg:col-span-3">{t("headingAboutWork")}</h2>
@@ -101,7 +129,10 @@ export function WorkDetail({ work }: { work: Work }) {
       </section>
 
       {paid ? (
-        <section className="mx-auto mt-28 max-w-[1680px] px-5 sm:px-8 lg:px-12">
+        <section
+          id="buy"
+          className="mx-auto mt-28 max-w-[1680px] scroll-mt-28 px-5 sm:px-8 lg:px-12"
+        >
           <h2 className="font-serif text-5xl sm:text-7xl">{t("headingReceive")}</h2>
           <ul className="mt-10 max-w-xl space-y-4 font-serif text-2xl">
             {work.whatYouReceive.map((item) => (

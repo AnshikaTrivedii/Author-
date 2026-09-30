@@ -22,7 +22,7 @@ export const platform: Platform = {
     hi: ["स्मृतियों की", "अनुगूँज"],
   },
   tagline: {
-    en: ["एक जीवन • अनेक पड़ाव • अनगिनत स्मृतियाँ"],
+    en: ["One life • many stages • countless memories"],
     hi: ["एक जीवन • अनेक पड़ाव • अनगिनत स्मृतियाँ"],
   },
   statement: {
@@ -43,22 +43,66 @@ export const navItems: NavItem[] = [
   {
     label: { en: "The Book", hi: "पुस्तक" },
     href: "/works/smritiyon-ki-anugoonj",
+    emphasis: true,
   },
   { label: { en: "Works", hi: "कृतियाँ" }, href: "/works" },
-  { label: { en: "Free works", hi: "निःशुल्क कृतियाँ" }, href: "/free-works" },
-  { label: { en: "Films", hi: "फिल्में" }, href: "/films" },
   { label: { en: "Listen", hi: "सुनें" }, href: "/audio-video" },
+  { label: { en: "Films", hi: "फिल्में" }, href: "/films" },
   { label: { en: "About", hi: "परिचय" }, href: "/about" },
 ];
 
-export const footerPrimary: NavItem[] = [
-  { label: { en: "Read", hi: "पढ़ें" }, href: "/works" },
-  { label: { en: "Listen", hi: "सुनें" }, href: "/audio-video" },
-  { label: { en: "Watch", hi: "देखें" }, href: "/films" },
-  { label: { en: "Works", hi: "कृतियाँ" }, href: "/works" },
-  { label: { en: "Films", hi: "फिल्में" }, href: "/films" },
-  { label: { en: "About", hi: "परिचय" }, href: "/about" },
+/** Secondary destinations — nav “More” and home community strip */
+export const navMoreItems: NavItem[] = [
+  { label: { en: "Free works", hi: "निःशुल्क कृतियाँ" }, href: "/free-works" },
+  { label: { en: "Gift a chapter", hi: "अध्याय भेंट करें" }, href: "/gift" },
+  { label: { en: "Reading circles", hi: "पठन मंडल" }, href: "/reading-circles" },
+  { label: { en: "Letters", hi: "पत्र" }, href: "/letters" },
+  { label: { en: "Making of", hi: "निर्माण" }, href: "/making-of" },
+  { label: { en: "Places", hi: "स्थान" }, href: "/places" },
+  { label: { en: "Author's desk", hi: "लेखक की मेज़" }, href: "/desk" },
   { label: { en: "Contact", hi: "संपर्क" }, href: "/contact" },
+];
+
+export type FooterGroup = {
+  title: Copy;
+  items: NavItem[];
+};
+
+export const footerGroups: FooterGroup[] = [
+  {
+    title: { en: "Read & watch", hi: "पढ़ें और देखें" },
+    items: [
+      {
+        label: { en: "The Book", hi: "पुस्तक" },
+        href: "/works/smritiyon-ki-anugoonj",
+      },
+      { label: { en: "All works", hi: "सभी कृतियाँ" }, href: "/works" },
+      { label: { en: "Free works", hi: "निःशुल्क कृतियाँ" }, href: "/free-works" },
+      { label: { en: "Listen", hi: "सुनें" }, href: "/audio-video" },
+      { label: { en: "Films", hi: "फिल्में" }, href: "/films" },
+    ],
+  },
+  {
+    title: { en: "Community", hi: "साझा" },
+    items: [
+      { label: { en: "Gift a chapter", hi: "अध्याय भेंट करें" }, href: "/gift" },
+      {
+        label: { en: "Reading circles", hi: "पठन मंडल" },
+        href: "/reading-circles",
+      },
+      { label: { en: "Letters", hi: "पत्र" }, href: "/letters" },
+      { label: { en: "Making of", hi: "निर्माण" }, href: "/making-of" },
+      { label: { en: "Places", hi: "स्थान" }, href: "/places" },
+    ],
+  },
+  {
+    title: { en: "About", hi: "परिचय" },
+    items: [
+      { label: { en: "About", hi: "परिचय" }, href: "/about" },
+      { label: { en: "Author's desk", hi: "लेखक की मेज़" }, href: "/desk" },
+      { label: { en: "Contact", hi: "संपर्क" }, href: "/contact" },
+    ],
+  },
 ];
 
 export const footerLegal: NavItem[] = [

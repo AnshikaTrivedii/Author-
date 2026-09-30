@@ -1,13 +1,19 @@
+import { redirect } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { AdminPage } from "@/components/platform/AdminPage";
+import { readSession } from "@/lib/session";
 
 export const metadata = pageMetadata(
-  "Admin architecture",
-  "Content model for Echoes of Memories works, editions, prices and media.",
+  "Admin desk",
+  "Manage works, pricing, uploads, buyers and orders for Echoes of Memories.",
   "/admin",
   false,
 );
 
-export default function Page() {
-  return <AdminPage />;
+export default async function Page() {
+  const session = await readSession();
+  if (!session || session.role !== "admin") {
+    redirect("/login?role=admin");
+  }
+  return <AdminPage email={session.email} />;
 }

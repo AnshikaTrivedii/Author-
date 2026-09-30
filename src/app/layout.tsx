@@ -7,6 +7,7 @@ import {
   notoSansDeva,
   notoSerifDeva,
 } from "@/lib/fonts";
+import { AmbientSound } from "@/components/audience/AmbientSound";
 import { CustomCursor } from "@/components/layout/CustomCursor";
 import { Footer } from "@/components/layout/Footer";
 import { LanguageProvider } from "@/components/layout/LanguageProvider";
@@ -19,7 +20,7 @@ const title = platform.title;
 const description = `${platform.title}. ${platform.statement.en}`;
 
 export const viewport: Viewport = {
-  themeColor: "#0A0908",
+  themeColor: "#0D0D0C",
   width: "device-width",
   initialScale: 1,
 };
@@ -100,6 +101,7 @@ export default function RootLayout({
           <Navbar />
           {children}
           <Footer />
+          <AmbientSound />
         </LanguageProvider>
       </body>
     </html>

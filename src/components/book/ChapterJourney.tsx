@@ -15,7 +15,7 @@ export function ChapterJourney() {
   const current = chapters[active] ?? chapters[0];
 
   return (
-    <section id="inside" className="bg-ink-2 py-24 lg:py-32">
+    <section id="inside" className="scroll-mt-28 bg-ink-2 py-24 lg:py-32">
       <div className="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
         <p className="label-meta text-gilt">{t("insideTheBook")}</p>
 
@@ -34,7 +34,9 @@ export function ChapterJourney() {
                       className="w-full py-5 text-left"
                     >
                       <span className="label-meta text-gilt">
-                        भाग {chapter.number}
+                        {chapter.number === "अंतिम"
+                          ? t("finalPart")
+                          : `${t("part")} ${chapter.number}`}
                       </span>
                       <span
                         className={cn(
@@ -86,7 +88,11 @@ export function ChapterJourney() {
                   onClick={() => setActive(open ? -1 : index)}
                   aria-expanded={open}
                 >
-                  <span className="label-meta text-gilt">भाग {chapter.number}</span>
+                  <span className="label-meta text-gilt">
+                    {chapter.number === "अंतिम"
+                      ? t("finalPart")
+                      : `${t("part")} ${chapter.number}`}
+                  </span>
                   <span className="mt-2 block font-serif text-2xl">
                     {loc(chapter.title)}
                   </span>

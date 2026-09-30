@@ -9,7 +9,7 @@ export function AboutTheBook() {
   const { t, loc } = useLanguage();
 
   return (
-    <section className="bg-ink py-24 lg:py-32">
+    <section id="about" className="scroll-mt-28 bg-ink py-24 lg:py-32">
       <div className="mx-auto grid max-w-[1680px] gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:px-12">
         <div className="lg:col-span-5">
           <PlaceholderMedia

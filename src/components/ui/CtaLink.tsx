@@ -22,7 +22,7 @@ export function CtaLink({
 }: CtaLinkProps) {
   const placeholder = isPlaceholderHref(href);
   const solidClass =
-    "label-meta inline-flex min-h-12 items-center justify-center border border-gilt bg-gilt px-8 py-4 !text-ink shadow-[0_10px_32px_rgba(0,0,0,0.45)] transition-colors duration-500 hover:border-gilt hover:bg-transparent hover:!text-ivory";
+    "label-meta inline-flex min-h-12 items-center justify-center border border-gilt bg-gilt px-8 py-4 !text-ink shadow-[0_6px_20px_rgba(0,0,0,0.28)] transition-colors duration-500 hover:border-gilt hover:bg-transparent hover:!text-ivory";
   const lineClass =
     "group label-meta inline-flex min-h-12 items-center gap-3 text-ivory transition-colors duration-500 hover:text-gilt";
   const classes = cn(

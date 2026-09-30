@@ -17,8 +17,12 @@ export function BuyPage({ work, offer }: { work: Work; offer: Offer }) {
         title={loc(work.title)}
         kicker={loc(offer.label)}
       />
-      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 lg:grid lg:grid-cols-12 lg:px-12">
+      <p className="mx-auto mt-8 max-w-2xl px-5 text-sm leading-relaxed text-muted sm:px-8 lg:px-12">
+        {t("checkoutIntro")}
+      </p>
+      <div className="mx-auto max-w-[1680px] px-5 pt-12 sm:px-8 lg:grid lg:grid-cols-12 lg:px-12">
         <aside className="lg:col-span-4">
+          <p className="label-meta text-gilt">{t("orderSummary")}</p>
           <StatusBadge
             label={work.pricingModel === "paid" ? t("badgePaid") : t("badgeFree")}
             tone={work.pricingModel === "paid" ? "paid" : "free"}
@@ -32,6 +36,11 @@ export function BuyPage({ work, offer }: { work: Work; offer: Offer }) {
             {t("editionOnline")} / {t("editionDownload")}
           </p>
           <p className="mt-3 font-serif text-xl">{moneyLabel(offer.price, locale)}</p>
+          {work.pricingModel === "paid" ? (
+            <p className="mt-8 max-w-sm text-sm leading-relaxed text-muted">
+              {t("pricingWhy")}
+            </p>
+          ) : null}
         </aside>
         <div className="lg:col-span-7 lg:col-start-6">
           <CheckoutForm work={work} offer={offer} />
