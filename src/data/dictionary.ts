@@ -445,6 +445,111 @@ export const ui = {
   status: { en: "Status", hi: "स्थिति" },
   languageMeta: { en: "Language", hi: "भाषा" },
   workId: { en: "Work ID", hi: "कृति पहचान" },
+
+  filmEyebrow: { en: "Introduction", hi: "परिचय" },
+  filmTitle: { en: "Echoes of Memories", hi: "स्मृतियों की अनुगूँज" },
+  filmIntro: {
+    en: "A cinematic introduction, narrated in Hindi. English subtitles can be turned on when the subtitle file is available.",
+    hi: "हिन्दी वाचन के साथ एक सिनेमाई परिचय। उपशीर्षक फ़ाइल उपलब्ध होने पर अंग्रेज़ी उपशीर्षक चालू किए जा सकते हैं।",
+  },
+  playFilm: { en: "Play", hi: "चलाएँ" },
+  filmLoading: { en: "Loading the film", hi: "फिल्म लोड हो रही है" },
+  filmMissing: {
+    en: "The introduction film file has not been added yet.",
+    hi: "परिचय फिल्म की फ़ाइल अभी जोड़ी नहीं गई है।",
+  },
+  filmPlayFailed: {
+    en: "The film could not be played in this browser.",
+    hi: "यह फ़िल्म इस ब्राउज़र में नहीं चल सकी।",
+  },
+  subtitles: { en: "English subtitles", hi: "अंग्रेज़ी उपशीर्षक" },
+  subtitlesOn: { en: "English subtitles on", hi: "अंग्रेज़ी उपशीर्षक चालू" },
+  subtitlesOff: { en: "English subtitles off", hi: "अंग्रेज़ी उपशीर्षक बंद" },
+  subtitlesMissing: {
+    en: "The English subtitle file has not been added yet.",
+    hi: "अंग्रेज़ी उपशीर्षक फ़ाइल अभी जोड़ी नहीं गई है।",
+  },
+  shareLanding: { en: "Share", hi: "साझा करें" },
+  shareCopied: { en: "Link copied", hi: "लिंक कॉपी हो गया" },
+  likeIntroduction: { en: "Like", hi: "पसंद" },
+  likedIntroduction: { en: "Liked", hi: "पसंद किया" },
+  likeFailed: { en: "The like could not be saved.", hi: "पसंद सहेजी नहीं जा सकी।" },
+
+  joinEyebrow: { en: "Launch", hi: "प्रक्षेपण" },
+  joinHeading: { en: "Be Part of the Journey", hi: "यात्रा का हिस्सा बनें" },
+  joinBody: {
+    en: "Join us to receive updates when new stories, films, and audio experiences become available on Echoes of Memories.",
+    hi: "जब स्मृतियों की अनुगूँज पर नई कथाएँ, फिल्में और श्रव्य अनुभव उपलब्ध हों, तब सूचना पाने के लिए जुड़ें।",
+  },
+  joinCta: { en: "Get the Launch Notification", hi: "प्रक्षेपण सूचना पाएँ" },
+  fullName: { en: "Full name", hi: "पूरा नाम" },
+  confirmPassword: { en: "Confirm password", hi: "पासवर्ड की पुष्टि" },
+  notifyConsent: {
+    en: "I agree to receive launch announcements, new content updates, and occasional emails from Echoes of Memories. I understand that I can unsubscribe at any time.",
+    hi: "मैं स्मृतियों की अनुगूँज से प्रक्षेपण घोषणाएँ, नई सामग्री की सूचनाएँ और यदा-कदा ईमेल पाने के लिए सहमत हूँ। मैं समझता/समझती हूँ कि मैं किसी भी समय सदस्यता छोड़ सकता/सकती हूँ।",
+  },
+  passwordHint: {
+    en: "Use at least 8 characters.",
+    hi: "कम से कम 8 अक्षर लिखें।",
+  },
+  registerInvalid: {
+    en: "Enter your name, a valid email, and a password of at least 8 characters.",
+    hi: "अपना नाम, मान्य ईमेल, और कम से कम 8 अक्षरों का पासवर्ड लिखें।",
+  },
+  registerMismatch: {
+    en: "The passwords do not match.",
+    hi: "पासवर्ड मेल नहीं खाते।",
+  },
+  registerDuplicate: {
+    en: "An account with this email already exists. Sign in instead.",
+    hi: "इस ईमेल से खाता पहले से है। प्रवेश करें।",
+  },
+  registerRate: {
+    en: "Too many attempts. Please wait and try again.",
+    hi: "बहुत अधिक प्रयास। कृपया रुककर फिर कोशिश करें।",
+  },
+  registerFailed: {
+    en: "Registration could not be completed.",
+    hi: "पंजीकरण पूरा नहीं हो सका।",
+  },
+  creatingAccount: { en: "Creating account", hi: "खाता बन रहा है" },
+  createAccount: { en: "Create account", hi: "खाता बनाएँ" },
+  alreadyAccount: { en: "Already have an account?", hi: "पहले से खाता है?" },
+  confirmHeading: { en: "You're Now Part of the Journey!", hi: "अब आप इस यात्रा का हिस्सा हैं!" },
+  confirmSubscribed: {
+    en: "Thank you for joining Echoes of Memories. We'll keep you updated as our stories and experiences unfold. You are subscribed to launch updates.",
+    hi: "स्मृतियों की अनुगूँज से जुड़ने के लिए धन्यवाद। जैसे-जैसे कथाएँ और अनुभव खुलेंगे, हम आपको बताते रहेंगे। आप प्रक्षेपण सूचनाओं के लिए सदस्य हैं।",
+  },
+  confirmAccount: {
+    en: "Thank you for joining Echoes of Memories. Your account is ready.",
+    hi: "स्मृतियों की अनुगूँज से जुड़ने के लिए धन्यवाद। आपका खाता तैयार है।",
+  },
+  continueExploring: { en: "Continue exploring", hi: "देखते रहें" },
+  getLaunchLink: { en: "Create account / Get launch notification", hi: "खाता बनाएँ / प्रक्षेपण सूचना पाएँ" },
+
+  adminRegistrations: { en: "Launch registrations", hi: "प्रक्षेपण पंजीकरण" },
+  adminRegistrationsKicker: {
+    en: "Accounts created from the public landing page. Email consent is stored separately from the account.",
+    hi: "सार्वजनिक पृष्ठ से बने खाते। ईमेल सहमति खाते से अलग रखी जाती है।",
+  },
+  adminRegTotal: { en: "Registrations", hi: "पंजीकरण" },
+  adminRegSubscribed: { en: "Launch subscribers", hi: "प्रक्षेपण सदस्य" },
+  adminFilterAll: { en: "All registrations", hi: "सभी पंजीकरण" },
+  adminFilterSubscribed: { en: "Subscribed to launch notifications", hi: "प्रक्षेपण सूचनाओं के सदस्य" },
+  adminFilterUnsubscribed: { en: "Not subscribed", hi: "सदस्य नहीं" },
+  adminConsentYes: { en: "Subscribed", hi: "सदस्य" },
+  adminConsentNo: { en: "Not subscribed", hi: "सदस्य नहीं" },
+  adminNoRegistrations: { en: "No registrations in this view.", hi: "इस दृश्य में कोई पंजीकरण नहीं।" },
+  adminFilmAssets: { en: "Introduction film", hi: "परिचय फिल्म" },
+  adminFilmKicker: {
+    en: "Upload the poster, the film file with Hindi narration, and an English WebVTT subtitle file.",
+    hi: "पोस्टर, हिन्दी वाचन वाली फिल्म, और अंग्रेज़ी WebVTT उपशीर्षक फ़ाइल अपलोड करें।",
+  },
+  adminPoster: { en: "Poster", hi: "पोस्टर" },
+  adminVideo: { en: "Video", hi: "वीडियो" },
+  adminSubtitlesFile: { en: "English subtitles (.vtt)", hi: "अंग्रेज़ी उपशीर्षक (.vtt)" },
+  adminFilmSaved: { en: "Film asset saved.", hi: "फिल्म सामग्री सहेजी गई।" },
+  adminNotSet: { en: "Not added yet", hi: "अभी नहीं जोड़ा गया" },
 } as const satisfies Record<string, Copy>;
 
 export type UiKey = keyof typeof ui;

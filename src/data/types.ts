@@ -9,6 +9,7 @@ export type NavItem = {
 export type AccessType = "ONLINE" | "DOWNLOAD" | "ONLINE_AND_DOWNLOAD";
 export type PricingModel = "free" | "paid";
 export type WorkStatus = "published" | "forthcoming" | "unpublished";
+export type AccessLevel = "public" | "sample" | "members";
 export type WorkKind = "story" | "film" | "audio";
 export type EditionLanguage = "hi" | "en";
 
@@ -104,6 +105,13 @@ export type Work = {
   aiAssisted: boolean;
   tax: TaxConfig;
   copyrightOwner: Copy;
+  accessLevel?: AccessLevel;
+  series?: string;
+  volume?: string;
+  chapter?: string;
+  releaseDate?: string;
+  contentLanguage?: string;
+  standaloneFilm?: boolean;
 };
 
 export type UserAccount = {

@@ -32,7 +32,7 @@ export const platform: Platform = {
   siteUrl: "https://www.echoesofmemories.com",
   ogImage: "/images/og/legacy-of-india.jpg",
   heroImage: "/images/hero/echoes-hero.jpg",
-  heroVideo: "/videos/echoes-hero.mp4",
+  heroVideo: "/videos/WhatsApp%20Video%202026-11-10%20at%2021.59.44.mp4",
   creatorName: "Sanjay Kumar Rai",
   creatorNameHi: "संजय कुमार राय",
   contactEmail: "contact@[domain].com",

@@ -16,11 +16,16 @@ export function TrailerRitual() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video || reduce) return;
-    if (playing) {
-      void video.play().catch(() => undefined);
-    } else {
+    if (!playing) {
       video.pause();
+      return;
     }
+    const start = () => {
+      void video.play().catch(() => undefined);
+    };
+    start();
+    video.addEventListener("canplay", start, { once: true });
+    return () => video.removeEventListener("canplay", start);
   }, [playing, reduce]);
 
   return (
@@ -41,16 +46,14 @@ export function TrailerRitual() {
               className="h-full w-full"
             />
           ) : (
-            <video
+              <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
-              muted
               playsInline
-              preload="metadata"
+              preload="none"
               poster={platform.heroImage}
-              loop
             >
-              <source src={platform.heroVideo} type="video/mp4" />
+              {playing ? <source src={platform.heroVideo} type="video/mp4" /> : null}
             </video>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-ink/20" />

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { verifyAccountPassword } from "@/lib/launch-store";
 import {
   adminCredentials,
   createToken,
@@ -33,6 +34,11 @@ export async function POST(request: Request) {
       sameSecret(email, admin.email.toLowerCase()) &&
       sameSecret(password, admin.password);
     if (!accepted) {
+      return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+    }
+  } else {
+    const account = verifyAccountPassword(email, password);
+    if (account.status === "invalid") {
       return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
     }
   }

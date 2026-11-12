@@ -124,6 +124,11 @@ export function LoginPage() {
           >
             {pending ? t("continue") : t("signIn")}
           </button>
+          <p className="mt-8 text-sm text-ivory/80">
+            <a href="/#join" className="underline decoration-gilt/50 hover:text-gilt">
+              {t("getLaunchLink")}
+            </a>
+          </p>
         </form>
       </section>
     </main>

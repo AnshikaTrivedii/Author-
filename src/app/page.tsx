@@ -1,4 +1,5 @@
-import { BookHero } from "@/components/book/BookHero";
+import { IntroductionFilm } from "@/components/audience/IntroductionFilm";
+import { LaunchJoin } from "@/components/audience/LaunchJoin";
 import { LookingBack } from "@/components/book/LookingBack";
 import { PauseMoment } from "@/components/book/PauseMoment";
 import { CentralQuestion } from "@/components/book/CentralQuestion";
@@ -26,7 +27,8 @@ import { pauses } from "@/data/anugoonj";
 export default function HomePage() {
   return (
     <main id="main">
-      <BookHero />
+      <IntroductionFilm />
+      <LaunchJoin />
       <VisitorPath />
       <TonightPause />
       <TrailerRitual />

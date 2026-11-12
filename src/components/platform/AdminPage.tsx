@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { AdminLaunchPanel } from "@/components/platform/AdminLaunchPanel";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { SignOutButton } from "@/components/platform/SignOutButton";
 import { useLanguage } from "@/components/layout/LanguageProvider";
@@ -502,6 +503,8 @@ export function AdminPage({ email }: { email: string }) {
           )}
         </ul>
       </section>
+
+      <AdminLaunchPanel />
     </main>
   );
 }

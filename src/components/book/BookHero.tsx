@@ -21,12 +21,10 @@ export function BookHero() {
   const reduce = useReducedMotion();
   const { t, loc, locale } = useLanguage();
   const ref = useRef<HTMLElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
-  const mediaY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
   const [resume, setResume] = useState<ReturnType<typeof readReaderResume>>(null);
 
@@ -34,57 +32,23 @@ export function BookHero() {
     setResume(readReaderResume());
   }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    if (reduce) {
-      video.pause();
-      return;
-    }
-    const play = () => {
-      void video.play().catch(() => undefined);
-    };
-    play();
-    video.addEventListener("canplay", play);
-    return () => video.removeEventListener("canplay", play);
-  }, [reduce]);
-
   return (
     <section ref={ref} className="relative min-h-[100svh] overflow-hidden bg-ink">
-      <motion.div
-        className="absolute inset-0"
-        style={reduce ? undefined : { y: mediaY }}
-      >
+      <div className="absolute inset-0">
         <div className="absolute inset-0">
-          {reduce ? (
-            <PlaceholderMedia
-              src={platform.heroImage}
-              alt={loc(bookOne.title)}
-              fill
-              priority
-              sizes="100vw"
-              className="h-full w-full"
-              imageClassName="object-cover object-center"
-            />
-          ) : (
-            <video
-              ref={videoRef}
-              className="absolute inset-0 h-full w-full scale-[1.02] object-cover object-[center_42%] [filter:contrast(1.08)_saturate(1.12)_brightness(1.05)]"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-              poster={platform.heroImage}
-              aria-hidden="true"
-            >
-              <source src={platform.heroVideo} type="video/mp4" />
-            </video>
-          )}
+          <PlaceholderMedia
+            src={platform.heroImage}
+            alt={loc(bookOne.title)}
+            fill
+            priority
+            sizes="100vw"
+            className="h-full w-full"
+            imageClassName="object-cover object-center"
+          />
         </div>
         <div className="absolute inset-y-0 left-0 w-[min(70%,52rem)] bg-gradient-to-r from-ink/78 via-ink/40 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-52 bg-gradient-to-t from-ink/80 via-ink/30 to-transparent" />
-      </motion.div>
+      </div>
 
       <FilmFrame className="z-20 hidden sm:block" />
 
