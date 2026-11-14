@@ -58,23 +58,14 @@ const pendingCredits: WorkCredits = {
   other: creditPending,
 };
 
-function audioFile(name: string) {
-  return `/audio/${encodeURIComponent(name)}`;
-}
-
-function voiceover(
-  hindiName: string,
-  englishName: string,
-  poster: string,
-): Work["audio"] {
-  const hindiSrc = audioFile(hindiName);
+function voiceover(hindiSrc: string, englishSrc: string, poster: string): Work["audio"] {
   return {
     available: true,
     title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
     accessType: "ONLINE",
     src: hindiSrc,
     hindiSrc,
-    englishSrc: audioFile(englishName),
+    englishSrc,
     poster,
     duration: { en: "[DURATION]", hi: "[अवधि]" },
     price: freeMoney,
@@ -190,8 +181,8 @@ export const catalogWorks: Work[] = [
       status: "forthcoming",
     },
     audio: voiceover(
-      "स्मृतियों की अनुगूँज Hindi Voiceover .mp3",
-      "स्मृतियों की अनुगूँज  English Voiceover.mp3",
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%B8%E0%A5%8D%E0%A4%AE%E0%A5%83%E0%A4%A4%E0%A4%BF%E0%A4%AF%E0%A5%8B%E0%A4%82+%E0%A4%95%E0%A5%80+%E0%A4%85%E0%A4%A8%E0%A5%81%E0%A4%97%E0%A5%82%E0%A4%81%E0%A4%9C+Hindi+Voiceover+.mp3",
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%B8%E0%A5%8D%E0%A4%AE%E0%A5%83%E0%A4%A4%E0%A4%BF%E0%A4%AF%E0%A5%8B%E0%A4%82+%E0%A4%95%E0%A5%80+%E0%A4%85%E0%A4%A8%E0%A5%81%E0%A4%97%E0%A5%82%E0%A4%81%E0%A4%9C++English+Voiceover.mp3",
       bookOne.image,
     ),
     film: {
@@ -230,8 +221,8 @@ export const catalogWorks: Work[] = [
       status: "forthcoming",
     },
     audio: voiceover(
-      "एक सवाल अपने आप से hindi Voiceover (2).mp3",
-      "एक सवाल अपने आप से English Voiceover.mp3",
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%8F%E0%A4%95+%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2+%E0%A4%85%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%86%E0%A4%AA+%E0%A4%B8%E0%A5%87+hindi+Voiceover+(2).mp3",
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%8F%E0%A4%95+%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2+%E0%A4%85%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%86%E0%A4%AA+%E0%A4%B8%E0%A5%87+English+Voiceover.mp3",
       questionsBook.image,
     ),
     credits: {

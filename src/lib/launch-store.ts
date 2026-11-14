@@ -43,7 +43,8 @@ const storeDir = path.join(process.cwd(), "data");
 const storePath = path.join(storeDir, "launch-store.json");
 const introduction = "introduction" as const;
 
-const defaultVideo = "/videos/WhatsApp Video 2026-11-10 at 21.59.44.mp4";
+const defaultVideo =
+  "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/WhatsApp+Video+2026-11-14+at+12.17.10.mp4";
 const defaultPoster = "/images/stills/grandmother.jpg";
 
 function fileExists(publicPath: string) {
@@ -53,7 +54,7 @@ function fileExists(publicPath: string) {
 function initialFilm(): FilmAssets {
   return {
     poster: fileExists(defaultPoster) ? defaultPoster : null,
-    video: fileExists(defaultVideo) ? defaultVideo : null,
+    video: defaultVideo,
     subtitlesEn: null,
   };
 }
@@ -70,10 +71,17 @@ function ensure() {
 }
 
 export function publicAssetPath(value: string | null | undefined) {
-  if (!value || !value.startsWith("/") || value.startsWith("//") || value.includes("..")) {
-    return null;
+  if (!value || value.includes("..")) return null;
+  if (value.startsWith("/") && !value.startsWith("//")) return value;
+  if (value.startsWith("https://")) {
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" ? url.toString() : null;
+    } catch {
+      return null;
+    }
   }
-  return value;
+  return null;
 }
 
 function readLaunchStore(): LaunchStore {
