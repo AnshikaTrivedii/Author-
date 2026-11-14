@@ -63,6 +63,19 @@ export function Reader({
                   : t("purchaseForthcoming")}
             </p>
           </div>
+        ) : pdf ? (
+          <div className="mt-16 border-t border-ivory/10 pt-16">
+            <iframe
+              title={`${loc(work.title)} — ${loc(edition.label)}`}
+              src={pdf}
+              className="h-[82svh] w-full bg-ivory"
+            />
+            <div className="mt-10">
+              <CtaLink href={`/works/${work.slug}`} cursor="explore">
+                {t("returnHome")}
+              </CtaLink>
+            </div>
+          </div>
         ) : (
           <div className="mt-16 space-y-16 border-t border-ivory/10 pt-16">
             {isAnugoonj && allowsOnline(edition.accessType)
