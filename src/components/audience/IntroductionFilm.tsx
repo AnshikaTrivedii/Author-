@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import { Heart, X } from "lucide-react";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { ImageReveal, Reveal } from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import { bookOne } from "@/data/anugoonj";
 import { platform } from "@/data/site";
 import { readReaderResume } from "@/lib/reading";
@@ -21,6 +21,7 @@ export function IntroductionFilm() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [film, setFilm] = useState<FilmPayload | null>(null);
   const [playing, setPlaying] = useState(false);
+  const [reduceMotion, setReduceMotion] = useState(false);
   const [subsOn, setSubsOn] = useState(false);
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
@@ -54,15 +55,42 @@ export function IntroductionFilm() {
   }, [t]);
 
   useEffect(() => {
+    document.body.style.overflow = playing ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [playing]);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const apply = () => setReduceMotion(media.matches);
+    apply();
+    media.addEventListener("change", apply);
+    return () => media.removeEventListener("change", apply);
+  }, []);
+
+  useEffect(() => {
     const video = videoRef.current;
-    if (!video || !playing) return;
+    if (!video) return;
+    if (!playing) {
+      video.muted = true;
+      const start = () => {
+        video.muted = true;
+        void video.play().catch(() => undefined);
+      };
+      start();
+      video.addEventListener("canplay", start, { once: true });
+      return () => video.removeEventListener("canplay", start);
+    }
+    video.muted = false;
+    video.loop = false;
     const start = () => {
       void video.play().catch(() => setError(t("filmPlayFailed")));
     };
     start();
     video.addEventListener("canplay", start, { once: true });
     return () => video.removeEventListener("canplay", start);
-  }, [playing, t]);
+  }, [playing, film?.video, t]);
 
   function toggleSubtitles() {
     const track = videoRef.current?.textTracks?.[0];
@@ -137,12 +165,79 @@ export function IntroductionFilm() {
   const poster = film?.poster ?? "/images/stills/grandmother.jpg";
   const video = film?.video ?? null;
   const subtitles = film?.subtitlesEn ?? null;
+  const silent = Boolean(video) && !playing && !reduceMotion;
+  const mediaSrc = (value: string) => (value.startsWith("https://") ? value : encodeURI(value));
   const lines = bookOne.titleLines[locale === "hi" ? "hi" : "en"];
 
+  function openWithAudio() {
+    setError("");
+    const element = videoRef.current;
+    if (element) {
+      element.loop = false;
+      element.muted = false;
+      element.currentTime = 0;
+      void element.play().catch(() => setError(t("filmPlayFailed")));
+    }
+    setPlaying(true);
+  }
+
+  function closeFilm() {
+    const element = videoRef.current;
+    if (element) {
+      element.pause();
+      element.muted = true;
+      element.loop = true;
+    }
+    setPlaying(false);
+  }
+
   return (
-    <section id="introduction" className="bg-ink">
-      <div className="mx-auto grid min-h-[100svh] max-w-[1680px] items-center gap-10 px-5 pt-36 pb-16 sm:px-8 md:grid-cols-12 md:gap-12 md:px-12 md:pt-40">
-        <Reveal className="order-2 md:order-1 md:col-span-5">
+    <section id="introduction" className="relative isolate min-h-[100svh] overflow-hidden bg-ink">
+      {video && (silent || playing) ? (
+        <video
+          ref={videoRef}
+          className={cn(
+            "bg-ink object-cover",
+            playing
+              ? "fixed inset-0 z-[80] h-full w-full object-cover"
+              : "absolute inset-x-0 top-0 h-[132%] w-full object-cover object-[center_18%]",
+          )}
+          controls={playing}
+          playsInline
+          autoPlay
+          muted={!playing}
+          loop={!playing}
+          preload="auto"
+          poster={poster}
+          aria-hidden={playing ? undefined : true}
+          onError={() => {
+            if (playing) setError(t("filmPlayFailed"));
+          }}
+        >
+          <source src={mediaSrc(video)} type="video/mp4" />
+          {playing && subtitles ? (
+            <track kind="subtitles" srcLang="en" label="English" src={encodeURI(subtitles)} />
+          ) : null}
+        </video>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={poster} alt="" className="absolute inset-0 h-full w-full object-cover object-[center_30%]" />
+      )}
+      {!playing ? (
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/45 sm:bg-gradient-to-r sm:from-ink sm:via-ink/75 sm:to-ink/20" />
+      ) : (
+        <button
+          type="button"
+          onClick={closeFilm}
+          aria-label={t("close")}
+          className="fixed top-5 right-5 z-[90] inline-flex size-11 items-center justify-center border border-ivory/40 bg-ink/70 text-ivory backdrop-blur-[2px]"
+        >
+          <X aria-hidden="true" className="size-5" strokeWidth={1.25} />
+        </button>
+      )}
+
+      <div className={cn("relative z-10 mx-auto flex min-h-[100svh] max-w-[1680px] items-center px-5 pt-36 pb-16 sm:px-8 md:px-12 md:pt-40", playing && "invisible")}>
+        <Reveal className="max-w-xl">
           <p className="label-meta text-gilt">{t("filmEyebrow")}</p>
           <h1 className="mt-5 font-serif text-[clamp(3.2rem,6vw,5.6rem)] leading-[0.92] tracking-[-0.035em] text-balance">
             {lines.map((line) => (
@@ -160,6 +255,14 @@ export function IntroductionFilm() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+            <button
+              type="button"
+              disabled={!video}
+              onClick={openWithAudio}
+              className="label-meta inline-flex min-h-12 items-center border border-ivory/70 bg-ink/55 px-8 py-4 text-ivory backdrop-blur-[2px] transition-colors duration-500 hover:border-gilt hover:text-gilt disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {t("playFilm")}
+            </button>
             <button
               type="button"
               onClick={() => {
@@ -218,61 +321,19 @@ export function IntroductionFilm() {
               {error}
             </p>
           ) : null}
+          {!video && film ? <p className="mt-4 text-sm text-muted">{t("filmMissing")}</p> : null}
         </Reveal>
-
-        <ImageReveal className="order-1 md:order-2 md:col-span-7">
-          <div className="relative aspect-[4/5] overflow-hidden bg-ink-2 sm:aspect-[16/10]">
-            {playing && video ? (
-              <video
-                ref={videoRef}
-                className="absolute inset-0 h-full w-full bg-ink object-cover"
-                controls
-                playsInline
-                preload="none"
-                poster={poster}
-                onError={() => setError(t("filmPlayFailed"))}
-              >
-                <source src={encodeURI(video)} type="video/mp4" />
-                {subtitles ? (
-                  <track kind="subtitles" srcLang="en" label="English" src={encodeURI(subtitles)} />
-                ) : null}
-              </video>
-            ) : (
-              <>
-                {/* Poster comes from the film configuration. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={poster} alt="" className="absolute inset-0 h-full w-full object-cover object-[center_30%]" />
-                <button
-                  type="button"
-                  disabled={!video}
-                  onClick={() => {
-                    setError("");
-                    setPlaying(true);
-                  }}
-                  className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent disabled:cursor-not-allowed"
-                >
-                  <span className="label-meta absolute bottom-5 left-5 inline-flex min-h-12 items-center border border-ivory/70 bg-ink/70 px-7 py-3 text-ivory backdrop-blur-[2px]">
-                    {t("playFilm")}
-                  </span>
-                </button>
-              </>
-            )}
-          </div>
-          {playing && subtitles ? (
-            <button
-              type="button"
-              aria-pressed={subsOn}
-              onClick={toggleSubtitles}
-              className="label-meta mt-4 text-ivory/70 transition-colors hover:text-gilt"
-            >
-              {subsOn ? t("subtitlesOn") : t("subtitlesOff")}
-            </button>
-          ) : null}
-          {!video && film ? (
-            <p className="mt-4 text-sm text-muted">{t("filmMissing")}</p>
-          ) : null}
-        </ImageReveal>
       </div>
+      {playing && subtitles ? (
+        <button
+          type="button"
+          aria-pressed={subsOn}
+          onClick={toggleSubtitles}
+          className="label-meta fixed bottom-6 left-6 z-[90] text-ivory/80 transition-colors hover:text-gilt"
+        >
+          {subsOn ? t("subtitlesOn") : t("subtitlesOff")}
+        </button>
+      ) : null}
     </section>
   );
 }
