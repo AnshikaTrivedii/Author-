@@ -496,7 +496,7 @@ export const readerExcerpts = [
 export const questionsBook = {
   slug: "ek-sawal-apne-aap-se",
   title: {
-    en: "A Question to myself",
+    en: "A Question for Myself",
     hi: "एक सवाल अपने आप से",
   },
   subtitle: {
