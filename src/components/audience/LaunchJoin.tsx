@@ -1,24 +1,27 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { X } from "lucide-react";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
 type FormState = {
   name: string;
+  age: string;
+  gender: "" | "male" | "female" | "non-binary" | "prefer-not-to-say";
+  countryCode: string;
+  mobileNumber: string;
   email: string;
-  password: string;
-  confirmPassword: string;
-  notifyLaunch: boolean;
+  postalCode: string;
 };
 
 const emptyForm: FormState = {
   name: "",
+  age: "",
+  gender: "",
+  countryCode: "+91",
+  mobileNumber: "",
   email: "",
-  password: "",
-  confirmPassword: "",
-  notifyLaunch: false,
+  postalCode: "",
 };
 
 export function LaunchJoin() {
@@ -27,7 +30,7 @@ export function LaunchJoin() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
-  const [done, setDone] = useState<null | { notifyLaunch: boolean }>(null);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     const openFromPage = () => setOpen(true);
@@ -46,12 +49,24 @@ export function LaunchJoin() {
     setError("");
 
     const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email.trim());
-    if (form.name.trim().length < 2 || !emailOk || form.password.length < 8) {
+    const countryDigits = form.countryCode.replace(/\D/g, "");
+    const mobileDigits = form.mobileNumber.replace(/\D/g, "");
+    const age = Number(form.age);
+    if (
+      form.name.trim().length < 2 ||
+      !Number.isInteger(age) ||
+      age < 1 ||
+      age > 120 ||
+      !form.gender ||
+      countryDigits.length < 1 ||
+      countryDigits.length > 3 ||
+      mobileDigits.length < 6 ||
+      mobileDigits.length > 14 ||
+      countryDigits.length + mobileDigits.length > 15 ||
+      !emailOk ||
+      form.postalCode.trim().length < 3
+    ) {
       setError(t("registerInvalid"));
-      return;
-    }
-    if (form.password !== form.confirmPassword) {
-      setError(t("registerMismatch"));
       return;
     }
 
@@ -62,27 +77,27 @@ export function LaunchJoin() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: form.name.trim(),
+          age,
+          gender: form.gender,
+          countryCode: `+${countryDigits}`,
+          mobileNumber: mobileDigits,
           email: form.email.trim(),
-          password: form.password,
-          confirmPassword: form.confirmPassword,
-          notifyLaunch: form.notifyLaunch,
+          postalCode: form.postalCode.trim(),
         }),
       });
       const data = (await response.json().catch(() => null)) as {
         ok?: boolean;
         error?: string;
-        notifyLaunch?: boolean;
       } | null;
       if (!response.ok || !data?.ok) {
         if (data?.error === "duplicate") setError(t("registerDuplicate"));
-        else if (data?.error === "mismatch") setError(t("registerMismatch"));
         else if (data?.error === "rate") setError(t("registerRate"));
-        else if (data?.error === "weak" || data?.error === "invalid") setError(t("registerInvalid"));
+        else if (data?.error === "invalid") setError(t("registerInvalid"));
         else setError(t("registerFailed"));
         setPending(false);
         return;
       }
-      setDone({ notifyLaunch: Boolean(data.notifyLaunch) });
+      setDone(true);
       setPending(false);
     } catch {
       setError(t("registerFailed"));
@@ -139,7 +154,7 @@ export function LaunchJoin() {
                   {t("confirmHeading")}
                 </h2>
                 <p className="mt-6 font-serif text-xl leading-snug text-ivory/85 italic">
-                  {done.notifyLaunch ? t("confirmSubscribed") : t("confirmAccount")}
+                  {t("confirmSubscribed")}
                 </p>
                 <div className="mt-10 flex flex-wrap gap-4">
                   <button
@@ -149,12 +164,6 @@ export function LaunchJoin() {
                   >
                     {t("continueExploring")}
                   </button>
-                  <Link
-                    href="/login"
-                    className="label-meta inline-flex min-h-12 items-center border border-ivory/20 px-6 py-4 text-ivory"
-                  >
-                    {t("signIn")}
-                  </Link>
                 </div>
               </div>
             ) : (
@@ -172,6 +181,60 @@ export function LaunchJoin() {
                     className="mt-3 w-full border border-ivory/15 bg-transparent px-4 py-3 text-ivory outline-none focus:border-gilt"
                   />
                 </label>
+                <div className="mt-6 grid gap-6 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="label-meta">{t("age")}</span>
+                    <input
+                      type="number"
+                      required
+                      min={1}
+                      max={120}
+                      inputMode="numeric"
+                      value={form.age}
+                      onChange={(event) => update("age", event.target.value)}
+                      className="mt-3 w-full border border-ivory/15 bg-transparent px-4 py-3 text-ivory outline-none focus:border-gilt"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="label-meta">{t("gender")}</span>
+                    <select
+                      required
+                      value={form.gender}
+                      onChange={(event) => update("gender", event.target.value as FormState["gender"])}
+                      className="mt-3 w-full border border-ivory/15 bg-ink-2 px-4 py-3 text-ivory outline-none focus:border-gilt"
+                    >
+                      <option value="">{t("selectOption")}</option>
+                      <option value="male">{t("genderMale")}</option>
+                      <option value="female">{t("genderFemale")}</option>
+                      <option value="non-binary">{t("genderNonBinary")}</option>
+                      <option value="prefer-not-to-say">{t("genderPreferNot")}</option>
+                    </select>
+                  </label>
+                </div>
+                <div className="mt-6 grid grid-cols-[7rem_1fr] gap-4">
+                  <label className="block">
+                    <span className="label-meta">{t("countryCode")}</span>
+                    <input
+                      required
+                      inputMode="tel"
+                      value={form.countryCode}
+                      onChange={(event) => update("countryCode", event.target.value)}
+                      className="mt-3 w-full border border-ivory/15 bg-transparent px-4 py-3 text-ivory outline-none focus:border-gilt"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className="label-meta">{t("mobileNumber")}</span>
+                    <input
+                      type="tel"
+                      required
+                      autoComplete="tel-national"
+                      inputMode="tel"
+                      value={form.mobileNumber}
+                      onChange={(event) => update("mobileNumber", event.target.value)}
+                      className="mt-3 w-full border border-ivory/15 bg-transparent px-4 py-3 text-ivory outline-none focus:border-gilt"
+                    />
+                  </label>
+                </div>
                 <label className="mt-6 block">
                   <span className="label-meta">{t("email")}</span>
                   <input
@@ -184,39 +247,18 @@ export function LaunchJoin() {
                   />
                 </label>
                 <label className="mt-6 block">
-                  <span className="label-meta">{t("password")}</span>
+                  <span className="label-meta">{t("postalCode")}</span>
                   <input
-                    type="password"
                     required
-                    minLength={8}
-                    autoComplete="new-password"
-                    value={form.password}
-                    onChange={(event) => update("password", event.target.value)}
-                    className="mt-3 w-full border border-ivory/15 bg-transparent px-4 py-3 text-ivory outline-none focus:border-gilt"
-                  />
-                  <span className="mt-2 block text-sm text-muted">{t("passwordHint")}</span>
-                </label>
-                <label className="mt-6 block">
-                  <span className="label-meta">{t("confirmPassword")}</span>
-                  <input
-                    type="password"
-                    required
-                    minLength={8}
-                    autoComplete="new-password"
-                    value={form.confirmPassword}
-                    onChange={(event) => update("confirmPassword", event.target.value)}
+                    autoComplete="postal-code"
+                    value={form.postalCode}
+                    onChange={(event) => update("postalCode", event.target.value)}
                     className="mt-3 w-full border border-ivory/15 bg-transparent px-4 py-3 text-ivory outline-none focus:border-gilt"
                   />
                 </label>
-                <label className="mt-8 flex items-start gap-4 text-sm leading-relaxed text-ivory/85">
-                  <input
-                    type="checkbox"
-                    checked={form.notifyLaunch}
-                    onChange={(event) => update("notifyLaunch", event.target.checked)}
-                    className="mt-1 size-5 shrink-0 accent-[#8f7558]"
-                  />
-                  <span className="min-w-0">{t("notifyConsent")}</span>
-                </label>
+                <p className="mt-6 text-sm leading-relaxed text-ivory/70">
+                  {t("notifyConsent")}
+                </p>
                 {error ? (
                   <p className="mt-6 text-sm text-ivory" role="alert">
                     {error}
@@ -228,7 +270,7 @@ export function LaunchJoin() {
                     disabled={pending}
                     className="label-meta inline-flex min-h-12 items-center border border-gilt bg-gilt px-6 py-4 text-ink disabled:opacity-50"
                   >
-                    {pending ? t("creatingAccount") : t("createAccount")}
+                    {pending ? t("submittingNotification") : t("submitNotification")}
                   </button>
                   <button
                     type="button"
@@ -238,12 +280,6 @@ export function LaunchJoin() {
                     {t("close")}
                   </button>
                 </div>
-                <p className="mt-6 text-sm text-muted">
-                  {t("alreadyAccount")}{" "}
-                  <Link href="/login" className="text-ivory underline decoration-gilt/50">
-                    {t("signIn")}
-                  </Link>
-                </p>
               </form>
             )}
             </div>

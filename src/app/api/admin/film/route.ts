@@ -1,7 +1,7 @@
 import { writeFile } from "fs/promises";
 import path from "path";
 import { NextResponse } from "next/server";
-import { uploadDir } from "@/lib/admin-data";
+import { ensureUploadDir, uploadDir } from "@/lib/admin-data";
 import { getFilmAssets, saveFilmAsset, type FilmAssets } from "@/lib/launch-store";
 import { requireAdmin } from "@/lib/session";
 
@@ -15,7 +15,7 @@ export async function GET() {
   if (!(await requireAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  return NextResponse.json(getFilmAssets());
+  return NextResponse.json(await getFilmAssets());
 }
 
 export async function POST(request: Request) {
@@ -40,6 +40,7 @@ export async function POST(request: Request) {
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const storedAs = `introduction-${kindValue}-${Date.now()}-${safeName}`;
   const buffer = Buffer.from(await file.arrayBuffer());
+  await ensureUploadDir();
   await writeFile(path.join(uploadDir, storedAs), buffer);
 
   const film = await saveFilmAsset(kind.field as keyof FilmAssets, `/uploads/${storedAs}`);

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getWork } from "@/data/works";
+import { findManagedWork } from "@/lib/admin-data";
 import { startCheckout } from "@/lib/commerce";
 
 export async function POST(request: Request) {
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ status: "unconfigured" }, { status: 400 });
   }
 
-  const work = getWork(body.workSlug);
+  const work = await findManagedWork(body.workSlug);
   if (!work) {
     return NextResponse.json({ status: "unconfigured" }, { status: 404 });
   }

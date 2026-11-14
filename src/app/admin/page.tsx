@@ -1,6 +1,6 @@
-import { redirect } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
 import { AdminPage } from "@/components/platform/AdminPage";
+import { LoginPage } from "@/components/platform/LoginPage";
 import { readSession } from "@/lib/session";
 
 export const metadata = pageMetadata(
@@ -13,7 +13,7 @@ export const metadata = pageMetadata(
 export default async function Page() {
   const session = await readSession();
   if (!session || session.role !== "admin") {
-    redirect("/login?role=admin");
+    return <LoginPage role="admin" />;
   }
   return <AdminPage email={session.email} />;
 }

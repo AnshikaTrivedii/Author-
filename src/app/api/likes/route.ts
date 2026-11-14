@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const identity = await likeIdentity(request);
-  const response = NextResponse.json(likeState(identity.identity));
+  const response = NextResponse.json(await likeState(identity.identity));
   return applyVisitorCookie(response, identity.visitorId);
 }
 

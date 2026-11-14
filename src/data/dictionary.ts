@@ -223,6 +223,27 @@ export const ui = {
     en: "Manage every work, set free or paid access, upload new files, and follow buyers and pending orders.",
     hi: "हर कृति का प्रबंधन करें, निःशुल्क या सशुल्क पहुँच तय करें, नई फ़ाइलें अपलोड करें, और खरीदारों तथा लंबित आदेशों पर नज़र रखें।",
   },
+  adminNavOverview: { en: "Overview", hi: "अवलोकन" },
+  adminNavOverviewHint: {
+    en: "Key publishing and order totals.",
+    hi: "प्रकाशन और आदेश के मुख्य आँकड़े।",
+  },
+  adminNavRegistrationsHint: {
+    en: "Launch notification requests and contact details.",
+    hi: "प्रक्षेपण सूचना अनुरोध और संपर्क विवरण।",
+  },
+  adminNavWorksHint: {
+    en: "Publish, price, create, and upload work files.",
+    hi: "कृतियाँ प्रकाशित करें, मूल्य तय करें और फ़ाइलें जोड़ें।",
+  },
+  adminNavMediaHint: {
+    en: "Introduction film, poster, and subtitles.",
+    hi: "परिचय फिल्म, पोस्टर और उपशीर्षक।",
+  },
+  adminNavOrdersHint: {
+    en: "Orders and buyer access records.",
+    hi: "आदेश और खरीदार पहुँच रिकॉर्ड।",
+  },
   adminAllWorks: { en: "All works", hi: "सभी कृतियाँ" },
   adminManageWork: { en: "Manage this work", hi: "इस कृति का प्रबंधन" },
   adminNewWork: { en: "Upload a new work", hi: "नई कृति जोड़ें" },
@@ -492,26 +513,36 @@ export const ui = {
   },
   joinCta: { en: "Get the Launch Notification", hi: "प्रक्षेपण सूचना पाएँ" },
   fullName: { en: "Full name", hi: "पूरा नाम" },
+  age: { en: "Age", hi: "आयु" },
+  gender: { en: "Gender", hi: "लिंग" },
+  selectOption: { en: "Select", hi: "चुनें" },
+  genderMale: { en: "Male", hi: "पुरुष" },
+  genderFemale: { en: "Female", hi: "महिला" },
+  genderNonBinary: { en: "Non-binary", hi: "नॉन-बाइनरी" },
+  genderPreferNot: { en: "Prefer not to say", hi: "बताना नहीं चाहते" },
+  countryCode: { en: "Code", hi: "कोड" },
+  mobileNumber: { en: "Mobile number", hi: "मोबाइल नंबर" },
+  postalCode: { en: "PIN / ZIP code", hi: "पिन / ज़िप कोड" },
   confirmPassword: { en: "Confirm password", hi: "पासवर्ड की पुष्टि" },
   notifyConsent: {
-    en: "I agree to receive launch announcements, new content updates, and occasional emails from Echoes of Memories. I understand that I can unsubscribe at any time.",
-    hi: "मैं स्मृतियों की अनुगूँज से प्रक्षेपण घोषणाएँ, नई सामग्री की सूचनाएँ और यदा-कदा ईमेल पाने के लिए सहमत हूँ। मैं समझता/समझती हूँ कि मैं किसी भी समय सदस्यता छोड़ सकता/सकती हूँ।",
+    en: "By submitting, you agree to receive launch announcements and content updates from Echoes of Memories. You can unsubscribe at any time.",
+    hi: "फ़ॉर्म भेजकर आप स्मृतियों की अनुगूँज से प्रक्षेपण घोषणाएँ और सामग्री सूचनाएँ पाने के लिए सहमत हैं। आप किसी भी समय सदस्यता छोड़ सकते हैं।",
   },
   passwordHint: {
     en: "Use at least 8 characters.",
     hi: "कम से कम 8 अक्षर लिखें।",
   },
   registerInvalid: {
-    en: "Enter your name, a valid email, and a password of at least 8 characters.",
-    hi: "अपना नाम, मान्य ईमेल, और कम से कम 8 अक्षरों का पासवर्ड लिखें।",
+    en: "Please complete every field with valid details.",
+    hi: "कृपया हर फ़ील्ड में सही विवरण भरें।",
   },
   registerMismatch: {
     en: "The passwords do not match.",
     hi: "पासवर्ड मेल नहीं खाते।",
   },
   registerDuplicate: {
-    en: "An account with this email already exists. Sign in instead.",
-    hi: "इस ईमेल से खाता पहले से है। प्रवेश करें।",
+    en: "This email is already registered for launch notifications.",
+    hi: "यह ईमेल प्रक्षेपण सूचनाओं के लिए पहले से पंजीकृत है।",
   },
   registerRate: {
     en: "Too many attempts. Please wait and try again.",
@@ -523,6 +554,8 @@ export const ui = {
   },
   creatingAccount: { en: "Creating account", hi: "खाता बन रहा है" },
   createAccount: { en: "Create account", hi: "खाता बनाएँ" },
+  submittingNotification: { en: "Submitting", hi: "भेजा जा रहा है" },
+  submitNotification: { en: "Notify me", hi: "मुझे सूचना दें" },
   alreadyAccount: { en: "Already have an account?", hi: "पहले से खाता है?" },
   confirmHeading: { en: "You're Now Part of the Journey!", hi: "अब आप इस यात्रा का हिस्सा हैं!" },
   confirmSubscribed: {
@@ -538,8 +571,8 @@ export const ui = {
 
   adminRegistrations: { en: "Launch registrations", hi: "प्रक्षेपण पंजीकरण" },
   adminRegistrationsKicker: {
-    en: "Accounts created from the public landing page. Email consent is stored separately from the account.",
-    hi: "सार्वजनिक पृष्ठ से बने खाते। ईमेल सहमति खाते से अलग रखी जाती है।",
+    en: "People who requested a launch notification from the public landing page.",
+    hi: "सार्वजनिक पृष्ठ से प्रक्षेपण सूचना माँगने वाले लोग।",
   },
   adminRegTotal: { en: "Registrations", hi: "पंजीकरण" },
   adminRegSubscribed: { en: "Launch subscribers", hi: "प्रक्षेपण सदस्य" },

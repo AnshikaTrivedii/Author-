@@ -1,13 +1,11 @@
 import { notFound } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
-import { getWork, worksWithFilm } from "@/data/works";
+import { findManagedWork } from "@/lib/admin-data";
 import { FilmPage } from "@/components/platform/FilmPage";
 
 type Params = { slug: string };
 
-export function generateStaticParams() {
-  return worksWithFilm().map((work) => ({ slug: work.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -15,7 +13,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const work = getWork(slug);
+  const work = await findManagedWork(slug);
   return pageMetadata(
     work ? `Work ${work.number} — film` : "Film",
     work?.film.synopsis.en ?? "Film presentation.",
@@ -25,7 +23,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
-  const work = getWork(slug);
+  const work = await findManagedWork(slug);
   if (!work?.film.available || work.status === "unpublished") notFound();
   return (
     <main id="main">

@@ -4,7 +4,7 @@ import { catalogWorks } from "./catalog";
 export const works: Work[] = catalogWorks;
 
 export function getWork(slug: string) {
-  return catalogWorks.find((work) => work.slug === slug);
+  return catalogWorks.find((work) => work.slug === slug || work.id === slug);
 }
 
 export function freeWorks() {

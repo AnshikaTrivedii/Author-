@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/session";
-import { adminStats, findManagedWork, readAdminStore } from "@/lib/admin-data";
+import { adminStats, managedWorks, readAdminStore } from "@/lib/admin-data";
 
 export async function GET() {
   if (!(await requireAdmin())) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const store = readAdminStore();
+  const [store, works, stats] = await Promise.all([
+    readAdminStore(),
+    managedWorks(),
+    adminStats(),
+  ]);
+  const workById = new Map(works.map((work) => [work.id, work]));
   const orders = store.orders.map((order) => ({
     ...order,
-    workTitle: findManagedWork(order.workId)?.title ?? order.product,
+    workTitle: workById.get(order.workId)?.title ?? order.product,
   }));
 
   const buyers = new Map<
@@ -25,7 +30,7 @@ export async function GET() {
       works: [],
     };
     current.paidOrders += 1;
-    const title = findManagedWork(order.workId)?.title.en ?? order.product.en;
+    const title = workById.get(order.workId)?.title.en ?? order.product.en;
     if (!current.works.includes(title)) current.works.push(title);
     buyers.set(order.userId, current);
   }
@@ -33,6 +38,6 @@ export async function GET() {
   return NextResponse.json({
     orders,
     buyers: Array.from(buyers.values()),
-    stats: adminStats(),
+    stats,
   });
 }

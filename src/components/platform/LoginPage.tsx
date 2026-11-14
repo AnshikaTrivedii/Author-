@@ -1,24 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { useState } from "react";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { cn } from "@/lib/utils";
 
 type SessionRole = "reader" | "admin";
 
-export function LoginPage() {
+export function LoginPage({ role }: { role: SessionRole }) {
   const { t } = useLanguage();
-  const params = useSearchParams();
-  const [role, setRole] = useState<SessionRole>("reader");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
-
-  useEffect(() => {
-    if (params.get("role") === "admin") setRole("admin");
-  }, [params]);
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -51,12 +44,12 @@ export function LoginPage() {
     <main id="main" className="bg-ink">
       <section className="mx-auto grid min-h-[100svh] max-w-[1680px] items-center gap-16 px-5 pt-36 pb-20 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-44">
         <div className="lg:col-span-5">
-          <p className="label-meta text-gilt">{t("signIn")}</p>
+          <p className="label-meta text-gilt">{t(role === "admin" ? "adminAccount" : "signIn")}</p>
           <h1 className="mt-6 font-serif text-6xl leading-[0.9] tracking-[-0.03em] sm:text-8xl">
-            {t("headingLogin")}
+            {t(role === "admin" ? "headingAdmin" : "headingLogin")}
           </h1>
           <p className="mt-8 max-w-md font-serif text-2xl italic text-muted">
-            {t("loginKicker")}
+            {t(role === "admin" ? "adminKicker" : "loginKicker")}
           </p>
         </div>
 
@@ -64,27 +57,7 @@ export function LoginPage() {
           onSubmit={onSubmit}
           className="border border-ivory/10 bg-ink-2 p-8 sm:p-10 lg:col-span-6 lg:col-start-7"
         >
-          <div className="flex gap-6" role="group" aria-label={t("signIn")}>
-            {(["reader", "admin"] as const).map((option) => (
-              <button
-                key={option}
-                type="button"
-                aria-pressed={role === option}
-                onClick={() => {
-                  setRole(option);
-                  setError("");
-                }}
-                className={cn(
-                  "label-meta min-h-12 transition-colors",
-                  role === option ? "text-gilt" : "text-muted hover:text-ivory",
-                )}
-              >
-                {option === "admin" ? t("adminAccount") : t("readerAccount")}
-              </button>
-            ))}
-          </div>
-
-          <label className="mt-10 block">
+          <label className="block">
             <span className="label-meta">{t("email")}</span>
             <input
               type="email"
@@ -124,11 +97,13 @@ export function LoginPage() {
           >
             {pending ? t("continue") : t("signIn")}
           </button>
-          <p className="mt-8 text-sm text-ivory/80">
-            <a href="/#join" className="underline decoration-gilt/50 hover:text-gilt">
-              {t("getLaunchLink")}
-            </a>
-          </p>
+          {role === "reader" ? (
+            <p className="mt-8 text-sm text-ivory/80">
+              <Link href="/#join" className="underline decoration-gilt/50 hover:text-gilt">
+                {t("getLaunchLink")}
+              </Link>
+            </p>
+          ) : null}
         </form>
       </section>
     </main>

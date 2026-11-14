@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readAudienceStore, writeAudienceStore } from "@/lib/audience-store";
+import { addLetter } from "@/lib/audience-store";
 
 export async function POST(request: Request) {
   const body = (await request.json().catch(() => null)) as {
@@ -17,15 +17,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
 
-  const store = readAudienceStore();
-  store.letters.unshift({
-    id: `let-${Date.now().toString(36)}`,
-    name,
-    email,
-    message,
-    createdAt: new Date().toISOString(),
-    status: "received",
-  });
-  writeAudienceStore(store);
+  await addLetter({ name, email, message });
   return NextResponse.json({ ok: true });
 }

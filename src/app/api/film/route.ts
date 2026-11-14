@@ -4,7 +4,7 @@ import { getFilmAssets } from "@/lib/launch-store";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const film = getFilmAssets();
+  const film = await getFilmAssets();
   return NextResponse.json({
     poster: film.poster,
     video: film.video,

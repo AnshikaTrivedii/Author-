@@ -5,19 +5,22 @@ import { CtaLink } from "@/components/ui/CtaLink";
 import { PageIntro } from "@/components/ui/PageIntro";
 import { SignOutButton } from "@/components/platform/SignOutButton";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { purchasedWorksFor } from "@/lib/library";
+import type { Copy } from "@/lib/locale";
 
 export function LibraryPage() {
-  const { t } = useLanguage();
-  const owned = purchasedWorksFor(null);
+  const { t, loc } = useLanguage();
+  const [owned, setOwned] = useState<Array<{ slug: string; title: Copy }>>([]);
   const [email, setEmail] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
-    fetch("/api/session")
+    fetch("/api/library")
       .then((response) => response.json())
-      .then((data: { session: { email: string } | null }) => {
-        if (active) setEmail(data.session?.email ?? null);
+      .then((data: { email?: string; works?: Array<{ slug: string; title: Copy }> }) => {
+        if (active) {
+          setEmail(data.email ?? null);
+          setOwned(data.works ?? []);
+        }
       })
       .catch(() => {
         if (active) setEmail(null);
@@ -39,6 +42,15 @@ export function LibraryPage() {
           <p className="max-w-xl font-serif text-2xl italic text-muted">
             {t("libraryEmpty")}
           </p>
+        ) : null}
+        {owned.length > 0 ? (
+          <ul className="space-y-5">
+            {owned.map((work) => (
+              <li key={work.slug}>
+                <CtaLink href={`/works/${work.slug}`}>{loc(work.title)}</CtaLink>
+              </li>
+            ))}
+          </ul>
         ) : null}
         <div className="mt-12 flex flex-wrap items-center gap-8">
           {email ? <SignOutButton /> : <CtaLink href="/login">{t("signIn")}</CtaLink>}

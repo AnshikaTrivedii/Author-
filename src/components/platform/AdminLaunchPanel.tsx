@@ -6,7 +6,12 @@ import { cn } from "@/lib/utils";
 
 type Registration = {
   name: string;
+  age: number;
+  gender: "male" | "female" | "non-binary" | "prefer-not-to-say";
+  countryCode: string;
+  mobileNumber: string;
   email: string;
+  postalCode: string;
   createdAt: string;
   notifyLaunch: boolean;
   notifyConsentAt: string | null;
@@ -26,7 +31,7 @@ type FilmAssets = {
 
 const filters = ["all", "subscribed", "unsubscribed"] as const;
 
-export function AdminLaunchPanel() {
+export function AdminLaunchPanel({ view }: { view: "registrations" | "media" }) {
   const { t } = useLanguage();
   const [filter, setFilter] = useState<(typeof filters)[number]>("all");
   const [data, setData] = useState<Payload | null>(null);
@@ -74,12 +79,19 @@ export function AdminLaunchPanel() {
     subscribed: t("adminFilterSubscribed"),
     unsubscribed: t("adminFilterUnsubscribed"),
   };
+  const genderLabel = {
+    male: t("genderMale"),
+    female: t("genderFemale"),
+    "non-binary": t("genderNonBinary"),
+    "prefer-not-to-say": t("genderPreferNot"),
+  };
 
   return (
-    <section className="mx-auto mt-20 max-w-[1680px] px-5 sm:px-8 lg:px-12">
-      <h2 className="font-serif text-4xl">{t("adminRegistrations")}</h2>
-      <p className="mt-4 max-w-2xl text-muted">{t("adminRegistrationsKicker")}</p>
-      <div className="mt-8 grid gap-6 sm:grid-cols-2">
+    <section>
+      <div className={view === "registrations" ? "" : "hidden"}>
+        <h2 className="font-serif text-4xl">{t("adminRegistrations")}</h2>
+        <p className="mt-4 max-w-2xl text-muted">{t("adminRegistrationsKicker")}</p>
+        <div className="mt-8 grid gap-6 sm:grid-cols-2">
         <div className="border border-ivory/10 bg-ink-2 px-6 py-8">
           <p className="label-meta text-gilt">{t("adminRegTotal")}</p>
           <p className="mt-4 font-serif text-5xl">{data?.total ?? "—"}</p>
@@ -88,8 +100,8 @@ export function AdminLaunchPanel() {
           <p className="label-meta text-gilt">{t("adminRegSubscribed")}</p>
           <p className="mt-4 font-serif text-5xl">{data?.subscribed ?? "—"}</p>
         </div>
-      </div>
-      <div className="mt-8 flex flex-wrap gap-4">
+        </div>
+        <div className="mt-8 flex flex-wrap gap-4">
         {filters.map((item) => (
           <button
             key={item}
@@ -104,33 +116,52 @@ export function AdminLaunchPanel() {
             {filterLabel[item]}
           </button>
         ))}
-      </div>
-      <ul className="mt-8 divide-y divide-ivory/10 border-y border-ivory/10">
+        </div>
+        <ul className="mt-8 divide-y divide-ivory/10 border-y border-ivory/10">
         {data && data.registrations.length === 0 ? (
           <li className="py-8 text-muted">{t("adminNoRegistrations")}</li>
         ) : null}
         {data?.registrations.map((entry) => (
-          <li key={entry.email} className="grid gap-3 py-6 lg:grid-cols-12">
-            <div className="lg:col-span-4">
+          <li key={entry.email} className="grid gap-6 py-7 md:grid-cols-2 xl:grid-cols-12">
+            <div className="xl:col-span-3">
               <p className="font-serif text-2xl">{entry.name}</p>
               <p className="mt-2 text-sm text-muted">{entry.email}</p>
             </div>
-            <p className="text-sm text-muted lg:col-span-3">{entry.createdAt.slice(0, 10)}</p>
-            <div className="lg:col-span-5 lg:text-right">
-              <p className="label-meta">
+            <dl className="grid grid-cols-2 gap-x-5 gap-y-4 text-sm xl:col-span-6 xl:grid-cols-4">
+              <div>
+                <dt className="label-meta text-gilt">{t("age")}</dt>
+                <dd className="mt-1 text-muted">{entry.age}</dd>
+              </div>
+              <div>
+                <dt className="label-meta text-gilt">{t("gender")}</dt>
+                <dd className="mt-1 text-muted">{genderLabel[entry.gender]}</dd>
+              </div>
+              <div>
+                <dt className="label-meta text-gilt">{t("mobileNumber")}</dt>
+                <dd className="mt-1 text-muted">
+                  {entry.countryCode} {entry.mobileNumber}
+                </dd>
+              </div>
+              <div>
+                <dt className="label-meta text-gilt">{t("postalCode")}</dt>
+                <dd className="mt-1 text-muted">{entry.postalCode}</dd>
+              </div>
+            </dl>
+            <div className="text-sm text-muted xl:col-span-3 xl:text-right">
+              <p>{entry.createdAt.slice(0, 16).replace("T", " ")}</p>
+              <p className="label-meta mt-2 text-ivory">
                 {entry.notifyLaunch ? t("adminConsentYes") : t("adminConsentNo")}
               </p>
-              {entry.notifyConsentAt ? (
-                <p className="mt-2 text-sm text-muted">{entry.notifyConsentAt.slice(0, 16).replace("T", " ")}</p>
-              ) : null}
             </div>
           </li>
         ))}
-      </ul>
+        </ul>
+      </div>
 
-      <h2 className="mt-20 font-serif text-4xl">{t("adminFilmAssets")}</h2>
-      <p className="mt-4 max-w-2xl text-muted">{t("adminFilmKicker")}</p>
-      <div className="mt-8 grid gap-8 lg:grid-cols-3">
+      <div className={view === "media" ? "" : "hidden"}>
+        <h2 className="font-serif text-4xl">{t("adminFilmAssets")}</h2>
+        <p className="mt-4 max-w-2xl text-muted">{t("adminFilmKicker")}</p>
+        <div className="mt-8 grid gap-8 lg:grid-cols-3">
         {(
           [
             ["poster", t("adminPoster"), film?.poster],
@@ -165,12 +196,13 @@ export function AdminLaunchPanel() {
             </button>
           </form>
         ))}
+        </div>
+        {message ? (
+          <p className="mt-6 text-sm text-gilt" role="status">
+            {message}
+          </p>
+        ) : null}
       </div>
-      {message ? (
-        <p className="mt-6 text-sm text-gilt" role="status">
-          {message}
-        </p>
-      ) : null}
     </section>
   );
 }

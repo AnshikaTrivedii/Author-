@@ -1,4 +1,5 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { randomUUID } from "crypto";
+import { mkdir } from "fs/promises";
 import path from "path";
 import type {
   Money,
@@ -9,6 +10,7 @@ import type {
 } from "@/data/types";
 import { catalogWorks } from "@/data/catalog";
 import { copyToBeProvided, platform, pricePlaceholder } from "@/data/site";
+import { database } from "@/lib/mongodb";
 
 export type AdminUpload = {
   workId: string;
@@ -35,8 +37,6 @@ export type AdminStore = {
   orders: Order[];
 };
 
-const storeDir = path.join(process.cwd(), "data");
-const storePath = path.join(storeDir, "admin-store.json");
 const uploadDir = path.join(process.cwd(), "public", "uploads");
 
 const pendingMoney: Money = {
@@ -51,104 +51,57 @@ const freeMoney: Money = {
   display: { en: "FREE", hi: "निःशुल्क" },
 };
 
-function seedOrders(): Order[] {
-  const paid = catalogWorks.find((work) => work.pricingModel === "paid");
-  const free = catalogWorks.find((work) => work.pricingModel === "free");
-  const target = paid ?? free ?? catalogWorks[0];
-  if (!target) return [];
+type WorkDocument = { _id: string; work: Work };
+type OverrideDocument = { _id: string; override: WorkOverride };
+type UploadDocument = AdminUpload & { _id: string };
+type OrderDocument = Order & { _id: string };
 
-  const amount: Money = {
-    amount: 499,
-    currency: "INR",
-    display: { en: "₹499", hi: "₹499" },
-  };
-  const zero: Money = {
-    amount: 0,
-    currency: "INR",
-    display: { en: "₹0", hi: "₹0" },
-  };
-
-  return [
-    {
-      id: "ord-1001",
-      userId: "reader-anjali",
-      workId: target.id,
-      offerId: target.offers[0]?.id ?? "complete",
-      product: target.title,
-      format: { en: "Complete Digital Access", hi: "पूर्ण डिजिटल पहुँच" },
-      amount,
-      tax: zero,
-      total: amount,
-      status: "paid",
-      createdAt: "2026-09-12T10:20:00.000Z",
-    },
-    {
-      id: "ord-1002",
-      userId: "reader-rahul",
-      workId: target.id,
-      offerId: target.offers[0]?.id ?? "complete",
-      product: target.title,
-      format: { en: "Complete Digital Access", hi: "पूर्ण डिजिटल पहुँच" },
-      amount,
-      tax: zero,
-      total: amount,
-      status: "pending",
-      createdAt: "2026-09-22T16:05:00.000Z",
-    },
-    {
-      id: "ord-1003",
-      userId: "reader-meera",
-      workId: free?.id ?? target.id,
-      offerId: "complete-free",
-      product: free?.title ?? target.title,
-      format: { en: "Hindi Edition", hi: "हिन्दी संस्करण" },
-      amount: freeMoney,
-      tax: zero,
-      total: freeMoney,
-      status: "paid",
-      createdAt: "2026-09-24T08:40:00.000Z",
-    },
-  ];
-}
-
-function emptyStore(): AdminStore {
+export async function readAdminStore(): Promise<AdminStore> {
+  const db = await database();
+  const [custom, overrides, uploads, orders] = await Promise.all([
+    db.collection<WorkDocument>("custom_works").find().toArray(),
+    db.collection<OverrideDocument>("work_overrides").find().toArray(),
+    db.collection<UploadDocument>("work_uploads").find().sort({ uploadedAt: -1 }).toArray(),
+    db.collection<OrderDocument>("orders").find().sort({ createdAt: -1 }).toArray(),
+  ]);
   return {
-    customWorks: [],
-    overrides: {},
-    uploads: [],
-    orders: seedOrders(),
+    customWorks: custom.map((entry) => entry.work),
+    overrides: Object.fromEntries(overrides.map((entry) => [entry._id, entry.override])),
+    uploads: uploads.map(({ _id, ...entry }) => {
+      void _id;
+      return entry;
+    }),
+    orders: orders.map(({ _id, ...entry }) => {
+      void _id;
+      return entry;
+    }),
   };
 }
 
-function ensureStore() {
-  if (!existsSync(storeDir)) mkdirSync(storeDir, { recursive: true });
-  if (!existsSync(storePath)) {
-    writeFileSync(storePath, JSON.stringify(emptyStore(), null, 2), "utf8");
-  }
-  if (!existsSync(uploadDir)) mkdirSync(uploadDir, { recursive: true });
+export async function addCustomWork(work: Work) {
+  const db = await database();
+  await db.collection<WorkDocument>("custom_works").insertOne({ _id: work.id, work });
 }
 
-export function readAdminStore(): AdminStore {
-  ensureStore();
-  try {
-    const raw = readFileSync(storePath, "utf8");
-    const parsed = JSON.parse(raw) as AdminStore;
-    return {
-      customWorks: parsed.customWorks ?? [],
-      overrides: parsed.overrides ?? {},
-      uploads: parsed.uploads ?? [],
-      orders: parsed.orders?.length ? parsed.orders : seedOrders(),
-    };
-  } catch {
-    const seeded = emptyStore();
-    writeAdminStore(seeded);
-    return seeded;
-  }
+export async function saveWorkOverride(workId: string, override: WorkOverride) {
+  const db = await database();
+  await db.collection<OverrideDocument>("work_overrides").updateOne(
+    { _id: workId },
+    { $set: { override } },
+    { upsert: true },
+  );
 }
 
-export function writeAdminStore(store: AdminStore) {
-  ensureStore();
-  writeFileSync(storePath, JSON.stringify(store, null, 2), "utf8");
+export async function addWorkUpload(upload: AdminUpload) {
+  const db = await database();
+  await db.collection<UploadDocument>("work_uploads").insertOne({
+    _id: randomUUID(),
+    ...upload,
+  });
+}
+
+export async function ensureUploadDir() {
+  await mkdir(uploadDir, { recursive: true });
 }
 
 function moneyFor(pricing: PricingModel, amount: number | null | undefined): Money {
@@ -164,7 +117,11 @@ function moneyFor(pricing: PricingModel, amount: number | null | undefined): Mon
 function applyOverride(work: Work, override?: WorkOverride): Work {
   if (!override) return work;
   const pricingModel = override.pricingModel ?? work.pricingModel;
-  const price = moneyFor(pricingModel, override.priceAmount);
+  const amount =
+    override.priceAmount !== undefined
+      ? override.priceAmount
+      : work.offers[0]?.price.amount;
+  const price = moneyFor(pricingModel, amount);
   const title = {
     en: override.titleEn ?? work.title.en,
     hi: override.titleHi ?? work.title.hi,
@@ -188,8 +145,8 @@ function applyOverride(work: Work, override?: WorkOverride): Work {
   };
 }
 
-export function managedWorks(): Work[] {
-  const store = readAdminStore();
+export async function managedWorks(): Promise<Work[]> {
+  const store = await readAdminStore();
   const base = catalogWorks.map((work) =>
     applyOverride(work, store.overrides[work.id]),
   );
@@ -199,8 +156,8 @@ export function managedWorks(): Work[] {
   return [...base, ...custom];
 }
 
-export function findManagedWork(idOrSlug: string) {
-  return managedWorks().find(
+export async function findManagedWork(idOrSlug: string) {
+  return (await managedWorks()).find(
     (work) => work.id === idOrSlug || work.slug === idOrSlug,
   );
 }
@@ -214,7 +171,7 @@ export function slugify(value: string) {
     .slice(0, 60);
 }
 
-export function createWorkDraft(input: {
+export async function createWorkDraft(input: {
   titleEn: string;
   titleHi?: string;
   descriptionEn?: string;
@@ -222,13 +179,13 @@ export function createWorkDraft(input: {
   pricingModel: PricingModel;
   priceAmount?: number | null;
   status?: WorkStatus;
-}): Work {
-  const store = readAdminStore();
+}): Promise<Work> {
+  const store = await readAdminStore();
   const number = String(catalogWorks.length + store.customWorks.length + 1).padStart(
     2,
     "0",
   );
-  const id = `work-${Date.now().toString(36)}`;
+  const id = `work-${randomUUID()}`;
   const titleEn = input.titleEn.trim();
   const titleHi = (input.titleHi ?? titleEn).trim();
   const pricingModel = input.pricingModel;
@@ -347,9 +304,8 @@ export function createWorkDraft(input: {
   };
 }
 
-export function adminStats() {
-  const works = managedWorks();
-  const store = readAdminStore();
+export async function adminStats() {
+  const [works, store] = await Promise.all([managedWorks(), readAdminStore()]);
   const paidOrders = store.orders.filter((order) => order.status === "paid");
   const pendingOrders = store.orders.filter((order) => order.status === "pending");
   const buyers = new Map<string, { userId: string; orders: number }>();

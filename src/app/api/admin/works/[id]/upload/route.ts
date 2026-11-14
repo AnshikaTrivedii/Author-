@@ -3,10 +3,10 @@ import path from "path";
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/session";
 import {
+  addWorkUpload,
+  ensureUploadDir,
   findManagedWork,
-  readAdminStore,
   uploadDir,
-  writeAdminStore,
 } from "@/lib/admin-data";
 
 type Params = { id: string };
@@ -22,7 +22,7 @@ export async function POST(
   }
 
   const { id } = await context.params;
-  const work = findManagedWork(id);
+  const work = await findManagedWork(id);
   if (!work) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -38,20 +38,20 @@ export async function POST(
   const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
   const storedAs = `${work.id}-${kindValue}-${Date.now()}-${safeName}`;
   const buffer = Buffer.from(await file.arrayBuffer());
+  await ensureUploadDir();
   await writeFile(path.join(uploadDir, storedAs), buffer);
 
-  const store = readAdminStore();
-  store.uploads.unshift({
+  const upload = {
     workId: work.id,
     kind: kindValue as "hindi" | "english" | "audio" | "film" | "cover",
     fileName: file.name,
     storedAs: `/uploads/${storedAs}`,
     uploadedAt: new Date().toISOString(),
-  });
-  writeAdminStore(store);
+  };
+  await addWorkUpload(upload);
 
   return NextResponse.json({
     ok: true,
-    upload: store.uploads[0],
+    upload,
   });
 }

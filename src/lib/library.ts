@@ -1,10 +1,5 @@
-import type { AccessPermission, AccessType, DigitalAsset, Order, Purchase, UserAccount } from "@/data/types";
-
-export const accounts: UserAccount[] = [];
-export const orders: Order[] = [];
-export const purchases: Purchase[] = [];
-export const permissions: AccessPermission[] = [];
-export const digitalAssets: DigitalAsset[] = [];
+import type { AccessPermission, AccessType, Purchase } from "@/data/types";
+import { database } from "@/lib/mongodb";
 
 export function permissionFromAccess(accessType: AccessType) {
   return {
@@ -13,14 +8,18 @@ export function permissionFromAccess(accessType: AccessType) {
   };
 }
 
-export function hasLibraryAccess(userId: string | null, workId: string) {
+export async function hasLibraryAccess(userId: string | null, workId: string) {
   if (!userId) return false;
-  return permissions.some(
-    (entry) => entry.userId === userId && entry.workId === workId,
-  );
+  const db = await database();
+  const permission = await db.collection<AccessPermission>("access_permissions").findOne({
+    userId,
+    workId,
+  });
+  return Boolean(permission);
 }
 
-export function purchasedWorksFor(userId: string | null) {
+export async function purchasedWorksFor(userId: string | null) {
   if (!userId) return [];
-  return purchases.filter((entry) => entry.userId === userId);
+  const db = await database();
+  return db.collection<Purchase>("purchases").find({ userId }, { projection: { _id: 0 } }).toArray();
 }

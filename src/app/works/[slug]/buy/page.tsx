@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
-import { getWork } from "@/data/works";
+import { findManagedWork } from "@/lib/admin-data";
 import { BuyPage } from "@/components/platform/BuyPage";
 
 type Params = { slug: string };
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -11,7 +13,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const work = getWork(slug);
+  const work = await findManagedWork(slug);
   return pageMetadata(
     work ? `Work ${work.number}` : "Buy",
     "Order summary for digital access.",
@@ -29,7 +31,7 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const { offer } = await searchParams;
-  const work = getWork(slug);
+  const work = await findManagedWork(slug);
   if (!work) notFound();
   const selected =
     work.offers.find((item) => item.id === offer) ??

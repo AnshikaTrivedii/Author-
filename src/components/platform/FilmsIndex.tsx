@@ -5,10 +5,10 @@ import { PageIntro } from "@/components/ui/PageIntro";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { StatusBadge } from "@/components/platform/StatusBadge";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { worksWithFilm } from "@/data/works";
+import type { Work } from "@/data/types";
 import { moneyLabel } from "@/lib/utils";
 
-export function FilmsIndex() {
+export function FilmsIndex({ works }: { works: Work[] }) {
   const { t, loc, locale } = useLanguage();
 
   return (
@@ -16,7 +16,7 @@ export function FilmsIndex() {
       <PageIntro eyebrow={t("watch")} title={t("headingFilms")} />
       <div className="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
         <ul className="grid gap-16 lg:grid-cols-2">
-          {worksWithFilm().map((work) => (
+          {works.map((work) => (
             <li key={work.id}>
               <Link href={`/films/${work.slug}`} data-cursor="watch" className="group block">
                 <PlaceholderMedia

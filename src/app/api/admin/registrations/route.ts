@@ -13,5 +13,5 @@ export async function GET(request: Request) {
   const filter =
     filterValue === "subscribed" || filterValue === "unsubscribed" ? filterValue : "all";
 
-  return NextResponse.json(registrationSummary(filter));
+  return NextResponse.json(await registrationSummary(filter));
 }

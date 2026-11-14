@@ -1,5 +1,8 @@
 import { pageMetadata } from "@/lib/seo";
 import { WorksLibrary } from "@/components/platform/WorksLibrary";
+import { managedWorks } from "@/lib/admin-data";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = pageMetadata(
   "Works",
@@ -7,6 +10,7 @@ export const metadata = pageMetadata(
   "/works",
 );
 
-export default function Page() {
-  return <WorksLibrary />;
+export default async function Page() {
+  const works = (await managedWorks()).filter((work) => work.status !== "unpublished");
+  return <WorksLibrary works={works} />;
 }

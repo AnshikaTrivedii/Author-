@@ -1,7 +1,7 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
-import path from "path";
+import { randomUUID } from "crypto";
 import type { Copy } from "@/lib/locale";
 import { seedMemories } from "@/data/audience";
+import { database } from "@/lib/mongodb";
 
 export type MemoryEcho = {
   id: string;
@@ -18,41 +18,36 @@ export type AuthorLetter = {
   status: "received";
 };
 
-type AudienceStore = {
-  memories: MemoryEcho[];
-  letters: AuthorLetter[];
-};
-
-const storeDir = path.join(process.cwd(), "data");
-const storePath = path.join(storeDir, "audience-store.json");
-
-function emptyStore(): AudienceStore {
-  return { memories: [...seedMemories], letters: [] };
+export async function recentMemories() {
+  const db = await database();
+  const submitted = await db
+    .collection<MemoryEcho>("memories")
+    .find({}, { projection: { _id: 0 } })
+    .sort({ createdAt: -1 })
+    .limit(40)
+    .toArray();
+  return [...submitted, ...seedMemories].slice(0, 40);
 }
 
-function ensure() {
-  if (!existsSync(storeDir)) mkdirSync(storeDir, { recursive: true });
-  if (!existsSync(storePath)) {
-    writeFileSync(storePath, JSON.stringify(emptyStore(), null, 2), "utf8");
-  }
+export async function addMemory(text: Copy) {
+  const memory: MemoryEcho = {
+    id: `mem-${randomUUID()}`,
+    text,
+    createdAt: new Date().toISOString(),
+  };
+  const db = await database();
+  await db.collection<MemoryEcho>("memories").insertOne(memory);
+  return memory;
 }
 
-export function readAudienceStore(): AudienceStore {
-  ensure();
-  try {
-    const parsed = JSON.parse(readFileSync(storePath, "utf8")) as AudienceStore;
-    return {
-      memories: parsed.memories?.length ? parsed.memories : [...seedMemories],
-      letters: parsed.letters ?? [],
-    };
-  } catch {
-    const seeded = emptyStore();
-    writeAudienceStore(seeded);
-    return seeded;
-  }
-}
-
-export function writeAudienceStore(store: AudienceStore) {
-  ensure();
-  writeFileSync(storePath, JSON.stringify(store, null, 2), "utf8");
+export async function addLetter(input: Pick<AuthorLetter, "name" | "email" | "message">) {
+  const letter: AuthorLetter = {
+    id: `let-${randomUUID()}`,
+    ...input,
+    createdAt: new Date().toISOString(),
+    status: "received",
+  };
+  const db = await database();
+  await db.collection<AuthorLetter>("letters").insertOne(letter);
+  return letter;
 }

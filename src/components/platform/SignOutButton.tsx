@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
-export function SignOutButton() {
+export function SignOutButton({ redirectTo = "/login" }: { redirectTo?: "/login" | "/admin" }) {
   const { t } = useLanguage();
   const [pending, setPending] = useState(false);
 
@@ -15,7 +15,7 @@ export function SignOutButton() {
       onClick={() => {
         setPending(true);
         void fetch("/api/session", { method: "DELETE" }).then(() => {
-          window.location.assign("/login");
+          window.location.assign(redirectTo);
         });
       }}
     >

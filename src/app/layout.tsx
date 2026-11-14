@@ -7,13 +7,8 @@ import {
   notoSansDeva,
   notoSerifDeva,
 } from "@/lib/fonts";
-import { AmbientSound } from "@/components/audience/AmbientSound";
-import { Footer } from "@/components/layout/Footer";
 import { LanguageProvider } from "@/components/layout/LanguageProvider";
-import { Navbar } from "@/components/layout/Navbar";
-import { ReloadToLanding } from "@/components/layout/ReloadToLanding";
-import { ScrollProgress } from "@/components/layout/ScrollProgress";
-import { SkipLink } from "@/components/layout/SkipLink";
+import { SiteShell } from "@/components/layout/SiteShell";
 import "./globals.css";
 
 const title = platform.title;
@@ -88,20 +83,12 @@ export default function RootLayout({
             __html: `try{if(localStorage.getItem('loi-locale')==='hi')document.documentElement.lang='hi'}catch(e){}`,
           }}
         />
-        <div className="grain" aria-hidden="true" />
-        <div className="vignette" aria-hidden="true" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(platformJsonLd) }}
         />
-        <ReloadToLanding />
         <LanguageProvider>
-          <SkipLink />
-          <ScrollProgress />
-          <Navbar />
-          {children}
-          <Footer />
-          <AmbientSound />
+          <SiteShell>{children}</SiteShell>
         </LanguageProvider>
       </body>
     </html>

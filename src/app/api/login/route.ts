@@ -37,8 +37,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
     }
   } else {
-    const account = verifyAccountPassword(email, password);
-    if (account.status === "invalid") {
+    const account = await verifyAccountPassword(email, password);
+    if (account.status !== "ok") {
       return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
     }
   }

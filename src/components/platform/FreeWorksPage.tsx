@@ -7,9 +7,9 @@ import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { StatusBadge } from "@/components/platform/StatusBadge";
 import { ImageReveal } from "@/components/ui/Reveal";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { freeWorks } from "@/data/works";
+import type { Work } from "@/data/types";
 
-export function FreeWorksPage() {
+export function FreeWorksPage({ works }: { works: Work[] }) {
   const { t, loc } = useLanguage();
 
   return (
@@ -21,7 +21,7 @@ export function FreeWorksPage() {
       />
       <div className="mx-auto max-w-[1680px] space-y-28 px-5 pt-12 sm:px-8 lg:px-12">
         <FreeProgressRibbon />
-        {freeWorks().map((work) => (
+        {works.map((work) => (
           <article key={work.id} className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-6">
               <ImageReveal>

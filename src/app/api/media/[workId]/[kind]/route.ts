@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { getWork } from "@/data/works";
+import { findManagedWork } from "@/lib/admin-data";
 import { canAccessPublicly } from "@/lib/access";
 import { hasLibraryAccess } from "@/lib/library";
+import { findAccount } from "@/lib/launch-store";
+import { readSession } from "@/lib/session";
 
 type Params = { workId: string; kind: string };
 
@@ -10,7 +12,7 @@ export async function GET(
   { params }: { params: Promise<Params> },
 ) {
   const { workId, kind } = await params;
-  const work = getWork(workId);
+  const work = await findManagedWork(workId);
   if (!work) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
@@ -27,9 +29,10 @@ export async function GET(
         ? "audio"
         : "film";
 
-  const userId = request.headers.get("x-user-id");
+  const session = await readSession();
+  const account = session?.role === "reader" ? await findAccount(session.email) : null;
   const allowed =
-    canAccessPublicly(work, publicKind) || hasLibraryAccess(userId, work.id);
+    canAccessPublicly(work, publicKind) || await hasLibraryAccess(account?.id ?? null, work.id);
 
   if (!allowed) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

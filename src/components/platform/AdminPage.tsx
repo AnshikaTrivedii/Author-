@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AdminLaunchPanel } from "@/components/platform/AdminLaunchPanel";
-import { PageIntro } from "@/components/ui/PageIntro";
 import { SignOutButton } from "@/components/platform/SignOutButton";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { cn } from "@/lib/utils";
@@ -49,6 +48,14 @@ const uploadKinds = [
   { id: "cover", label: "Cover image" },
 ] as const;
 
+type AdminSection = "overview" | "registrations" | "works" | "media" | "orders";
+
+function editablePrice(work: Work) {
+  return work.pricingModel === "paid" && work.offers[0]?.price.amount != null
+    ? String(work.offers[0].price.amount)
+    : "";
+}
+
 export function AdminPage({ email }: { email: string }) {
   const { loc, t } = useLanguage();
   const [works, setWorks] = useState<Work[]>([]);
@@ -59,6 +66,7 @@ export function AdminPage({ email }: { email: string }) {
   const [selectedId, setSelectedId] = useState<string>("");
   const [message, setMessage] = useState("");
   const [pending, setPending] = useState(false);
+  const [activeSection, setActiveSection] = useState<AdminSection>("overview");
 
   const [titleEn, setTitleEn] = useState("");
   const [titleHi, setTitleHi] = useState("");
@@ -94,22 +102,17 @@ export function AdminPage({ email }: { email: string }) {
     setOrders(ordersData.orders);
     setBuyers(ordersData.buyers);
     setStats(ordersData.stats);
-    if (!selectedId && worksData.works[0]) setSelectedId(worksData.works[0].id);
+    if (!selectedId && worksData.works[0]) {
+      setSelectedId(worksData.works[0].id);
+      setEditPrice(editablePrice(worksData.works[0]));
+    }
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!selected) return;
-    setEditPrice(
-      selected.pricingModel === "paid" && selected.offers[0]?.price.amount != null
-        ? String(selected.offers[0].price.amount)
-        : "",
-    );
-  }, [selected]);
 
   async function createWork(event: React.FormEvent) {
     event.preventDefault();
@@ -139,6 +142,7 @@ export function AdminPage({ email }: { email: string }) {
     setMessage(t("adminWorkCreated"));
     await load();
     setSelectedId(data.work.id);
+    setEditPrice(editablePrice(data.work));
   }
 
   async function patchWork(body: Record<string, unknown>) {
@@ -182,29 +186,76 @@ export function AdminPage({ email }: { email: string }) {
   }
 
   const selectedUploads = uploads.filter((item) => item.workId === selected?.id);
+  const navigation: Array<{ id: AdminSection; label: string; description: string }> = [
+    { id: "overview", label: t("adminNavOverview"), description: t("adminNavOverviewHint") },
+    {
+      id: "registrations",
+      label: t("adminRegistrations"),
+      description: t("adminNavRegistrationsHint"),
+    },
+    { id: "works", label: t("adminAllWorks"), description: t("adminNavWorksHint") },
+    { id: "media", label: t("adminFilmAssets"), description: t("adminNavMediaHint") },
+    { id: "orders", label: t("adminOrders"), description: t("adminNavOrdersHint") },
+  ];
+  const current = navigation.find((item) => item.id === activeSection) ?? navigation[0];
 
   return (
-    <main id="main" className="bg-ink pb-28">
-      <PageIntro
-        eyebrow={t("adminAccount")}
-        title={t("headingAdmin")}
-        kicker={t("adminKicker")}
-      />
-      <div className="mx-auto flex max-w-[1680px] flex-wrap items-center justify-between gap-6 px-5 pb-10 sm:px-8 lg:px-12">
-        <p className="label-meta text-muted">
-          {t("signedInAs")} {email}
-        </p>
-        <SignOutButton />
-      </div>
+    <main id="main" className="min-h-screen bg-[#101110] text-ivory">
+      <div className="min-h-screen md:grid md:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[17rem_minmax(0,1fr)]">
+        <aside className="border-b border-ivory/10 bg-[#0b0c0b] md:sticky md:top-0 md:h-screen md:border-r md:border-b-0">
+          <div className="flex h-full flex-col px-5 py-6 sm:px-8 md:px-5 md:py-8 xl:px-6">
+            <div>
+              <p className="label-meta text-gilt">Echoes of Memories</p>
+              <h1 className="mt-3 font-serif text-3xl">{t("headingAdmin")}</h1>
+              <p className="mt-3 truncate text-xs text-muted">{email}</p>
+            </div>
+            <nav className="mt-7 flex gap-2 overflow-x-auto pb-2 md:mt-10 md:block md:space-y-2 md:overflow-visible md:pb-0" aria-label={t("headingAdmin")}>
+              {navigation.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  aria-current={activeSection === item.id ? "page" : undefined}
+                  onClick={() => setActiveSection(item.id)}
+                  className={cn(
+                    "shrink-0 border px-4 py-3 text-left transition-colors md:block md:w-full",
+                    activeSection === item.id
+                      ? "border-gilt/70 bg-gilt/10 text-ivory"
+                      : "border-transparent text-muted hover:border-ivory/10 hover:text-ivory",
+                  )}
+                >
+                  <span className="label-meta block text-current">{item.label}</span>
+                  <span className="mt-1 hidden text-xs leading-relaxed text-muted md:block">
+                    {item.description}
+                  </span>
+                </button>
+              ))}
+            </nav>
+            <div className="mt-auto hidden border-t border-ivory/10 pt-6 md:block">
+              <SignOutButton redirectTo="/admin" />
+            </div>
+          </div>
+        </aside>
+
+        <div className="min-w-0 px-5 py-8 sm:px-8 md:px-8 md:py-10 lg:px-10 xl:px-14">
+          <header className="flex flex-wrap items-start justify-between gap-6 border-b border-ivory/10 pb-8">
+            <div>
+              <p className="label-meta text-gilt">{t("adminAccount")}</p>
+              <h2 className="mt-3 font-serif text-4xl sm:text-5xl">{current.label}</h2>
+              <p className="mt-3 max-w-2xl text-sm text-muted">{current.description}</p>
+            </div>
+            <div className="md:hidden">
+              <SignOutButton redirectTo="/admin" />
+            </div>
+          </header>
 
       {message ? (
-        <p className="mx-auto mb-8 max-w-[1680px] px-5 text-sm text-gilt sm:px-8 lg:px-12" role="status">
+        <p className="mt-6 border border-gilt/30 bg-gilt/5 px-4 py-3 text-sm text-gilt" role="status">
           {message}
         </p>
       ) : null}
 
       {stats ? (
-        <section className="mx-auto grid max-w-[1680px] gap-6 px-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:px-12">
+        <section className={cn("mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4", activeSection !== "overview" && "hidden")}>
           {[
             { label: t("adminStatWorks"), value: stats.worksTotal },
             { label: t("adminStatFree"), value: stats.worksFree },
@@ -219,7 +270,7 @@ export function AdminPage({ email }: { email: string }) {
         </section>
       ) : null}
 
-      <div className="mx-auto mt-16 grid max-w-[1680px] gap-16 px-5 sm:px-8 lg:grid-cols-12 lg:px-12">
+      <div className={cn("mt-10 grid gap-12 xl:grid-cols-12", activeSection !== "works" && "hidden")}>
         <section className="lg:col-span-7">
           <h2 className="font-serif text-4xl">{t("adminAllWorks")}</h2>
           <ul className="mt-8 divide-y divide-ivory/10 border-y border-ivory/10">
@@ -229,7 +280,10 @@ export function AdminPage({ email }: { email: string }) {
                 <li key={work.id}>
                   <button
                     type="button"
-                    onClick={() => setSelectedId(work.id)}
+                    onClick={() => {
+                      setSelectedId(work.id);
+                      setEditPrice(editablePrice(work));
+                    }}
                     className={cn(
                       "grid w-full gap-2 py-6 text-left transition-colors lg:grid-cols-12",
                       active ? "text-ivory" : "text-ivory/70 hover:text-ivory",
@@ -461,7 +515,7 @@ export function AdminPage({ email }: { email: string }) {
         </section>
       </div>
 
-      <section className="mx-auto mt-20 max-w-[1680px] px-5 sm:px-8 lg:px-12">
+      <section className={cn("mt-10", activeSection !== "orders" && "hidden")}>
         <h2 className="font-serif text-4xl">{t("adminOrders")}</h2>
         <p className="mt-4 max-w-2xl text-muted">{t("adminOrdersKicker")}</p>
         <ul className="mt-10 divide-y divide-ivory/10 border-y border-ivory/10">
@@ -485,7 +539,7 @@ export function AdminPage({ email }: { email: string }) {
         </ul>
       </section>
 
-      <section className="mx-auto mt-20 max-w-[1680px] px-5 sm:px-8 lg:px-12">
+      <section className={cn("mt-16", activeSection !== "orders" && "hidden")}>
         <h2 className="font-serif text-4xl">{t("adminBuyers")}</h2>
         <ul className="mt-10 divide-y divide-ivory/10 border-y border-ivory/10">
           {buyers.length === 0 ? (
@@ -504,7 +558,18 @@ export function AdminPage({ email }: { email: string }) {
         </ul>
       </section>
 
-      <AdminLaunchPanel />
+          {activeSection === "registrations" ? (
+            <div className="mt-10">
+              <AdminLaunchPanel view="registrations" />
+            </div>
+          ) : null}
+          {activeSection === "media" ? (
+            <div className="mt-10">
+              <AdminLaunchPanel view="media" />
+            </div>
+          ) : null}
+        </div>
+      </div>
     </main>
   );
 }

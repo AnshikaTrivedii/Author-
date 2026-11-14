@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { pageMetadata } from "@/lib/seo";
-import { getWork } from "@/data/works";
+import { findManagedWork } from "@/lib/admin-data";
 import { Reader } from "@/components/platform/Reader";
 import { canAccessPublicly } from "@/lib/access";
 
 type Params = { slug: string; lang: string };
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -12,7 +14,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }) {
   const { slug, lang } = await params;
-  const work = getWork(slug);
+  const work = await findManagedWork(slug);
   const language = lang === "hi" ? "Hindi" : "English";
   return pageMetadata(
     work ? `Work ${work.number} — ${language}` : "Read",
@@ -23,7 +25,7 @@ export async function generateMetadata({
 
 export default async function Page({ params }: { params: Promise<Params> }) {
   const { slug, lang } = await params;
-  const work = getWork(slug);
+  const work = await findManagedWork(slug);
   if (!work || (lang !== "hi" && lang !== "en")) notFound();
   const edition = lang === "hi" ? work.hindi : work.english;
   const allowed =

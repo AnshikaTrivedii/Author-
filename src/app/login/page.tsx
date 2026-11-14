@@ -1,18 +1,13 @@
-import { Suspense } from "react";
 import { pageMetadata } from "@/lib/seo";
 import { LoginPage } from "@/components/platform/LoginPage";
 
 export const metadata = pageMetadata(
   "Sign in",
-  "Sign in to your library, or open the admin desk.",
+  "Sign in to your reader library.",
   "/login",
   false,
 );
 
 export default function Page() {
-  return (
-    <Suspense>
-      <LoginPage />
-    </Suspense>
-  );
+  return <LoginPage role="reader" />;
 }

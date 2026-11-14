@@ -6,11 +6,11 @@ import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { StatusBadge } from "@/components/platform/StatusBadge";
 import { WorkModes } from "@/components/platform/WorkModes";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { publishedWorks } from "@/data/works";
+import type { Work } from "@/data/types";
 import { accessLabel } from "@/lib/commerce";
 import { moneyLabel } from "@/lib/utils";
 
-export function WorksLibrary() {
+export function WorksLibrary({ works }: { works: Work[] }) {
   const { t, loc, locale } = useLanguage();
 
   return (
@@ -22,7 +22,7 @@ export function WorksLibrary() {
       />
       <div className="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
         <ul className="divide-y divide-ivory/10 border-y border-ivory/10">
-          {publishedWorks().map((work) => (
+          {works.map((work) => (
             <li key={work.id} className="grid gap-8 py-16 lg:grid-cols-12">
               <Link
                 href={`/works/${work.slug}`}

@@ -5,10 +5,10 @@ import { PageIntro } from "@/components/ui/PageIntro";
 import { MediaPlayer } from "@/components/platform/MediaPlayer";
 import { StatusBadge } from "@/components/platform/StatusBadge";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { worksWithAudio } from "@/data/works";
+import type { Work } from "@/data/types";
 import { moneyLabel } from "@/lib/utils";
 
-export function AudioVideoPage() {
+export function AudioVideoPage({ works }: { works: Work[] }) {
   const { t, loc, locale } = useLanguage();
 
   return (
@@ -19,7 +19,7 @@ export function AudioVideoPage() {
         kicker={t("audioKicker")}
       />
       <div className="mx-auto max-w-[1680px] space-y-24 px-5 sm:px-8 lg:px-12">
-        {worksWithAudio().map((work) => (
+        {works.map((work) => (
           <article key={work.id} className="grid gap-10 lg:grid-cols-12">
             <div className="lg:col-span-4">
               <p className="label-meta text-gilt">

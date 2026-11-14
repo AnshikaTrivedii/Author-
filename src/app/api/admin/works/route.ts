@@ -2,10 +2,10 @@ import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/session";
 import {
   adminStats,
+  addCustomWork,
   createWorkDraft,
   managedWorks,
   readAdminStore,
-  writeAdminStore,
 } from "@/lib/admin-data";
 import type { PricingModel, WorkStatus } from "@/data/types";
 
@@ -14,12 +14,14 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const store = readAdminStore();
+  const [store, works, stats] = await Promise.all([
+    readAdminStore(), managedWorks(), adminStats(),
+  ]);
   return NextResponse.json({
-    works: managedWorks(),
+    works,
     orders: store.orders,
     uploads: store.uploads,
-    stats: adminStats(),
+    stats,
   });
 }
 
@@ -50,7 +52,7 @@ export async function POST(request: Request) {
         : null
       : 0;
 
-  const work = createWorkDraft({
+  const work = await createWorkDraft({
     titleEn: body.titleEn,
     titleHi: body.titleHi,
     descriptionEn: body.descriptionEn,
@@ -60,9 +62,7 @@ export async function POST(request: Request) {
     status: body.status === "published" ? "published" : "forthcoming",
   });
 
-  const store = readAdminStore();
-  store.customWorks.push(work);
-  writeAdminStore(store);
+  await addCustomWork(work);
 
   return NextResponse.json({ ok: true, work });
 }

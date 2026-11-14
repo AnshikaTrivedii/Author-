@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
-import { readAudienceStore, writeAudienceStore } from "@/lib/audience-store";
+import { addMemory, recentMemories } from "@/lib/audience-store";
 
 export async function GET() {
-  const store = readAudienceStore();
   return NextResponse.json({
-    memories: store.memories.slice(0, 40),
+    memories: await recentMemories(),
   });
 }
 
@@ -20,14 +19,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
 
-  const store = readAudienceStore();
-  const memory = {
-    id: `mem-${Date.now().toString(36)}`,
-    text: { en, hi },
-    createdAt: new Date().toISOString(),
-  };
-  store.memories.unshift(memory);
-  store.memories = store.memories.slice(0, 120);
-  writeAudienceStore(store);
+  const memory = await addMemory({ en, hi });
   return NextResponse.json({ ok: true, memory });
 }
