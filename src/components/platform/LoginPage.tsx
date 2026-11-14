@@ -49,7 +49,7 @@ export function LoginPage() {
 
   return (
     <main id="main" className="bg-ink">
-      <section className="mx-auto grid min-h-[100svh] max-w-[1680px] items-center gap-16 px-5 pt-28 pb-20 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-36">
+      <section className="mx-auto grid min-h-[100svh] max-w-[1680px] items-center gap-16 px-5 pt-36 pb-20 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-44">
         <div className="lg:col-span-5">
           <p className="label-meta text-gilt">{t("signIn")}</p>
           <h1 className="mt-6 font-serif text-6xl leading-[0.9] tracking-[-0.03em] sm:text-8xl">

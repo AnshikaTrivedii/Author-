@@ -18,7 +18,7 @@ export function WorkDetailSubnav({ work }: { work: Work }) {
   return (
     <nav
       aria-label={t("workJumpNav")}
-      className="sticky top-16 z-40 border-b border-ivory/8 bg-ink/90 backdrop-blur-md sm:top-[4.75rem]"
+      className="sticky top-24 z-40 border-b border-ivory/8 bg-ink/90 backdrop-blur-md sm:top-[6.75rem]"
     >
       <div className="mx-auto flex max-w-[1680px] gap-1 overflow-x-auto px-5 py-3 sm:px-8 lg:px-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {links.map((link) => (

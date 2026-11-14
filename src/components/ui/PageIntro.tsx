@@ -12,7 +12,7 @@ export function PageIntro({
   kicker?: string;
 }) {
   return (
-    <header className="bg-ink px-5 pt-28 pb-4 sm:px-8 lg:px-12 lg:pt-36">
+    <header className="bg-ink px-5 pt-36 pb-4 sm:px-8 lg:px-12 lg:pt-44">
       <Reveal>
         <div className="mx-auto max-w-[1680px]">
           <p className="label-meta text-gilt">{eyebrow}</p>

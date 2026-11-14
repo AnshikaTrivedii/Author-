@@ -24,7 +24,7 @@ export default async function Page({ params }: { params: Promise<Params> }) {
 
   return (
     <main id="main" className="bg-ink pb-28">
-      <div className="mx-auto grid max-w-[1680px] gap-12 px-5 pt-28 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-36">
+      <div className="mx-auto grid max-w-[1680px] gap-12 px-5 pt-36 sm:px-8 lg:grid-cols-12 lg:px-12 lg:pt-44">
         <div className="lg:col-span-6">
           <p className="label-meta text-gilt">Part {echo.chapter}</p>
           <h1 className="mt-6 font-serif text-4xl leading-snug sm:text-6xl">

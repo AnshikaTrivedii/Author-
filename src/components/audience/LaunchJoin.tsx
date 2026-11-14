@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { X } from "lucide-react";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
 type FormState = {
@@ -121,11 +122,20 @@ export function LaunchJoin() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="join-title"
-            className="max-h-[90svh] w-full max-w-xl overflow-y-auto border border-ivory/15 bg-ink-2 p-6 sm:p-10"
+            className="relative max-h-[90svh] w-full max-w-xl overflow-hidden border border-ivory/15 bg-ink-2"
           >
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label={t("close")}
+              className="absolute top-4 right-4 z-10 flex size-10 items-center justify-center text-ivory/70 transition-colors hover:text-ivory"
+            >
+              <X className="size-5" strokeWidth={1.25} aria-hidden />
+            </button>
+            <div className="max-h-[90svh] overflow-y-auto p-6 sm:p-10">
             {done ? (
               <div>
-                <h2 id="join-title" className="font-serif text-4xl leading-tight sm:text-5xl">
+                <h2 id="join-title" className="pr-10 font-serif text-4xl leading-tight sm:text-5xl">
                   {t("confirmHeading")}
                 </h2>
                 <p className="mt-6 font-serif text-xl leading-snug text-ivory/85 italic">
@@ -149,7 +159,7 @@ export function LaunchJoin() {
               </div>
             ) : (
               <form onSubmit={onSubmit}>
-                <h2 id="join-title" className="font-serif text-4xl leading-tight">
+                <h2 id="join-title" className="pr-10 font-serif text-4xl leading-tight">
                   {t("joinCta")}
                 </h2>
                 <label className="mt-8 block">
@@ -203,9 +213,9 @@ export function LaunchJoin() {
                     type="checkbox"
                     checked={form.notifyLaunch}
                     onChange={(event) => update("notifyLaunch", event.target.checked)}
-                    className="mt-1 size-5 accent-[#8f7558]"
+                    className="mt-1 size-5 shrink-0 accent-[#8f7558]"
                   />
-                  <span>{t("notifyConsent")}</span>
+                  <span className="min-w-0">{t("notifyConsent")}</span>
                 </label>
                 {error ? (
                   <p className="mt-6 text-sm text-ivory" role="alert">
@@ -236,6 +246,7 @@ export function LaunchJoin() {
                 </p>
               </form>
             )}
+            </div>
           </div>
         </div>
       ) : null}

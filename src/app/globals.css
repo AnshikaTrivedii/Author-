@@ -229,11 +229,61 @@ textarea {
   background: #8f7558;
 }
 
+.launch-marquee {
+  animation: launch-marquee 46s linear infinite;
+}
+
+.launch-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes launch-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.launch-fade-left,
+.launch-fade-right {
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 2;
+  width: 4.5rem;
+}
+
+.launch-fade-left {
+  left: 0;
+  background: linear-gradient(90deg, #0d0d0c 10%, transparent);
+}
+
+.launch-fade-right {
+  right: 0;
+  background: linear-gradient(270deg, #0d0d0c 10%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .grain,
   .light-sweep,
   .vignette {
     display: none;
     animation: none;
+  }
+
+  .launch-marquee {
+    animation: none;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .launch-marquee-copy,
+  .launch-marquee-extra,
+  .launch-fade-left,
+  .launch-fade-right {
+    display: none;
   }
 }

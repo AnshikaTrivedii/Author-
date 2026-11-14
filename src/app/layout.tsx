@@ -8,10 +8,10 @@ import {
   notoSerifDeva,
 } from "@/lib/fonts";
 import { AmbientSound } from "@/components/audience/AmbientSound";
-import { CustomCursor } from "@/components/layout/CustomCursor";
 import { Footer } from "@/components/layout/Footer";
 import { LanguageProvider } from "@/components/layout/LanguageProvider";
 import { Navbar } from "@/components/layout/Navbar";
+import { ReloadToLanding } from "@/components/layout/ReloadToLanding";
 import { ScrollProgress } from "@/components/layout/ScrollProgress";
 import { SkipLink } from "@/components/layout/SkipLink";
 import "./globals.css";
@@ -94,10 +94,10 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(platformJsonLd) }}
         />
+        <ReloadToLanding />
         <LanguageProvider>
           <SkipLink />
           <ScrollProgress />
-          <CustomCursor />
           <Navbar />
           {children}
           <Footer />

@@ -21,7 +21,7 @@ export function WorkDetail({ work }: { work: Work }) {
 
   return (
     <article className="bg-ink pb-28">
-      <header className="mx-auto max-w-[1680px] px-5 pt-28 sm:px-8 lg:px-12 lg:pt-36">
+      <header className="mx-auto max-w-[1680px] px-5 pt-36 sm:px-8 lg:px-12 lg:pt-44">
         <p className="label-meta text-gilt">
           {t("workLabel")} {work.number}
         </p>
@@ -107,6 +107,8 @@ export function WorkDetail({ work }: { work: Work }) {
           <MediaPlayer
             kind="audio"
             src={work.audio.src}
+            hindiSrc={work.audio.hindiSrc}
+            englishSrc={work.audio.englishSrc}
             poster={work.audio.poster}
             title={loc(work.audio.title)}
             pendingLabel={t("mediaPending")}

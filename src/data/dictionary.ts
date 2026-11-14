@@ -162,10 +162,10 @@ export const ui = {
     hi: "खाता-आधारित लाइब्रेरी खरीदी गई पहुँच रखेगी। सशुल्क प्रकाशन से पहले प्रमाणीकरण जोड़ा जाएगा।",
   },
 
-  headingAudio: { en: "Voice, audio, film", hi: "आवाज़, श्रव्य, फिल्म" },
+  headingAudio: { en: "Author's voice", hi: "लेखक की आवाज़" },
   audioKicker: {
-    en: "Author voice, audio presentations, video presentations and films.",
-    hi: "लेखक की आवाज़, श्रव्य प्रस्तुतियाँ, दृश्य प्रस्तुतियाँ और फिल्में।",
+    en: "Listen to each book in Hindi or English.",
+    hi: "प्रत्येक पुस्तक हिन्दी या अंग्रेज़ी में सुनें।",
   },
   headingFilms: { en: "Films", hi: "फिल्में" },
   filmDuration: { en: "Duration", hi: "अवधि" },
@@ -188,8 +188,14 @@ export const ui = {
     en: "Echoes of Memories exists so lived experience can return as literature, voice and film — without becoming a catalogue of personality.",
     hi: "स्मृतियों की अनुगूंज इसलिए है कि जिया हुआ अनुभव साहित्य, आवाज़ और फिल्म के रूप में लौट सके — व्यक्तित्व की सूची बने बिना।",
   },
-  shortBio: { en: "[SHORT BIO]", hi: "[संक्षिप्त परिचय]" },
-  creativeJourney: { en: "[CREATIVE JOURNEY]", hi: "[रचनात्मक यात्रा]" },
+  shortBio: {
+    en: "Sanjay Kumar Rai graduated in engineering from MACT, Bhopal, in 1989. He worked as a civil engineer with government and private organisations, pursued business management at XLRI, Jamshedpur, and earned an LL.B. In 1997, he founded his construction and consultancy firm. Today, he provides services to a major Indian oil company and works as a valuer.",
+    hi: "संजय कुमार राय ने 1989 में MACT, भोपाल से इंजीनियरिंग में स्नातक किया। उन्होंने सरकारी और निजी संस्थाओं में सिविल इंजीनियर के रूप में कार्य किया, XLRI, जमशेदपुर में व्यवसाय प्रबंधन की पढ़ाई की, और एलएल.बी. की उपाधि प्राप्त की। 1997 में उन्होंने अपनी निर्माण एवं परामर्श फर्म की स्थापना की। आज वे एक प्रमुख भारतीय तेल कंपनी को सेवाएँ देते हैं और मूल्यांकनकर्ता के रूप में कार्य करते हैं।",
+  },
+  creativeJourney: {
+    en: "Looking back, he began to ask how his family, friends, and the ups and downs of his working life had changed him. That question led to स्मृतियों की अनुगूँज (Echoes of Memories), with more recollections to follow on IndianLegacies.com.",
+    hi: "पीछे मुड़कर देखने पर उन्होंने पूछना शुरू किया कि परिवार, मित्र और कार्यजीवन के उतार-चढ़ाव ने उन्हें कैसे बदला। इसी प्रश्न से स्मृतियों की अनुगूँज (Echoes of Memories) बनी, और आगे की स्मृतियाँ IndianLegacies.com पर आती रहेंगी।",
+  },
   projectPhilosophy: { en: "[PROJECT PHILOSOPHY]", hi: "[परियोजना दर्शन]" },
 
   signIn: { en: "Sign in", hi: "प्रवेश करें" },
@@ -475,6 +481,9 @@ export const ui = {
   likedIntroduction: { en: "Liked", hi: "पसंद किया" },
   likeFailed: { en: "The like could not be saved.", hi: "पसंद सहेजी नहीं जा सकी।" },
 
+  launchTicker: { en: "Launching 16 November 2026", hi: "प्रक्षेपण 16 नवम्बर 2026" },
+  launchTickerLabel: { en: "Launching", hi: "प्रक्षेपण" },
+  launchTickerDate: { en: "16 November 2026", hi: "16 नवम्बर 2026" },
   joinEyebrow: { en: "Launch", hi: "प्रक्षेपण" },
   joinHeading: { en: "Be Part of the Journey", hi: "यात्रा का हिस्सा बनें" },
   joinBody: {

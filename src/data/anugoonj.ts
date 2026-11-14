@@ -3,11 +3,11 @@ import type { Copy } from "@/lib/locale";
 export const bookOne = {
   slug: "smritiyon-ki-anugoonj",
   title: {
-    en: "Smritiyon Ki Anugoonj",
+    en: "Echoes of Memory",
     hi: "स्मृतियों की अनुगूँज",
   },
   titleLines: {
-    en: ["Smritiyon Ki", "Anugoonj"],
+    en: ["Echoes of", "Memory"],
     hi: ["स्मृतियों की", "अनुगूँज"],
   },
   tagline: {

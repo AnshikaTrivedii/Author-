@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { navItems, navMoreItems, platform } from "@/data/site";
 import { AccountLink } from "@/components/layout/AccountLink";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
+import { LaunchTicker } from "@/components/layout/LaunchTicker";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { cn } from "@/lib/utils";
 import { easeCinematic } from "@/lib/motion";
@@ -99,6 +100,7 @@ export function Navbar() {
           : "border-b border-ivory/10 bg-ink/78 backdrop-blur-md",
       )}
     >
+      <LaunchTicker />
       <nav
         className="mx-auto flex h-16 max-w-[1680px] items-center justify-between gap-4 px-5 sm:h-[4.75rem] sm:px-8 lg:px-12"
         aria-label="Primary"
@@ -181,7 +183,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: easeCinematic }}
-            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-ink sm:top-[4.75rem] lg:hidden"
+            className="fixed inset-x-0 top-24 bottom-0 z-40 overflow-y-auto bg-ink sm:top-[6.75rem] lg:hidden"
           >
             <div className="flex min-h-full flex-col px-6 py-8 sm:px-10">
               <div className="border-b border-ivory/10 pb-6">

@@ -35,7 +35,7 @@ export function Reader({
   }, [allowed, work.slug, edition.language]);
 
   return (
-    <article className="bg-ink px-5 pt-28 pb-28 sm:px-8 lg:px-12">
+    <article className="bg-ink px-5 pt-36 pb-28 sm:px-8 lg:px-12">
       <div className="reader-prose mx-auto max-w-[42rem]">
         <p className="label-meta text-gilt">
           {t("workLabel")} {work.number}

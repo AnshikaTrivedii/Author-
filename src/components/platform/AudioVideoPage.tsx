@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { PageIntro } from "@/components/ui/PageIntro";
-import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { MediaPlayer } from "@/components/platform/MediaPlayer";
 import { StatusBadge } from "@/components/platform/StatusBadge";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-import { worksWithAudio, worksWithFilm } from "@/data/works";
+import { worksWithAudio } from "@/data/works";
 import { moneyLabel } from "@/lib/utils";
 
 export function AudioVideoPage() {
@@ -41,6 +40,8 @@ export function AudioVideoPage() {
               <MediaPlayer
                 kind="audio"
                 src={work.audio.src}
+                hindiSrc={work.audio.hindiSrc}
+                englishSrc={work.audio.englishSrc}
                 poster={work.audio.poster}
                 title={loc(work.audio.title)}
                 pendingLabel={t("mediaPending")}
@@ -48,32 +49,6 @@ export function AudioVideoPage() {
             </div>
           </article>
         ))}
-
-        <section>
-          <h2 className="font-serif text-5xl">{t("headingFilms")}</h2>
-          <ul className="mt-12 grid gap-8 sm:grid-cols-2">
-            {worksWithFilm().map((work) => (
-              <li key={work.id}>
-                <Link href={`/films/${work.slug}`} data-cursor="watch">
-                  <PlaceholderMedia
-                    src={work.film.poster ?? work.image}
-                    alt={loc(work.imageAlt)}
-                    width={1200}
-                    height={750}
-                    sizes="(min-width: 640px) 45vw, 100vw"
-                    className="aspect-video"
-                    label={t("mediaFilm")}
-                  />
-                  <p className="label-meta mt-4 text-gilt">
-                    {t("workLabel")} {work.number}
-                  </p>
-                  <p className="mt-2 font-serif text-3xl">{loc(work.film.title)}</p>
-                  <p className="mt-2 text-sm text-muted">{loc(work.film.duration)}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
       </div>
     </main>
   );

@@ -53,7 +53,7 @@ export function HomeSectionNav() {
     <nav
       aria-label={t("homeNavLabel")}
       className={cn(
-        "sticky top-16 z-40 border-b border-ivory/8 bg-ink/90 backdrop-blur-md transition-[opacity,transform] duration-500 sm:top-[4.75rem]",
+        "sticky top-24 z-40 border-b border-ivory/8 bg-ink/90 backdrop-blur-md transition-[opacity,transform] duration-500 sm:top-[6.75rem]",
         visible ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-1 opacity-0",
       )}
     >

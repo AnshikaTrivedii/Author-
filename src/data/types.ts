@@ -35,6 +35,8 @@ export type AudioPresentation = {
   title: Copy;
   accessType: AccessType;
   src: string | null;
+  hindiSrc?: string | null;
+  englishSrc?: string | null;
   poster: string | null;
   duration: Copy;
   price: Money;

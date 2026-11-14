@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useLanguage } from "@/components/layout/LanguageProvider";
+import { ImageReveal, Reveal } from "@/components/ui/Reveal";
 import { bookOne } from "@/data/anugoonj";
 import { platform } from "@/data/site";
 import { readReaderResume } from "@/lib/reading";
@@ -140,8 +141,8 @@ export function IntroductionFilm() {
 
   return (
     <section id="introduction" className="bg-ink">
-      <div className="mx-auto grid min-h-[100svh] max-w-[1680px] items-center gap-10 px-5 pt-28 pb-16 sm:px-8 md:grid-cols-12 md:gap-12 md:px-12 md:pt-32">
-        <div className="order-2 md:order-1 md:col-span-5">
+      <div className="mx-auto grid min-h-[100svh] max-w-[1680px] items-center gap-10 px-5 pt-36 pb-16 sm:px-8 md:grid-cols-12 md:gap-12 md:px-12 md:pt-40">
+        <Reveal className="order-2 md:order-1 md:col-span-5">
           <p className="label-meta text-gilt">{t("filmEyebrow")}</p>
           <h1 className="mt-5 font-serif text-[clamp(3.2rem,6vw,5.6rem)] leading-[0.92] tracking-[-0.035em] text-balance">
             {lines.map((line) => (
@@ -195,10 +196,10 @@ export function IntroductionFilm() {
             >
               {t("readTheStory")}
             </Link>
-            <Link href="#listen" className="label-meta text-ivory/80 transition-colors hover:text-gilt">
+            <Link href="/audio-video" className="label-meta text-ivory/80 transition-colors hover:text-gilt">
               {t("listenToVoice")}
             </Link>
-            <Link href="#watch" className="label-meta text-ivory/80 transition-colors hover:text-gilt">
+            <Link href="/films" className="label-meta text-ivory/80 transition-colors hover:text-gilt">
               {t("watchTheJourney")}
             </Link>
           </div>
@@ -217,9 +218,9 @@ export function IntroductionFilm() {
               {error}
             </p>
           ) : null}
-        </div>
+        </Reveal>
 
-        <div className="order-1 md:order-2 md:col-span-7">
+        <ImageReveal className="order-1 md:order-2 md:col-span-7">
           <div className="relative aspect-[4/5] overflow-hidden bg-ink-2 sm:aspect-[16/10]">
             {playing && video ? (
               <video
@@ -270,7 +271,7 @@ export function IntroductionFilm() {
           {!video && film ? (
             <p className="mt-4 text-sm text-muted">{t("filmMissing")}</p>
           ) : null}
-        </div>
+        </ImageReveal>
       </div>
     </section>
   );

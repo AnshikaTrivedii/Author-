@@ -26,7 +26,7 @@ export async function generateMetadata({
 export default async function Page({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const work = getWork(slug);
-  if (!work?.film.available) notFound();
+  if (!work?.film.available || work.status === "unpublished") notFound();
   return (
     <main id="main">
       <FilmPage work={work} />

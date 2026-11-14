@@ -3,7 +3,7 @@ import { AudioVideoPage } from "@/components/platform/AudioVideoPage";
 
 export const metadata = pageMetadata(
   "Listen",
-  "Author voice, audio presentations, video presentations and films.",
+  "Listen to each book in Hindi or English.",
   "/audio-video",
 );
 

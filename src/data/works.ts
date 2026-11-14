@@ -22,5 +22,9 @@ export function worksWithFilm() {
 }
 
 export function worksWithAudio() {
-  return publishedWorks().filter((work) => work.audio.available);
+  return publishedWorks().filter(
+    (work) =>
+      work.audio.available &&
+      Boolean(work.audio.src || work.audio.hindiSrc || work.audio.englishSrc),
+  );
 }

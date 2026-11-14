@@ -58,6 +58,29 @@ const pendingCredits: WorkCredits = {
   other: creditPending,
 };
 
+function audioFile(name: string) {
+  return `/audio/${encodeURIComponent(name)}`;
+}
+
+function voiceover(
+  hindiName: string,
+  englishName: string,
+  poster: string,
+): Work["audio"] {
+  const hindiSrc = audioFile(hindiName);
+  return {
+    available: true,
+    title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
+    accessType: "ONLINE",
+    src: hindiSrc,
+    hindiSrc,
+    englishSrc: audioFile(englishName),
+    poster,
+    duration: { en: "[DURATION]", hi: "[अवधि]" },
+    price: freeMoney,
+  };
+}
+
 function film(pricing: "free" | "paid"): FilmPresentation {
   return {
     available: true,
@@ -166,15 +189,11 @@ export const catalogWorks: Work[] = [
       ),
       status: "forthcoming",
     },
-    audio: {
-      available: true,
-      title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
-      accessType: "ONLINE",
-      src: null,
-      poster: bookOne.image,
-      duration: { en: "[DURATION]", hi: "[अवधि]" },
-      price: freeMoney,
-    },
+    audio: voiceover(
+      "स्मृतियों की अनुगूँज Hindi Voiceover .mp3",
+      "स्मृतियों की अनुगूँज  English Voiceover.mp3",
+      bookOne.image,
+    ),
     film: {
       ...film("free"),
       poster: "/images/stills/family-photo.jpg",
@@ -210,6 +229,11 @@ export const catalogWorks: Work[] = [
       ),
       status: "forthcoming",
     },
+    audio: voiceover(
+      "एक सवाल अपने आप से hindi Voiceover (2).mp3",
+      "एक सवाल अपने आप से English Voiceover.mp3",
+      questionsBook.image,
+    ),
     credits: {
       ...pendingCredits,
       writtenBy: bookOne.author,
@@ -227,7 +251,7 @@ export const catalogWorks: Work[] = [
       en: "Heritage books and a camera on stone",
       hi: "पत्थर पर विरासत की पुस्तकें और कैमरा",
     }),
-    status: "forthcoming",
+    status: "unpublished",
     pricingModel: "paid",
     hindi: {
       ...edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "paid"),
