@@ -53,8 +53,8 @@ export const ui = {
 
   headingFree: { en: "The first stories — free", hi: "पहली कथाएँ — निःशुल्क" },
   freeSupport: {
-    en: "The first two presentations are being made available free of charge as the beginning of this creative journey.",
-    hi: "इस रचनात्मक यात्रा के आरम्भ में पहली दो प्रस्तुतियाँ निःशुल्क उपलब्ध कराई जा रही हैं।",
+    en: "These stories are being made available free of charge as the beginning of this creative journey.",
+    hi: "इस रचनात्मक यात्रा के आरम्भ में ये कथाएँ निःशुल्क उपलब्ध कराई जा रही हैं।",
   },
   hindiFree: { en: "Hindi Book — FREE", hi: "हिन्दी पुस्तक — निःशुल्क" },
   englishFree: { en: "English Book — FREE", hi: "अंग्रेज़ी पुस्तक — निःशुल्क" },

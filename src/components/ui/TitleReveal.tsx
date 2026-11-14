@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { cn } from "@/lib/utils";
 import { easeCinematic } from "@/lib/motion";
 
@@ -13,7 +14,7 @@ export function TitleReveal({
   delay?: number;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const letters = Array.from(text);
 
   return (

@@ -16,8 +16,12 @@ export function WorkDetail({ work }: { work: Work }) {
   const { t, loc, locale } = useLanguage();
   const paid = work.pricingModel === "paid";
   const complete = work.offers.find((offer) => offer.id.startsWith("complete"));
-  const hindiReady = work.hindi.status !== "forthcoming";
-  const primaryReadLang = hindiReady ? "hi" : "en";
+  const preferred = locale === "hi" ? work.hindi : work.english;
+  const primaryRead = preferred.fileKey
+    ? preferred
+    : work.hindi.fileKey
+      ? work.hindi
+      : work.english;
 
   return (
     <article className="bg-ink pb-28">
@@ -47,7 +51,7 @@ export function WorkDetail({ work }: { work: Work }) {
           </p>
           <div className="flex flex-wrap gap-4">
             <CtaLink
-              href={`/works/${work.slug}/read/${primaryReadLang}`}
+              href={`/works/${work.slug}/read/${primaryRead.language}`}
               cursor="read"
               variant="solid"
             >
@@ -100,6 +104,7 @@ export function WorkDetail({ work }: { work: Work }) {
         </div>
       </section>
 
+      {work.audio.available ? (
       <section id="listen" className="mx-auto mt-28 max-w-[1680px] scroll-mt-28 px-5 sm:px-8 lg:px-12">
         <h2 className="font-serif text-5xl sm:text-7xl">{t("headingListen")}</h2>
         <p className="mt-6 font-serif text-2xl italic text-muted">{t("authorsVoice")}</p>
@@ -115,7 +120,9 @@ export function WorkDetail({ work }: { work: Work }) {
           />
         </div>
       </section>
+      ) : null}
 
+      {work.film.available ? (
       <section id="watch" className="mx-auto mt-28 max-w-[1680px] scroll-mt-28 px-5 sm:px-8 lg:px-12">
         <h2 className="font-serif text-5xl sm:text-7xl">{t("headingWatch")}</h2>
         <p className="mt-6 font-serif text-2xl italic text-muted">{loc(work.film.duration)}</p>
@@ -129,6 +136,7 @@ export function WorkDetail({ work }: { work: Work }) {
           />
         </div>
       </section>
+      ) : null}
 
       {paid ? (
         <section

@@ -78,8 +78,8 @@ export function HomeFreeWorks() {
                     label={`${t("englishEdition")} — ${work.english.status === "published" ? t("badgeFree") : t("forthcoming")}`}
                     tone={work.english.status === "published" ? "free" : "soon"}
                   />
-                  <StatusBadge label={t("voiceFree")} />
-                  <StatusBadge label={t("filmFree")} />
+                  {work.audio.available ? <StatusBadge label={t("voiceFree")} /> : null}
+                  {work.film.available ? <StatusBadge label={t("filmFree")} /> : null}
                 </div>
                 <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                   <CtaLink href={`/works/${work.slug}/read/hi`} cursor="read">
@@ -88,12 +88,16 @@ export function HomeFreeWorks() {
                   <CtaLink href={`/works/${work.slug}/read/en`} cursor="read">
                     {t("readEnglish")}
                   </CtaLink>
-                  <CtaLink href={`/works/${work.slug}#listen`} cursor="listen">
-                    {t("listenWatch")}
-                  </CtaLink>
-                  <CtaLink href={`/works/${work.slug}#watch`} cursor="watch">
-                    {t("watchFilm")}
-                  </CtaLink>
+                  {work.audio.available ? (
+                    <CtaLink href={`/works/${work.slug}#listen`} cursor="listen">
+                      {t("listenWatch")}
+                    </CtaLink>
+                  ) : null}
+                  {work.film.available ? (
+                    <CtaLink href={`/works/${work.slug}#watch`} cursor="watch">
+                      {t("watchFilm")}
+                    </CtaLink>
+                  ) : null}
                 </div>
               </div>
             </article>

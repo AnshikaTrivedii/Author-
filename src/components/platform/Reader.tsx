@@ -34,9 +34,11 @@ export function Reader({
     }
   }, [allowed, work.slug, edition.language]);
 
+  const pdf = edition.fileKey?.startsWith("https://") ? edition.fileKey : null;
+
   return (
-    <article className="bg-ink px-5 pt-36 pb-28 sm:px-8 lg:px-12">
-      <div className="reader-prose mx-auto max-w-[42rem]">
+    <article className="bg-ink px-5 pt-36 pb-16 sm:px-8 lg:px-12">
+      <div className={pdf ? "mx-auto max-w-[1100px]" : "reader-prose mx-auto max-w-[42rem]"}>
         <p className="label-meta text-gilt">
           {t("workLabel")} {work.number}
         </p>

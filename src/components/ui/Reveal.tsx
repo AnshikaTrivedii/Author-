@@ -1,8 +1,9 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { easeCinematic, easeCurtain } from "@/lib/motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 
 type RevealProps = {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ type RevealProps = {
 };
 
 export function Reveal({ children, className, delay = 0, y = 32 }: RevealProps) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
 
   return (
     <motion.div
@@ -34,7 +35,7 @@ export function ImageReveal({
   children: React.ReactNode;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
 
   return (
     <div className={cn("relative overflow-hidden", className)}>

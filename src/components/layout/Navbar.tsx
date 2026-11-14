@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { navItems, navMoreItems, platform } from "@/data/site";
 import { AccountLink } from "@/components/layout/AccountLink";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
@@ -11,6 +11,7 @@ import { LaunchTicker } from "@/components/layout/LaunchTicker";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { cn } from "@/lib/utils";
 import { easeCinematic } from "@/lib/motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 
 function NavLink({
   item,
@@ -53,7 +54,7 @@ function NavLink({
 
 export function Navbar() {
   const pathname = usePathname();
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const { loc, t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [openPath, setOpenPath] = useState<string | null>(null);
@@ -89,6 +90,7 @@ export function Navbar() {
   }, [moreOpen]);
 
   return (
+    <>
     <motion.header
       initial={reduce ? false : { opacity: 0, y: -12 }}
       animate={{ opacity: 1, y: 0 }}
@@ -107,7 +109,7 @@ export function Navbar() {
       >
         <Link
           href="/"
-          className="font-serif text-[0.68rem] tracking-[0.22em] !text-ivory sm:text-[0.92rem] sm:tracking-[0.28em]"
+          className="min-w-0 truncate font-serif text-[0.62rem] tracking-[0.14em] !text-ivory sm:text-[0.92rem] sm:tracking-[0.28em]"
         >
           {platform.title.toUpperCase()}
         </Link>
@@ -174,6 +176,7 @@ export function Navbar() {
           </button>
         </div>
       </nav>
+    </motion.header>
 
       <AnimatePresence>
         {open ? (
@@ -183,7 +186,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: easeCinematic }}
-            className="fixed inset-x-0 top-24 bottom-0 z-40 overflow-y-auto bg-ink sm:top-[6.75rem] lg:hidden"
+            className="fixed inset-x-0 top-24 bottom-0 z-[45] overflow-y-auto bg-ink sm:top-[6.75rem] lg:hidden"
           >
             <div className="flex min-h-full flex-col px-6 py-8 sm:px-10">
               <div className="border-b border-ivory/10 pb-6">
@@ -236,6 +239,6 @@ export function Navbar() {
           </motion.div>
         ) : null}
       </AnimatePresence>
-    </motion.header>
+    </>
   );
 }

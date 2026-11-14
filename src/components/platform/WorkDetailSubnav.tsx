@@ -10,8 +10,8 @@ export function WorkDetailSubnav({ work }: { work: Work }) {
 
   const links = [
     { href: "#read", label: t("read") },
-    { href: "#listen", label: t("listen") },
-    { href: "#watch", label: t("watch") },
+    ...(work.audio.available ? [{ href: "#listen", label: t("listen") }] : []),
+    ...(work.film.available ? [{ href: "#watch", label: t("watch") }] : []),
     ...(paid ? [{ href: "#buy", label: t("buyNow") }] : []),
   ];
 

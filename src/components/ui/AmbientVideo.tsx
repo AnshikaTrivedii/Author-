@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { cn } from "@/lib/utils";
 
 export function AmbientVideo({
@@ -13,7 +13,7 @@ export function AmbientVideo({
   poster?: string;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

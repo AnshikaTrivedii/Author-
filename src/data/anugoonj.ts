@@ -496,7 +496,7 @@ export const readerExcerpts = [
 export const questionsBook = {
   slug: "ek-sawal-apne-aap-se",
   title: {
-    en: "Ek Sawaal Apne Aap Se",
+    en: "A Question to myself",
     hi: "एक सवाल अपने आप से",
   },
   subtitle: {
@@ -511,5 +511,26 @@ export const questionsBook = {
   imageAlt: {
     en: "A letter and a notebook",
     hi: "एक पत्र और एक नोटबुक",
+  },
+};
+
+export const differentStory = {
+  slug: "is-your-story-different",
+  title: {
+    en: "Is Your Story Different",
+    hi: "क्या आपकी कहानी अलग है",
+  },
+  subtitle: {
+    en: "Is your story different?",
+    hi: "क्या आपकी कहानी अलग है?",
+  },
+  about: {
+    en: "Is your story different?",
+    hi: "क्या आपकी कहानी अलग है?",
+  },
+  image: "/images/stills/family-photo.jpg",
+  imageAlt: {
+    en: "A family photograph",
+    hi: "एक पारिवारिक चित्र",
   },
 };

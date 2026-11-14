@@ -58,14 +58,18 @@ export function FreeWorksPage({ works }: { works: Work[] }) {
                     tone={work.english.status === "published" ? "free" : "soon"}
                   />
                 </li>
-                <li className="flex justify-between border-b border-ivory/10 py-3">
-                  <span>{t("authorsVoice")}</span>
-                  <StatusBadge label={t("badgeFree")} />
-                </li>
-                <li className="flex justify-between border-b border-ivory/10 py-3">
-                  <span>{t("shortFilm")}</span>
-                  <StatusBadge label={t("badgeFree")} />
-                </li>
+                {work.audio.available ? (
+                  <li className="flex justify-between border-b border-ivory/10 py-3">
+                    <span>{t("authorsVoice")}</span>
+                    <StatusBadge label={t("badgeFree")} />
+                  </li>
+                ) : null}
+                {work.film.available ? (
+                  <li className="flex justify-between border-b border-ivory/10 py-3">
+                    <span>{t("shortFilm")}</span>
+                    <StatusBadge label={t("badgeFree")} />
+                  </li>
+                ) : null}
               </ul>
               <div className="mt-10 flex flex-col gap-4">
                 <CtaLink href={`/works/${work.slug}/read/hi`} cursor="read">
@@ -74,12 +78,16 @@ export function FreeWorksPage({ works }: { works: Work[] }) {
                 <CtaLink href={`/works/${work.slug}/read/en`} cursor="read">
                   {t("readEnglish")}
                 </CtaLink>
-                <CtaLink href={`/works/${work.slug}#listen`} cursor="listen">
-                  {t("listenWatch")}
-                </CtaLink>
-                <CtaLink href={`/works/${work.slug}#watch`} cursor="watch">
-                  {t("watchFilm")}
-                </CtaLink>
+                {work.audio.available ? (
+                  <CtaLink href={`/works/${work.slug}#listen`} cursor="listen">
+                    {t("listenWatch")}
+                  </CtaLink>
+                ) : null}
+                {work.film.available ? (
+                  <CtaLink href={`/works/${work.slug}#watch`} cursor="watch">
+                    {t("watchFilm")}
+                  </CtaLink>
+                ) : null}
               </div>
             </div>
           </article>

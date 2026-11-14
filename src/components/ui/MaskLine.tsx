@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { cn } from "@/lib/utils";
 import { easeCinematic } from "@/lib/motion";
 
@@ -15,7 +16,7 @@ export function MaskLine({
   delay?: number;
   play?: boolean;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
 
   return (
     <span className={cn("block overflow-hidden", className)}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { platform } from "@/data/site";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { CtaLink } from "@/components/ui/CtaLink";
@@ -9,7 +9,7 @@ import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export function TrailerRitual() {
   const { t } = useLanguage();
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
 

@@ -7,30 +7,23 @@ import { moneyLabel } from "@/lib/utils";
 
 export function WorkModes({ work }: { work: Work }) {
   const { t, loc, locale } = useLanguage();
+  const readLang = locale === "hi" ? "hi" : "en";
+  const readEdition = readLang === "hi" ? work.hindi : work.english;
+  const readHref = readEdition.fileKey
+    ? `/works/${work.slug}/read/${readLang}`
+    : `/works/${work.slug}#read`;
 
   const items = [
     {
       key: "read" as const,
-      href: `/works/${work.slug}#read`,
+      href: readHref,
       detail: `${loc(work.hindi.label)} · ${loc(work.english.label)}`,
       status: moneyLabel(work.hindi.price, locale),
-    },
-    {
-      key: "listen" as const,
-      href: `/works/${work.slug}#listen`,
-      detail: loc(work.audio.title),
-      status: moneyLabel(work.audio.price, locale),
-    },
-    {
-      key: "watch" as const,
-      href: `/works/${work.slug}#watch`,
-      detail: loc(work.film.duration),
-      status: moneyLabel(work.film.price, locale),
     },
   ];
 
   return (
-    <ul className="mt-10 grid gap-px bg-ivory/10 sm:grid-cols-3">
+    <ul className="mt-10 grid max-w-sm">
       {items.map((item) => (
         <li key={item.key} className="bg-ink">
           <Link

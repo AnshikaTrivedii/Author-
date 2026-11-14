@@ -1,14 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { reflectionQuestions } from "@/data/anugoonj";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { easeCinematic } from "@/lib/motion";
 
 export function ReflectQuestions() {
   const { t, loc } = useLanguage();
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const [index, setIndex] = useState(0);
   const question = reflectionQuestions[index] ?? reflectionQuestions[0];
 

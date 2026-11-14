@@ -47,6 +47,15 @@ export const publishingDefaults: Record<string, PublishingDefault> = {
     releaseDate: "2026-11-16",
     standaloneFilm: false,
   },
+  "work-04": {
+    series: "क्या आपकी कहानी अलग है",
+    volume: "1",
+    chapter: "1",
+    accessLevel: "sample",
+    contentLanguage: "Hindi · English",
+    releaseDate: "2026-11-16",
+    standaloneFilm: false,
+  },
   "work-03": {
     series: "Indian Legacies",
     volume: "",

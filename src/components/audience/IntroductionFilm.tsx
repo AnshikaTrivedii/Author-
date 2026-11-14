@@ -36,23 +36,24 @@ export function IntroductionFilm() {
 
   useEffect(() => {
     let active = true;
-    Promise.all([
-      fetch("/api/film").then((response) => response.json()),
-      fetch("/api/likes").then((response) => response.json()),
-    ])
-      .then(([filmData, likeData]: [FilmPayload, { count?: number; liked?: boolean }]) => {
-        if (!active) return;
-        setFilm(filmData);
+    fetch("/api/film")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((filmData: FilmPayload | null) => {
+        if (active && filmData?.video) setFilm(filmData);
+      })
+      .catch(() => undefined);
+    fetch("/api/likes")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((likeData: { count?: number; liked?: boolean } | null) => {
+        if (!active || !likeData) return;
         setLikeCount(typeof likeData.count === "number" ? likeData.count : 0);
         setLiked(Boolean(likeData.liked));
       })
-      .catch(() => {
-        if (active) setError(t("filmPlayFailed"));
-      });
+      .catch(() => undefined);
     return () => {
       active = false;
     };
-  }, [t]);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = playing ? "hidden" : "";
@@ -162,8 +163,7 @@ export function IntroductionFilm() {
     }
   }
 
-  const poster = film?.poster ?? "/images/stills/grandmother.jpg";
-  const video = film?.video ?? null;
+  const video = film?.video || platform.heroVideo;
   const subtitles = film?.subtitlesEn ?? null;
   const silent = Boolean(video) && !playing && !reduceMotion;
   const mediaSrc = (value: string) => (value.startsWith("https://") ? value : encodeURI(value));
@@ -192,40 +192,39 @@ export function IntroductionFilm() {
   }
 
   return (
-    <section id="introduction" className="relative isolate min-h-[100svh] overflow-hidden bg-ink">
-      {video && (silent || playing) ? (
-        <video
-          ref={videoRef}
-          className={cn(
-            "bg-ink object-cover",
-            playing
-              ? "fixed inset-0 z-[80] h-full w-full object-cover"
-              : "absolute inset-x-0 top-0 h-[132%] w-full object-cover object-[center_18%]",
-          )}
-          controls={playing}
-          playsInline
-          autoPlay
-          muted={!playing}
-          loop={!playing}
-          preload="auto"
-          poster={poster}
-          aria-hidden={playing ? undefined : true}
-          onError={() => {
-            if (playing) setError(t("filmPlayFailed"));
-          }}
-        >
-          <source src={mediaSrc(video)} type="video/mp4" />
-          {playing && subtitles ? (
-            <track kind="subtitles" srcLang="en" label="English" src={encodeURI(subtitles)} />
-          ) : null}
-        </video>
-      ) : (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={poster} alt="" className="absolute inset-0 h-full w-full object-cover object-[center_30%]" />
-      )}
-      {!playing ? (
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/45 sm:bg-gradient-to-r sm:from-ink sm:via-ink/75 sm:to-ink/20" />
-      ) : (
+    <section id="introduction" className="relative min-h-[100svh] bg-ink">
+      <div className={cn("absolute inset-x-0 top-0 h-[100svh] overflow-hidden", playing ? "pointer-events-none" : undefined)}>
+        {video && (silent || playing) ? (
+          <video
+            ref={videoRef}
+            className={cn(
+              "bg-ink object-cover",
+              playing
+                ? "pointer-events-auto fixed inset-0 z-[80] h-full w-full"
+                : "absolute inset-x-0 top-0 h-[124%] w-full object-[center_28%] sm:h-[132%] sm:object-[center_18%]",
+            )}
+            controls={playing}
+            playsInline
+            autoPlay
+            muted={!playing}
+            loop={!playing}
+            preload="auto"
+            aria-hidden={playing ? undefined : true}
+            onError={() => {
+              if (playing) setError(t("filmPlayFailed"));
+            }}
+          >
+            <source src={mediaSrc(video)} type="video/mp4" />
+            {playing && subtitles ? (
+              <track kind="subtitles" srcLang="en" label="English" src={encodeURI(subtitles)} />
+            ) : null}
+          </video>
+        ) : null}
+        {!playing ? (
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink via-ink/80 to-ink/45 sm:bg-gradient-to-r sm:from-ink sm:via-ink/75 sm:to-ink/20" />
+        ) : null}
+      </div>
+      {playing ? (
         <button
           type="button"
           onClick={closeFilm}
@@ -234,19 +233,19 @@ export function IntroductionFilm() {
         >
           <X aria-hidden="true" className="size-5" strokeWidth={1.25} />
         </button>
-      )}
+      ) : null}
 
-      <div className={cn("relative z-10 mx-auto flex min-h-[100svh] max-w-[1680px] items-center px-5 pt-36 pb-16 sm:px-8 md:px-12 md:pt-40", playing && "invisible")}>
+      <div className={cn("relative z-10 mx-auto flex min-h-[100svh] max-w-[1680px] items-end px-5 pt-28 pb-8 sm:items-center sm:px-8 sm:pt-36 sm:pb-16 md:px-12 md:pt-40", playing && "invisible")}>
         <Reveal className="max-w-xl">
           <p className="label-meta text-gilt">{t("filmEyebrow")}</p>
-          <h1 className="mt-5 font-serif text-[clamp(3.2rem,6vw,5.6rem)] leading-[0.92] tracking-[-0.035em] text-balance">
+          <h1 className="mt-4 font-serif text-[clamp(2.35rem,11vw,5.6rem)] leading-[0.92] tracking-[-0.035em] text-balance sm:mt-5">
             {lines.map((line) => (
               <span key={line} className="block">
                 {line}
               </span>
             ))}
           </h1>
-          <p className="mt-6 max-w-md font-serif text-2xl leading-snug text-ivory/85 italic">
+          <p className="mt-4 max-w-md font-serif text-xl leading-snug text-ivory/85 italic sm:mt-6 sm:text-2xl">
             {loc(bookOne.tagline)}
           </p>
           <p className="label-meta mt-5 text-ivory/70">{loc(bookOne.positioning)}</p>
@@ -254,12 +253,12 @@ export function IntroductionFilm() {
             {loc(bookOne.author)}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 sm:mt-10 sm:gap-x-8 sm:gap-y-4">
             <button
               type="button"
               disabled={!video}
               onClick={openWithAudio}
-              className="label-meta inline-flex min-h-12 items-center border border-ivory/70 bg-ink/55 px-8 py-4 text-ivory backdrop-blur-[2px] transition-colors duration-500 hover:border-gilt hover:text-gilt disabled:cursor-not-allowed disabled:opacity-60"
+              className="label-meta inline-flex min-h-12 items-center border border-ivory/70 bg-ink/55 px-6 py-3 text-ivory backdrop-blur-[2px] transition-colors duration-500 hover:border-gilt hover:text-gilt disabled:cursor-not-allowed disabled:opacity-60 sm:px-8 sm:py-4"
             >
               {t("playFilm")}
             </button>
@@ -269,7 +268,7 @@ export function IntroductionFilm() {
                 document.getElementById("join")?.scrollIntoView({ behavior: "smooth" });
                 window.dispatchEvent(new Event("loi-join"));
               }}
-              className="label-meta inline-flex min-h-12 items-center border border-gilt bg-gilt px-8 py-4 text-ink transition-colors duration-500 hover:bg-transparent hover:text-ivory"
+              className="label-meta inline-flex min-h-12 max-w-full items-center border border-gilt bg-gilt px-5 py-3 text-center text-ink transition-colors duration-500 hover:bg-transparent hover:text-ivory sm:px-8 sm:py-4"
             >
               {t("joinCta")}
             </button>

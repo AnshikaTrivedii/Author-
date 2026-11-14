@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/locale";
 
 export function Waveform({ active = false }: { active?: boolean }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const bars = Array.from({ length: 28 });
 
   return (

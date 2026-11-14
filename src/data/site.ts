@@ -41,11 +41,6 @@ export const platform: Platform = {
 };
 
 export const navItems: NavItem[] = [
-  {
-    label: { en: "The Book", hi: "पुस्तक" },
-    href: "/works/smritiyon-ki-anugoonj",
-    emphasis: true,
-  },
   { label: { en: "Works", hi: "कृतियाँ" }, href: "/works" },
   { label: { en: "Listen", hi: "सुनें" }, href: "/audio-video" },
   { label: { en: "Films", hi: "फिल्में" }, href: "/films" },
@@ -116,4 +111,19 @@ export const footerLegal: NavItem[] = [
   },
   { label: { en: "Disclaimer", hi: "अस्वीकरण" }, href: "/disclaimer" },
   { label: { en: "AI Disclosure", hi: "एआई प्रकटीकरण" }, href: "/ai-disclosure" },
+];
+
+export const footerSocial: NavItem[] = [
+  {
+    label: { en: "Instagram", hi: "Instagram" },
+    href: "https://www.instagram.com/indian.legacies/",
+  },
+  {
+    label: { en: "Facebook", hi: "Facebook" },
+    href: "https://www.facebook.com/indian.legacies",
+  },
+  {
+    label: { en: "YouTube", hi: "YouTube" },
+    href: "https://www.youtube.com/@YOURLEGACY007",
+  },
 ];

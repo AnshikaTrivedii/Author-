@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { easeCinematic } from "@/lib/motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 
 type PlaceholderMediaProps = {
   src: string;
@@ -32,7 +33,7 @@ export function PlaceholderMedia({
   priority,
   kenBurns = false,
 }: PlaceholderMediaProps) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const zoom = kenBurns && !reduce;
 
   const image = fill ? (

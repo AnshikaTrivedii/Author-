@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { platform } from "@/data/site";
 import { platformJsonLd } from "@/lib/seo";
 import {
@@ -78,13 +79,13 @@ export default function RootLayout({
       className={`${cormorant.variable} ${manrope.variable} ${notoSerifDeva.variable} ${notoSansDeva.variable} h-full bg-ink antialiased`}
     >
       <body className="min-h-full bg-ink font-sans text-ivory">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{if(localStorage.getItem('loi-locale')==='hi')document.documentElement.lang='hi'}catch(e){}`,
-          }}
-        />
-        <script
+        <Script id="loi-locale" strategy="beforeInteractive">
+          {`try{if(localStorage.getItem('loi-locale')==='hi')document.documentElement.lang='hi'}catch(e){}`}
+        </Script>
+        <Script
+          id="platform-jsonld"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(platformJsonLd) }}
         />
         <LanguageProvider>

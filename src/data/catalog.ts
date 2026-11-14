@@ -8,7 +8,7 @@ import type {
   WorkCredits,
 } from "./types";
 import { copyToBeProvided, platform, pricePlaceholder } from "./site";
-import { bookOne, questionsBook } from "./anugoonj";
+import { bookOne, differentStory, questionsBook } from "./anugoonj";
 
 const pendingTax = {
   rate: null as number | null,
@@ -30,6 +30,17 @@ const freeMoney: Money = {
 
 const creditPending: Copy = copyToBeProvided;
 
+function publishedEdition(language: "hi" | "en", file: string): Edition {
+  const label =
+    language === "hi"
+      ? { en: "Hindi Edition", hi: "हिन्दी संस्करण" }
+      : { en: "English Edition", hi: "अंग्रेज़ी संस्करण" };
+  return {
+    ...edition(language, label, "free"),
+    status: "published",
+    fileKey: `https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/${file}`,
+  };
+}
 function edition(
   language: "hi" | "en",
   label: Copy,
@@ -39,7 +50,7 @@ function edition(
     language,
     label,
     version: "1.0",
-    publishedAt: { en: "[PUBLICATION DATE]", hi: "[प्रकाशन तिथि]" },
+    publishedAt: { en: "16 November 2026", hi: "16 नवम्बर 2026" },
     status: "published",
     accessType: "ONLINE",
     fileKey: null,
@@ -109,7 +120,7 @@ function freeWork(
     kind: "story",
     status: "published",
     pricingModel: "free",
-    publishedAt: { en: "[PUBLICATION DATE]", hi: "[प्रकाशन तिथि]" },
+    publishedAt: { en: "16 November 2026", hi: "16 नवम्बर 2026" },
     version: "1.0",
     image,
     imageAlt,
@@ -168,18 +179,8 @@ export const catalogWorks: Work[] = [
     description: bookOne.proposition,
     about: bookOne.about,
     image: bookOne.image,
-    hindi: {
-      ...edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "free"),
-      status: "published",
-    },
-    english: {
-      ...edition(
-        "en",
-        { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
-        "free",
-      ),
-      status: "forthcoming",
-    },
+    hindi: publishedEdition("hi", "Smritiyon_Ki_Anugoonj_Hindi.pdf"),
+    english: publishedEdition("en", "Echoes_of_Memories_English.pdf"),
     audio: voiceover(
       "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%B8%E0%A5%8D%E0%A4%AE%E0%A5%83%E0%A4%A4%E0%A4%BF%E0%A4%AF%E0%A5%8B%E0%A4%82+%E0%A4%95%E0%A5%80+%E0%A4%85%E0%A4%A8%E0%A5%81%E0%A4%97%E0%A5%82%E0%A4%81%E0%A4%9C+Hindi+Voiceover+.mp3",
       "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%B8%E0%A5%8D%E0%A4%AE%E0%A5%83%E0%A4%A4%E0%A4%BF%E0%A4%AF%E0%A5%8B%E0%A4%82+%E0%A4%95%E0%A5%80+%E0%A4%85%E0%A4%A8%E0%A5%81%E0%A4%97%E0%A5%82%E0%A4%81%E0%A4%9C++English+Voiceover.mp3",
@@ -196,7 +197,7 @@ export const catalogWorks: Work[] = [
     },
     whatYouReceive: [
       { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
-      { en: "English Edition — Forthcoming", hi: "अंग्रेज़ी संस्करण — शीघ्र आ रही" },
+      { en: "English Edition — FREE", hi: "अंग्रेज़ी संस्करण — निःशुल्क" },
       { en: "Author's Voice — FREE", hi: "लेखक की आवाज़ — निःशुल्क" },
       { en: "Short Film — FREE", hi: "लघु फिल्म — निःशुल्क" },
     ],
@@ -208,18 +209,8 @@ export const catalogWorks: Work[] = [
     subtitle: questionsBook.subtitle,
     description: questionsBook.subtitle,
     about: questionsBook.about,
-    hindi: {
-      ...edition("hi", { en: "Hindi Edition", hi: "हिन्दी संस्करण" }, "free"),
-      status: "published",
-    },
-    english: {
-      ...edition(
-        "en",
-        { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
-        "free",
-      ),
-      status: "forthcoming",
-    },
+    hindi: publishedEdition("hi", "Ek_Sawal_Apne_Aap_Se_Hindi.pdf"),
+    english: publishedEdition("en", "A_Question_for_Myself_English.pdf"),
     audio: voiceover(
       "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%8F%E0%A4%95+%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2+%E0%A4%85%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%86%E0%A4%AA+%E0%A4%B8%E0%A5%87+hindi+Voiceover+(2).mp3",
       "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%8F%E0%A4%95+%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2+%E0%A4%85%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%86%E0%A4%AA+%E0%A4%B8%E0%A5%87+English+Voiceover.mp3",
@@ -232,13 +223,60 @@ export const catalogWorks: Work[] = [
     },
     whatYouReceive: [
       { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
-      { en: "English Edition — Forthcoming", hi: "अंग्रेज़ी संस्करण — शीघ्र आ रही" },
+      { en: "English Edition — FREE", hi: "अंग्रेज़ी संस्करण — निःशुल्क" },
       { en: "Author's Voice — FREE", hi: "लेखक की आवाज़ — निःशुल्क" },
       { en: "Short Film — FREE", hi: "लघु फिल्म — निःशुल्क" },
     ],
   },
   {
-    ...freeWork("work-03", "03", "/images/stills/heritage-books.jpg", {
+    ...freeWork("work-04", "03", differentStory.image, differentStory.imageAlt),
+    slug: differentStory.slug,
+    title: differentStory.title,
+    subtitle: differentStory.subtitle,
+    description: differentStory.subtitle,
+    about: differentStory.about,
+    hindi: publishedEdition("hi", "Kya_Aapki_Kahani_Alag_Hai_Hindi.pdf"),
+    english: publishedEdition("en", "Is_Your_Story_Different_English.pdf"),
+    audio: {
+      available: false,
+      title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
+      accessType: "ONLINE",
+      src: null,
+      poster: differentStory.image,
+      duration: { en: "Forthcoming", hi: "आगामी" },
+      price: freeMoney,
+    },
+    film: {
+      ...film("free"),
+      available: false,
+      title: differentStory.title,
+      duration: { en: "Forthcoming", hi: "आगामी" },
+      poster: differentStory.image,
+    },
+    credits: {
+      ...pendingCredits,
+      writtenBy: bookOne.author,
+      narratedBy: bookOne.author,
+    },
+    whatYouReceive: [
+      { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
+      { en: "English Edition — FREE", hi: "अंग्रेज़ी संस्करण — निःशुल्क" },
+    ],
+    offers: [
+      {
+        id: "complete-free",
+        label: { en: "Complete Digital Access", hi: "पूर्ण डिजिटल पहुँच" },
+        includes: [
+          { en: "Hindi Edition", hi: "हिन्दी संस्करण" },
+          { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+        ],
+        price: freeMoney,
+        accessType: "ONLINE",
+      },
+    ],
+  },
+  {
+    ...freeWork("work-03", "04", "/images/stills/heritage-books.jpg", {
       en: "Heritage books and a camera on stone",
       hi: "पत्थर पर विरासत की पुस्तकें और कैमरा",
     }),

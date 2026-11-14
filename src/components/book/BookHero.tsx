@@ -3,13 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { readReaderResume } from "@/lib/reading";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { platform } from "@/data/site";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { bookOne } from "@/data/anugoonj";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { FilmFrame } from "@/components/ui/FilmFrame";
@@ -18,7 +14,7 @@ import { fadeUp, staggerChildren } from "@/lib/motion";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export function BookHero() {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const { t, loc, locale } = useLanguage();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({

@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 
 import { useLanguage } from "@/components/layout/LanguageProvider";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 
 type CursorMode = "default" | "view" | "explore" | "read" | "listen" | "watch";
 
@@ -19,7 +20,7 @@ function getPointerSnapshot() {
 
 export function CustomCursor() {
   const { t } = useLanguage();
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const canHover = useSyncExternalStore(
     subscribePointer,
     getPointerSnapshot,

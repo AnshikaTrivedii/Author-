@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { useReducedMotion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { Reveal } from "@/components/ui/Reveal";
 import { useLanguage } from "@/components/layout/LanguageProvider";
@@ -31,7 +31,7 @@ const modes = [
 
 export function ModeExperience() {
   const { t } = useLanguage();
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const [active, setActive] = useState<(typeof modes)[number]["key"]>("read");
   const current = modes.find((mode) => mode.key === active) ?? modes[0];
 

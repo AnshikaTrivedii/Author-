@@ -7,7 +7,6 @@ import { StatusBadge } from "@/components/platform/StatusBadge";
 import { WorkModes } from "@/components/platform/WorkModes";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import type { Work } from "@/data/types";
-import { accessLabel } from "@/lib/commerce";
 import { moneyLabel } from "@/lib/utils";
 
 export function WorksLibrary({ works }: { works: Work[] }) {
@@ -73,14 +72,6 @@ export function WorksLibrary({ works }: { works: Work[] }) {
                   <div>
                     <dt className="label-meta">{t("price")}</dt>
                     <dd className="mt-1">{moneyLabel(work.offers[0].price, locale)}</dd>
-                  </div>
-                  <div>
-                    <dt className="label-meta">{t("listen")}</dt>
-                    <dd className="mt-1">{loc(accessLabel(work.audio.accessType))}</dd>
-                  </div>
-                  <div>
-                    <dt className="label-meta">{t("watch")}</dt>
-                    <dd className="mt-1">{loc(accessLabel(work.film.accessType))}</dd>
                   </div>
                   <div>
                     <dt className="label-meta">{t("published")}</dt>

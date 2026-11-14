@@ -1,10 +1,11 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { easeCinematic, easeCurtain } from "@/lib/motion";
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
 
   if (reduce) {
     return <>{children}</>;

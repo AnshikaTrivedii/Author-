@@ -1,22 +1,18 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { platform } from "@/data/site";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { TitleReveal } from "@/components/ui/TitleReveal";
 import { FilmFrame } from "@/components/ui/FilmFrame";
 import { CtaLink } from "@/components/ui/CtaLink";
 import { fadeUp, staggerChildren } from "@/lib/motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 
 export function Hero() {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const { t, lines } = useLanguage();
   const titleLines = lines(platform.titleLines);
   const tagline = lines(platform.tagline);

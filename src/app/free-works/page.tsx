@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata = pageMetadata(
   "Free works",
-  "The first two presentations of Echoes of Memories, available to read, listen to, and watch.",
+  "Free stories from Echoes of Memories.",
   "/free-works",
 );
 

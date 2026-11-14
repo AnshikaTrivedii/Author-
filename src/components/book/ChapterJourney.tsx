@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
+import { useHydratedReducedMotion } from "@/lib/reduced-motion";
 import { PlaceholderMedia } from "@/components/ui/PlaceholderMedia";
 import { chapters } from "@/data/anugoonj";
 import { useLanguage } from "@/components/layout/LanguageProvider";
@@ -10,7 +11,7 @@ import { easeCinematic } from "@/lib/motion";
 
 export function ChapterJourney() {
   const { t, loc } = useLanguage();
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const [active, setActive] = useState(0);
   const current = chapters[active] ?? chapters[0];
 
