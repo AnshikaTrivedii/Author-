@@ -63,7 +63,7 @@ export function AmbientSound() {
       onClick={() => void toggle()}
       aria-pressed={on}
       className={cn(
-        "fixed right-4 bottom-4 z-50 label-meta min-h-11 border px-4 py-2 backdrop-blur-md transition-colors sm:right-8 sm:bottom-8",
+        "fixed right-8 bottom-8 z-50 hidden min-h-11 border px-4 py-2 backdrop-blur-md transition-colors sm:inline-flex sm:items-center",
         on
           ? "border-gilt bg-ink/80 text-gilt"
           : "border-ivory/20 bg-ink/70 text-muted hover:text-ivory",

@@ -58,9 +58,12 @@ export function BookHero() {
           animate="show"
           className="max-w-4xl"
         >
-          <h1 className="max-w-[14ch] font-serif text-[clamp(2.6rem,7.4vw,6.1rem)] leading-[1.12] tracking-[-0.03em] text-balance">
+          <h1
+            aria-label={loc(bookOne.title)}
+            className="flex max-w-[14ch] flex-col gap-[0.08em] font-serif text-[clamp(2.6rem,7.4vw,6.1rem)] leading-[1.12] tracking-[-0.03em] text-balance"
+          >
             {bookOne.titleLines[locale === "hi" ? "hi" : "en"].map((line) => (
-              <span key={line} className="block">
+              <span key={line} aria-hidden="true" className="block">
                 {line}
               </span>
             ))}

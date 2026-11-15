@@ -29,7 +29,7 @@ export function WorkDetail({ work }: { work: Work }) {
         <p className="label-meta text-gilt">
           {t("workLabel")} {work.number}
         </p>
-        <h1 className="mt-6 max-w-5xl font-serif text-5xl leading-[1.12] tracking-[-0.03em] sm:text-7xl lg:text-8xl">
+        <h1 className="mt-6 max-w-5xl break-words font-serif text-5xl leading-[1.12] tracking-[-0.03em] sm:text-7xl lg:text-8xl">
           {loc(work.title)}
         </h1>
         <p className="mt-6 font-serif text-2xl italic text-muted">

@@ -15,7 +15,7 @@ export function ContactPage() {
         kicker={t("contactBody")}
       />
       <div className="mx-auto max-w-[1680px] px-5 sm:px-8 lg:px-12">
-        <p className="font-serif text-4xl sm:text-6xl">{platform.contactEmail}</p>
+        <p className="break-all font-serif text-3xl sm:text-6xl">{platform.contactEmail}</p>
         <p className="mt-10 max-w-md text-sm text-muted">{t("futureAddresses")}</p>
       </div>
     </main>

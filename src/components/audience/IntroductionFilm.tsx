@@ -238,9 +238,12 @@ export function IntroductionFilm() {
       <div className={cn("relative z-10 mx-auto flex min-h-[100svh] max-w-[1680px] items-end px-5 pt-28 pb-8 sm:items-center sm:px-8 sm:pt-36 sm:pb-16 md:px-12 md:pt-40", playing && "invisible")}>
         <Reveal className="max-w-xl">
           <p className="label-meta text-gilt">{t("filmEyebrow")}</p>
-          <h1 className="mt-4 font-serif text-[clamp(2.35rem,11vw,5.6rem)] leading-[0.92] tracking-[-0.035em] text-balance sm:mt-5">
+          <h1
+            aria-label={loc(bookOne.title)}
+            className="mt-4 flex flex-col gap-[0.08em] font-serif text-[clamp(2.35rem,11vw,5.6rem)] leading-[0.92] tracking-[-0.035em] text-balance sm:mt-5"
+          >
             {lines.map((line) => (
-              <span key={line} className="block">
+              <span key={line} aria-hidden="true" className="block">
                 {line}
               </span>
             ))}

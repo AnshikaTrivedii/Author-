@@ -16,7 +16,7 @@ export function PageIntro({
       <Reveal>
         <div className="mx-auto max-w-[1680px]">
           <p className="label-meta text-gilt">{eyebrow}</p>
-          <h1 className="mt-6 max-w-5xl font-serif text-6xl leading-[0.86] tracking-[-0.03em] sm:text-8xl lg:text-[7.5rem]">
+          <h1 className="mt-6 max-w-5xl break-words font-serif text-5xl leading-[0.92] tracking-[-0.03em] sm:text-8xl sm:leading-[0.86] lg:text-[7.5rem]">
             {title}
           </h1>
           {kicker ? (

@@ -94,7 +94,6 @@ export const footerGroups: FooterGroup[] = [
   {
     title: { en: "About", hi: "परिचय" },
     items: [
-      { label: { en: "About", hi: "परिचय" }, href: "/about" },
       { label: { en: "Author's desk", hi: "लेखक की मेज़" }, href: "/desk" },
       { label: { en: "Contact", hi: "संपर्क" }, href: "/contact" },
     ],
