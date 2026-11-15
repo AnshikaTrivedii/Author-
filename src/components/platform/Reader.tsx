@@ -18,9 +18,13 @@ export function Reader({
   edition: Edition;
   allowed: boolean;
 }) {
-  const { t, loc } = useLanguage();
+  const { t, loc, locale, setLocale } = useLanguage();
   const isAnugoonj = work.slug === bookOne.slug;
   const isQuestions = work.slug === questionsBook.slug;
+
+  useEffect(() => {
+    if (locale !== edition.language) setLocale(edition.language);
+  }, [edition.language, locale, setLocale]);
 
   useEffect(() => {
     if (!allowed) return;
@@ -75,6 +79,7 @@ export function Reader({
             </a>
             {/* Phone browsers will not render a PDF inside an iframe, so the button above is the reader there. */}
             <iframe
+              key={pdf}
               title={`${loc(work.title)} — ${loc(edition.label)}`}
               src={pdf}
               className="mt-10 hidden h-[82svh] w-full bg-ivory md:block"

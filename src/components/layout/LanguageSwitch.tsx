@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { cn } from "@/lib/utils";
 import type { Locale } from "@/lib/locale";
@@ -11,6 +12,17 @@ const options: Array<{ id: Locale; label: string }> = [
 
 export function LanguageSwitch({ className }: { className?: string }) {
   const { locale, setLocale, t } = useLanguage();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  function choose(next: Locale) {
+    const reader = pathname.match(/^\/works\/([^/]+)\/read\/(hi|en)\/?$/);
+    if (reader) {
+      if (reader[2] !== next) router.push(`/works/${reader[1]}/read/${next}`);
+      return;
+    }
+    setLocale(next);
+  }
 
   return (
     <div
@@ -27,7 +39,7 @@ export function LanguageSwitch({ className }: { className?: string }) {
           ) : null}
           <button
             type="button"
-            onClick={() => setLocale(option.id)}
+            onClick={() => choose(option.id)}
             aria-pressed={locale === option.id}
             className={cn(
               "label-meta transition-colors duration-300",
