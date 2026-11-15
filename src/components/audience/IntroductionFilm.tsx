@@ -198,10 +198,10 @@ export function IntroductionFilm() {
           <video
             ref={videoRef}
             className={cn(
-              "bg-ink object-cover",
+              "bg-ink",
               playing
-                ? "pointer-events-auto fixed inset-0 z-[80] h-full w-full"
-                : "absolute inset-x-0 top-0 h-[124%] w-full object-[center_28%] sm:h-[132%] sm:object-[center_18%]",
+                ? "pointer-events-auto fixed inset-0 z-[80] h-[100dvh] w-[100dvw] object-contain"
+                : "absolute inset-x-0 top-0 h-[124%] w-full object-cover object-[center_28%] sm:h-[132%] sm:object-[center_18%]",
             )}
             controls={playing}
             playsInline

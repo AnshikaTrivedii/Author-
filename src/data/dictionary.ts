@@ -502,9 +502,9 @@ export const ui = {
   likedIntroduction: { en: "Liked", hi: "पसंद किया" },
   likeFailed: { en: "The like could not be saved.", hi: "पसंद सहेजी नहीं जा सकी।" },
 
-  launchTicker: { en: "Launching 16 November 2026", hi: "प्रक्षेपण 16 नवम्बर 2026" },
+  launchTicker: { en: "Launching 16 November 2026, 7 PM", hi: "प्रक्षेपण 16 नवम्बर 2026, शाम 7 बजे" },
   launchTickerLabel: { en: "Launching", hi: "प्रक्षेपण" },
-  launchTickerDate: { en: "16 November 2026", hi: "16 नवम्बर 2026" },
+  launchTickerDate: { en: "16 November 2026, 7 PM", hi: "16 नवम्बर 2026, शाम 7 बजे" },
   joinEyebrow: { en: "Launch", hi: "प्रक्षेपण" },
   joinHeading: { en: "Be Part of the Journey", hi: "यात्रा का हिस्सा बनें" },
   joinBody: {
