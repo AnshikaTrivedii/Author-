@@ -65,10 +65,19 @@ export function Reader({
           </div>
         ) : pdf ? (
           <div className="mt-16 border-t border-ivory/10 pt-16">
+            <a
+              href={pdf}
+              target="_blank"
+              rel="noreferrer"
+              className="label-meta inline-flex min-h-12 items-center justify-center border border-gilt bg-gilt px-8 py-4 text-ink transition-colors duration-500 hover:bg-transparent hover:text-ivory"
+            >
+              {t("openBook")}
+            </a>
+            {/* Phone browsers will not render a PDF inside an iframe, so the button above is the reader there. */}
             <iframe
               title={`${loc(work.title)} — ${loc(edition.label)}`}
               src={pdf}
-              className="h-[82svh] w-full bg-ivory"
+              className="mt-10 hidden h-[82svh] w-full bg-ivory md:block"
             />
             <div className="mt-10">
               <CtaLink href={`/works/${work.slug}`} cursor="explore">

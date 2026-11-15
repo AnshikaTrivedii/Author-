@@ -5,6 +5,7 @@ export const ui = {
   menu: { en: "Menu", hi: "मेनू" },
   close: { en: "Close", hi: "बंद करें" },
   language: { en: "Language", hi: "भाषा" },
+  themeLabel: { en: "Theme", hi: "रंग-रूप" },
   cursorRead: { en: "Read", hi: "पढ़ें" },
   cursorListen: { en: "Listen", hi: "सुनें" },
   cursorWatch: { en: "Watch", hi: "देखें" },
@@ -44,6 +45,7 @@ export const ui = {
   filmTitlePending: { en: "[FILM TITLE]", hi: "[फिल्म का शीर्षक]" },
   readHindi: { en: "Read Hindi", hi: "हिन्दी पढ़ें" },
   readEnglish: { en: "Read English", hi: "अंग्रेज़ी पढ़ें" },
+  openBook: { en: "Open the book", hi: "पुस्तक खोलें" },
   listenWatch: { en: "Listen / Watch", hi: "सुनें / देखें" },
   watchFilm: { en: "Watch film", hi: "फिल्म देखें" },
   buyNow: { en: "Buy now", hi: "अभी खरीदें" },
@@ -440,17 +442,6 @@ export const ui = {
     hi: "सशुल्क कृति लेखन, स्वर रिकॉर्डिंग और फिल्म शिल्प के समय का समर्थन करती है — ताकि निःशुल्क द्वार खुले रह सकें।",
   },
 
-  headingContact: { en: "Contact", hi: "संपर्क" },
-  contactBody: {
-    en: "Write when you wish to reach the platform.",
-    hi: "मंच से संपर्क के लिए लिखें।",
-  },
-  officialEmail: { en: "Official email", hi: "आधिकारिक ईमेल" },
-  futureAddresses: {
-    en: "Future architecture may support support, copyright and privacy addresses at the same domain.",
-    hi: "भविष्य में उसी डोमेन पर सहायता, कॉपीराइट और गोपनीयता पते जोड़े जा सकते हैं।",
-  },
-
   legalDraft: {
     en: "DRAFT — SUBJECT TO LEGAL REVIEW",
     hi: "मसौदा — कानूनी समीक्षा के अधीन",
@@ -512,6 +503,16 @@ export const ui = {
     hi: "जब स्मृतियों की अनुगूँज पर नई कथाएँ, फिल्में और श्रव्य अनुभव उपलब्ध हों, तब सूचना पाने के लिए जुड़ें।",
   },
   joinCta: { en: "Get the Launch Notification", hi: "प्रक्षेपण सूचना पाएँ" },
+  visionHeading: { en: "Our Vision", hi: "हमारा दृष्टिकोण" },
+  visionBody: {
+    en: "To preserve the stories and memories of Indian life for generations to come.",
+    hi: "आने वाली पीढ़ियों के लिए भारतीय जीवन की कथाओं और स्मृतियों को सहेजना।",
+  },
+  missionHeading: { en: "Our Mission", hi: "हमारा उद्देश्य" },
+  missionBody: {
+    en: "To share honest accounts of life through books, audiobooks, podcasts and films in Hindi and English, inviting everyone to see their own story in a new light.",
+    hi: "हिन्दी और अंग्रेज़ी में पुस्तकों, ऑडियोबुक्स, पॉडकास्ट और फिल्मों के माध्यम से जीवन के ईमानदार वृत्तांत साझा करना, और हर किसी को अपनी कहानी एक नई रोशनी में देखने के लिए आमंत्रित करना।",
+  },
   fullName: { en: "Full name", hi: "पूरा नाम" },
   age: { en: "Age", hi: "आयु" },
   gender: { en: "Gender", hi: "लिंग" },

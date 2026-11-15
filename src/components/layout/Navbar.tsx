@@ -8,6 +8,7 @@ import { navItems, navMoreItems, platform } from "@/data/site";
 import { AccountLink } from "@/components/layout/AccountLink";
 import { LanguageSwitch } from "@/components/layout/LanguageSwitch";
 import { LaunchTicker } from "@/components/layout/LaunchTicker";
+import { ThemeSwitch } from "@/components/layout/ThemeSwitch";
 import { useLanguage } from "@/components/layout/LanguageProvider";
 import { cn } from "@/lib/utils";
 import { easeCinematic } from "@/lib/motion";
@@ -160,11 +161,15 @@ export function Navbar() {
           <li>
             <LanguageSwitch />
           </li>
+          <li>
+            <ThemeSwitch />
+          </li>
         </ul>
 
         <div className="flex items-center gap-5">
           <AccountLink className="label-meta hidden whitespace-nowrap !text-ivory transition-colors hover:!text-gilt sm:inline" />
           <LanguageSwitch className="lg:hidden" />
+          <ThemeSwitch className="lg:hidden" />
           <button
             type="button"
             className="label-meta text-ivory lg:hidden"

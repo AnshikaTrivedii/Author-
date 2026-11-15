@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { platform } from "@/data/site";
 import { platformJsonLd } from "@/lib/seo";
+import { themeBootScript } from "@/lib/theme";
 import {
   cormorant,
   manrope,
@@ -75,12 +76,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${cormorant.variable} ${manrope.variable} ${notoSerifDeva.variable} ${notoSansDeva.variable} h-full bg-ink antialiased`}
     >
       <body className="min-h-full bg-ink font-sans text-ivory">
         <Script id="loi-locale" strategy="beforeInteractive">
           {`try{if(localStorage.getItem('loi-locale')==='hi')document.documentElement.lang='hi'}catch(e){}`}
+        </Script>
+        <Script id="loi-theme" strategy="beforeInteractive">
+          {themeBootScript}
         </Script>
         <Script
           id="platform-jsonld"

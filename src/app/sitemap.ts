@@ -9,7 +9,6 @@ const routes = [
   "/audio-video",
   "/films",
   "/about",
-  "/contact",
   "/gift",
   "/reading-circles",
   "/letters",

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { footerGroups, footerLegal, footerSocial, platform } from "@/data/site";
 import { useLanguage } from "@/components/layout/LanguageProvider";
-
 function InstagramIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth="1.6">

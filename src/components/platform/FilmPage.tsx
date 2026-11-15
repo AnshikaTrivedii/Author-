@@ -59,11 +59,6 @@ export function FilmPage({ work }: { work: Work }) {
             {[
               [t("writtenBy"), loc(work.credits.writtenBy)],
               [t("narratedBy"), loc(work.credits.narratedBy)],
-              [t("filmConcept"), loc(work.credits.filmConcept)],
-              [t("direction"), loc(work.credits.direction)],
-              [t("editing"), loc(work.credits.editing)],
-              [t("music"), loc(work.credits.music)],
-              [t("aiProduction"), loc(work.credits.aiProduction)],
             ].map(([label, value]) => (
               <div key={label} className="border-t border-ivory/10 pt-4">
                 <dt className="label-meta text-muted">{label}</dt>

@@ -179,12 +179,6 @@ export function WorkDetail({ work }: { work: Work }) {
           {[
             [t("writtenBy"), loc(work.credits.writtenBy)],
             [t("narratedBy"), loc(work.credits.narratedBy)],
-            [t("filmConcept"), loc(work.credits.filmConcept)],
-            [t("direction"), loc(work.credits.direction)],
-            [t("editing"), loc(work.credits.editing)],
-            [t("aiProduction"), loc(work.credits.aiProduction)],
-            [t("music"), loc(work.credits.music)],
-            [t("otherContributors"), loc(work.credits.other)],
           ].map(([label, value]) => (
             <div key={label} className="border-t border-ivory/10 pt-4">
               <dt className="label-meta text-muted">{label}</dt>

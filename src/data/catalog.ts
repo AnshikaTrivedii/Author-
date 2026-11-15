@@ -188,6 +188,7 @@ export const catalogWorks: Work[] = [
     ),
     film: {
       ...film("free"),
+      title: bookOne.title,
       poster: "/images/stills/family-photo.jpg",
     },
     credits: {
@@ -216,6 +217,10 @@ export const catalogWorks: Work[] = [
       "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/%E0%A4%8F%E0%A4%95+%E0%A4%B8%E0%A4%B5%E0%A4%BE%E0%A4%B2+%E0%A4%85%E0%A4%AA%E0%A4%A8%E0%A5%87+%E0%A4%86%E0%A4%AA+%E0%A4%B8%E0%A5%87+English+Voiceover.mp3",
       questionsBook.image,
     ),
+    film: {
+      ...film("free"),
+      title: questionsBook.title,
+    },
     credits: {
       ...pendingCredits,
       writtenBy: bookOne.author,
@@ -237,18 +242,13 @@ export const catalogWorks: Work[] = [
     about: differentStory.about,
     hindi: publishedEdition("hi", "Kya_Aapki_Kahani_Alag_Hai_Hindi.pdf"),
     english: publishedEdition("en", "Is_Your_Story_Different_English.pdf"),
-    audio: {
-      available: false,
-      title: { en: "Author's Voice", hi: "लेखक की आवाज़" },
-      accessType: "ONLINE",
-      src: null,
-      poster: differentStory.image,
-      duration: { en: "Forthcoming", hi: "आगामी" },
-      price: freeMoney,
-    },
+    audio: voiceover(
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/Video.Guru_20261114-112815410.mp3",
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/WhatsApp+Audio+2026-11-15+at+14.42.01.mpeg",
+      differentStory.image,
+    ),
     film: {
       ...film("free"),
-      available: false,
       title: differentStory.title,
       duration: { en: "Forthcoming", hi: "आगामी" },
       poster: differentStory.image,
@@ -261,6 +261,7 @@ export const catalogWorks: Work[] = [
     whatYouReceive: [
       { en: "Hindi Edition — FREE", hi: "हिन्दी संस्करण — निःशुल्क" },
       { en: "English Edition — FREE", hi: "अंग्रेज़ी संस्करण — निःशुल्क" },
+      { en: "Author's Voice — FREE", hi: "लेखक की आवाज़ — निःशुल्क" },
     ],
     offers: [
       {
@@ -269,6 +270,7 @@ export const catalogWorks: Work[] = [
         includes: [
           { en: "Hindi Edition", hi: "हिन्दी संस्करण" },
           { en: "English Edition", hi: "अंग्रेज़ी संस्करण" },
+          { en: "Author's Voice", hi: "लेखक की आवाज़" },
         ],
         price: freeMoney,
         accessType: "ONLINE",

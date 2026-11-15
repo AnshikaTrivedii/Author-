@@ -1,19 +1,58 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #0d0d0c;
-  --color-ink-2: #161615;
-  --color-ivory: #e8e4dc;
-  --color-muted: #938e86;
-  --color-brown: #5c5248;
-  --color-gilt: #8f7558;
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ivory: var(--ivory);
+  --color-muted: var(--muted);
+  --color-brown: var(--brown);
+  --color-gilt: var(--gilt);
   --font-serif: var(--font-cormorant), var(--font-noto-serif-deva), "Palatino Linotype", Palatino, serif;
   --font-sans: var(--font-manrope), var(--font-noto-sans-deva), system-ui, sans-serif;
 }
 
+/* Every theme stays dark: the landing film and photographs sit under ink gradients,
+   and gilt buttons carry ink text, so ink/gilt contrast must stay at least 4.5:1. */
+:root,
+html[data-theme="heritage"] {
+  --ink: #0d0d0c;
+  --ink-2: #161615;
+  --ivory: #e8e4dc;
+  --muted: #938e86;
+  --brown: #5c5248;
+  --gilt: #a68a63;
+}
+
+html[data-theme="indigo"] {
+  --ink: #0a0e1a;
+  --ink-2: #121a2c;
+  --ivory: #ece8df;
+  --muted: #9aa2b6;
+  --brown: #3b4566;
+  --gilt: #d1a85a;
+}
+
+html[data-theme="maroon"] {
+  --ink: #140a0b;
+  --ink-2: #211213;
+  --ivory: #f1e7da;
+  --muted: #ad9a8f;
+  --brown: #6a3a35;
+  --gilt: #d4915a;
+}
+
+html[data-theme="peacock"] {
+  --ink: #061413;
+  --ink-2: #0d211f;
+  --ivory: #e7ede6;
+  --muted: #92a8a2;
+  --brown: #2e4b47;
+  --gilt: #c9ab6c;
+}
+
 html {
   scroll-behavior: smooth;
-  background: #0d0d0c;
+  background: var(--ink);
 }
 
 html.has-custom-cursor,
@@ -40,8 +79,8 @@ html.has-custom-cursor * {
 
 body {
   min-height: 100%;
-  background: #0d0d0c;
-  color: #e8e4dc;
+  background: var(--ink);
+  color: var(--ivory);
   font-family: var(--font-sans);
   font-weight: 400;
   line-height: 1.7;
@@ -56,22 +95,22 @@ body {
 }
 
 .reader-prose p {
-  color: rgba(232, 228, 220, 0.92);
+  color: color-mix(in srgb, var(--ivory) 92%, transparent);
 }
 
 ::selection {
-  background: #8f7558;
-  color: #0d0d0c;
+  background: var(--gilt);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 1px solid #8f7558;
+  outline: 1px solid var(--gilt);
   outline-offset: 4px;
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 1px solid #8f7558;
+  outline: 1px solid var(--gilt);
   outline-offset: 4px;
 }
 
@@ -80,8 +119,8 @@ button:focus-visible {
   left: 1rem;
   top: -5rem;
   z-index: 100;
-  background: #8f7558;
-  color: #0d0d0c;
+  background: var(--gilt);
+  color: var(--ink);
   padding: 0.75rem 1.25rem;
   font-size: 0.75rem;
   letter-spacing: 0.18em;
@@ -92,23 +131,30 @@ button:focus-visible {
   top: 1rem;
 }
 
-.label-meta {
-  font-family: var(--font-sans);
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #938e86;
-}
+@layer components {
+  .label-meta {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
 
-html[lang="hi"] .label-meta {
-  letter-spacing: 0.04em;
-  text-transform: none;
-  font-size: 0.78rem;
+  html[lang="hi"] .label-meta {
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 0.78rem;
+  }
 }
 
 html[lang="hi"] {
   word-break: keep-all;
+}
+
+/* Wide tracking meant for Latin capitals splits Devanagari clusters apart. */
+html[lang="hi"] .uppercase {
+  letter-spacing: 0.02em;
 }
 
 .grain {
@@ -142,7 +188,7 @@ html[lang="hi"] {
   background: linear-gradient(
     100deg,
     transparent 0%,
-    rgba(232, 228, 220, 0.06) 45%,
+    color-mix(in srgb, var(--ivory) 6%, transparent) 45%,
     transparent 100%
   );
   animation: light-sweep 8s ease-in-out 1.8s infinite;
@@ -179,10 +225,10 @@ html[lang="hi"] {
   font-size: 0.625rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #8f7558;
-  border: 1px solid rgba(143, 117, 88, 0.4);
+  color: var(--gilt);
+  border: 1px solid color-mix(in srgb, var(--gilt) 40%, transparent);
   padding: 0.28rem 0.5rem;
-  background: rgba(13, 13, 12, 0.55);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
   backdrop-filter: blur(8px);
 }
 
@@ -191,7 +237,7 @@ html[lang="hi"] {
   position: fixed;
   inset: 0;
   z-index: 55;
-  box-shadow: inset 0 0 10vw 2vw rgba(13, 13, 12, 0.28);
+  box-shadow: inset 0 0 10vw 2vw color-mix(in srgb, var(--ink) 28%, transparent);
 }
 
 .media-hover img {
@@ -213,7 +259,7 @@ html[lang="hi"] {
 
 input,
 textarea {
-  caret-color: #8f7558;
+  caret-color: var(--gilt);
 }
 
 ::-webkit-scrollbar {
@@ -222,11 +268,11 @@ textarea {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0d0d0c;
+  background: var(--ink);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #8f7558;
+  background: var(--gilt);
 }
 
 .launch-marquee {
@@ -258,12 +304,12 @@ textarea {
 
 .launch-fade-left {
   left: 0;
-  background: linear-gradient(90deg, #0d0d0c 10%, transparent);
+  background: linear-gradient(90deg, var(--ink-2) 10%, transparent);
 }
 
 .launch-fade-right {
   right: 0;
-  background: linear-gradient(270deg, #0d0d0c 10%, transparent);
+  background: linear-gradient(270deg, var(--ink-2) 10%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

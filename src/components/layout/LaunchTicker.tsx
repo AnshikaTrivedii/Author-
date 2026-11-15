@@ -76,7 +76,7 @@ export function LaunchTicker() {
   };
 
   return (
-    <div className="relative h-8 overflow-hidden border-b border-gilt/45 bg-[#100e0c]">
+    <div className="relative h-8 overflow-hidden border-b border-gilt/45 bg-ink-2">
       <div className="launch-fade-left" />
       <div className="launch-fade-right" />
       <div className="launch-marquee flex h-full w-max items-center">

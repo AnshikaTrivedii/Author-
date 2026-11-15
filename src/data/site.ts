@@ -56,7 +56,6 @@ export const navMoreItems: NavItem[] = [
   { label: { en: "Making of", hi: "निर्माण" }, href: "/making-of" },
   { label: { en: "Places", hi: "स्थान" }, href: "/places" },
   { label: { en: "Author's desk", hi: "लेखक की मेज़" }, href: "/desk" },
-  { label: { en: "Contact", hi: "संपर्क" }, href: "/contact" },
 ];
 
 export type FooterGroup = {
@@ -95,7 +94,6 @@ export const footerGroups: FooterGroup[] = [
     title: { en: "About", hi: "परिचय" },
     items: [
       { label: { en: "Author's desk", hi: "लेखक की मेज़" }, href: "/desk" },
-      { label: { en: "Contact", hi: "संपर्क" }, href: "/contact" },
     ],
   },
 ];
