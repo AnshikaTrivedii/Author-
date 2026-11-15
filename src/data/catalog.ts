@@ -244,7 +244,7 @@ export const catalogWorks: Work[] = [
     english: publishedEdition("en", "Is_Your_Story_Different_English.pdf"),
     audio: voiceover(
       "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/Video.Guru_20261114-112815410.mp3",
-      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/WhatsApp+Audio+2026-11-15+at+14.42.01.mpeg",
+      "https://orion-led-quotations.s3.ap-south-1.amazonaws.com/quotations/Book+content+/WhatsApp+Audio+2026-11-15+at+5.40.52+PM.mp3",
       differentStory.image,
     ),
     film: {

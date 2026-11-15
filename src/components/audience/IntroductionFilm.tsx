@@ -201,7 +201,7 @@ export function IntroductionFilm() {
               "bg-ink",
               playing
                 ? "pointer-events-auto fixed inset-0 z-[80] h-[100dvh] w-[100dvw] object-contain"
-                : "absolute inset-x-0 top-0 h-[124%] w-full object-cover object-[center_28%] sm:h-[132%] sm:object-[center_18%]",
+                : "absolute inset-0 h-full w-full object-contain object-center sm:h-[132%] sm:object-cover sm:object-[center_18%]",
             )}
             controls={playing}
             playsInline
